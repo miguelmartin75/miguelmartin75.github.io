@@ -1,0 +1,266 @@
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video 
+{
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section 
+{
+	display: block;
+}
+
+body 
+{
+	font-family: "Helvetica Neue",  Helvetica, Arial, sans-serif;
+    	font-size: 14px;
+	font-weight: normal;
+	line-height: 18px;
+	background: #FFFFFF;
+    	color: #666;
+}
+
+ul, ol, dl 
+{
+	display: block;
+}
+
+blockquote, q 
+{
+	quotes: none;
+}
+
+h1
+{
+    color: black;
+	font-size: 50px;	
+    padding-bottom: 20px;
+    padding-top: 10px;
+}
+
+strong
+{
+    font-style: bold;
+}
+
+a
+{
+    color: grey;
+    text-decoration: none;
+}
+
+a:hover
+{
+    color: black;
+}
+
+a:visited
+{
+   color: grey; 
+}
+
+
+
+#container
+{
+	width: 800px;
+  	margin: 0 auto;
+    padding-top: 10px;
+    padding-bottom: 25px;
+}
+.large
+{
+    font-size: 18px;
+}
+
+#content
+{
+    overflow: auto;
+}
+    #content h2
+    {
+        color: black;
+        display: block;
+        padding-top: 15px;
+        padding-bottom: 5px;
+        font-size: 30px;
+        font-weight: bold;
+    }
+    #content h3
+    {
+        color: black;
+        display: block;
+        padding-top: 10px;
+        font-size: 25px;
+        font-weight: bold;
+    }
+    #content p
+    {
+        display: block;
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+    #content a
+    {
+        font-weight: bold;
+        color: rgb(20, 20, 200);
+    }
+    #content a:hover
+    {
+        color: black;
+    }
+
+    #content ul
+    {
+        list-style-type: none;
+        padding-left: 20px; // indent the list
+    }
+
+
+    #content #contact
+    {
+    }
+        #content #contact a
+        {
+            font-weight: normal;
+            color: grey;
+        }
+        #content #contact a:hover
+        {
+            color: black;
+        }
+
+	#content #nav
+	{
+	}
+        #content #nav a
+        {
+            
+            font-weight: normal;
+        }
+		#content #nav a
+		{
+    			color: grey;
+		}		
+		#content #nav a:visited
+		{
+    			color: grey;
+		}
+		
+		#content #nav a:hover
+		{
+    			color: black;
+       		}
+
+		#content #nav ul
+		{
+			list-style-type: none;
+            padding: 0px 0px 0px 0px;
+		}
+
+		#content #nav li 
+ 	  	{
+    		text-align: center;
+    		margin: auto;
+   			padding: auto;
+    		display: inline;
+     	   	font-size: 20px;
+    	    line-height: 24px;
+    	}
+
+		#content #nav li#current a
+		{
+    		color: black;
+		}
+
+    #content #projects
+    {
+        display: block;
+        width: 600px;
+        padding-left: 20px;
+    }
+
+        #content #projects .project
+        {
+            display: block;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            width: 600px;
+        }
+            #content #projects .project h1
+            {
+                font-size: 20px;
+                display: block;
+                font-weight: bold;
+                padding-bottom: 5px;
+            }
+
+            #content #projects .project h1 small
+            {
+                display: block;
+                font-size: 12px;
+                font-weight: normal;
+                color: grey;
+            }
+
+            #content #projects .project h1 a
+            {
+                color: grey;
+            }
+
+            #content #projects .project h1 a:hover
+            {
+                color: black;
+            }
+
+            #content #projects .project .info
+            {
+                padding-left: 20px;
+                display: block;
+            }
+
+            #content #projects .project .info th
+            {
+                text-align: left;
+                color: black;
+                font-weight: bold;
+                font-size: 18px;
+                padding-right: 20px;
+                width: 100px;
+            }
+
+
+#contact 
+{
+    font-size: 20px;
+	float: right;    
+}
+
+#contact a:hover
+{
+    color: black;
+}
+
+#container footer
+{
+	margin-top: 40px;
+	padding-top: 20px;
+    padding-bottom: 30px;
+    font-size: 13px;
+}
