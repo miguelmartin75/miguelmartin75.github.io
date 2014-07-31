@@ -7,27 +7,6 @@ Last updated: 2014-04-14
 </ul>
 </div>
 
-## OBJECTIVE
-
-- To create applications for the desktop and mobile that will utilize my skills in programming, problem solving and mathematics efficiently and enchance them further.
-
-## TECHNOLOGY SUMMARY
-
-- **Languages:** C++03/11 (3+ years); C# (2 years); Objective-C (1 year); Java (1 year); Shell (less than a year); JavaScript (less than a year); HTML (2 years); CSS (less than a year); Python (less than a year); Markdown (2 years)
-- **Operating Systems:** Windows, Mac OS X, Linux, iOS (development)
-- **Version Control:** Git, SVN, Mercurial
-- **Applications:** Visual Studio, Xcode, Qt Creator, NetBeans, Vim, Bash and Zsh (Unix Shells), Make, CMake
-
-## HOBBIES/INTERESTS
-
-- Programming; developing personal projects, and contributing/developing open source softwar
-- Computer Graphics
-- Programming Language Design and Implementation (Compilers/Interpreters)
-- Gaming/game development
-- Multi-media/Graphics Design (Video Editing, 3D Modelling, Photo-editing)
-- Math
-- Experimenting with new technologies
-
 ## PERSONAL PROJECTS
 
 I have quite a few (open source) personal projects that I am most proud of during my time of programming, which I work on during my spare time. Here is a small list of all my personal projects I am most fond of:
@@ -49,6 +28,28 @@ If you would like to see more details, please visit my "projects" section on my 
 ##### Goal:
 
 To become an expert in the field of Computer Science; advancing and improving my existing knowledge of programming and programming concepts.
+
+## TECHNOLOGY SUMMARY
+
+- **Languages:** C++03/11 (3+ years); C# (2 years); Objective-C (1 year); Java (1 year); Python (less than a year)
+- **Operating Systems:** Windows, Mac OS X, Linux, iOS (development)
+- **Version Control:** Git, SVN, Mercurial
+- **Applications:** Vim, CMake, make, Visual Studio, Xcode
+
+## OBJECTIVE
+
+- To create applications for the desktop and mobile that will utilize my skills in programming, problem solving and mathematics efficiently and enchance them further.
+
+## HOBBIES/INTERESTS
+
+- Programming; developing personal projects, and contributing/developing open source software
+- Computer Graphics
+- Programming Language Design and Implementation (Compilers/Interpreters)
+- Gaming/game development
+- Multi-media/Graphics Design (Video Editing, 3D Modelling, Photo-editing)
+- Math
+- Experimenting with new technologies
+- Working out
 
 # LINKS
 
