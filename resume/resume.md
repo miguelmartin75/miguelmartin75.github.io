@@ -38,7 +38,7 @@ To become an expert in the field of Computer Science; advancing and improving my
 
 ## OBJECTIVE
 
-- To create applications for the desktop and mobile that will utilize my skills in programming, problem solving and mathematics efficiently and enchance them further.
+- To create applications for the desktop and mobile that will utilise my skills in programming, problem solving and mathematics efficiently and enhance them further.
 
 ## HOBBIES/INTERESTS
 
