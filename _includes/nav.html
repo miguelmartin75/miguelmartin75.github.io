@@ -4,7 +4,7 @@
         {% assign pageNames = "me|lifestory|projects|resume|blog" | split: "|" %}
         {% for name in pageNames %}
             <li id="{% if page.title == name or (page.title == "miguel" and name == "me") %}current{% endif %}">
-            <a href="{% if name == "me" %}{{ site.url }}{% else %}{{ site.url }}/{{ name }}.html{% endif %}">
+            <a href="{% if name == "me" %}{{ site.url }}{% else %}{{ site.url }}/{{ name }}{% endif %}">
             {{ name }} 
             </a></li>
         {% endfor %}
