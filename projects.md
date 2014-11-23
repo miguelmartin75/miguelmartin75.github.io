@@ -4,14 +4,9 @@ html_title: miguel's projects
 title: projects
 ---
 
-
-<p>
 Most of my projects are open-sourced on GitHub/BitBucket, however some will be close-source (as some I wanting to sell). I reccomend checking out my <a href="https://www.github.com/miguelmartin75" target="_blank">GitHub profile</a>, as it will have a detailed list of all my projects, with a bigger description and determine how often I contribute to them.
-</p>
 
-<h2>
-    Completed Projects
-</h2>
+## Completed Projects
 
 <div id="projects">
     <div class="project">
@@ -61,7 +56,7 @@ Most of my projects are open-sourced on GitHub/BitBucket, however some will be c
     <div class="project">
         <h1>
             <a target="_blank" href="https://github.com/mosra/magnum">Magnum</a>
-            <small>contributer; author: <a href="https://github.com/mosra">Vladimír Vondruš</a></small>
+            <small>contributor; author: <a href="https://github.com/mosra">Vladimír Vondruš</a></small>
         </h1>
         <div class="info">
             <table>
