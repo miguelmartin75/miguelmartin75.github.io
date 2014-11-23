@@ -1,0 +1,32 @@
+{% include top.html %}
+<div id="container">
+    <h1>
+        <strong>{{ page.title }}</strong>
+        <small><time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date_to_string }}</time></small>
+    </h1>
+
+    <div id="content">
+        {% include header.html %}
+        {{ content }}
+    </div>
+
+    <aside id="related">
+        <h2>Related Posts</h2>
+
+        <ul id="related-posts">
+            {% for post in site.related_posts limit:5 %}
+                <li>
+                    <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date_to_string }}</time>
+                    <a href="{{ site.url }}{{ post.url }}">{{ post.title }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </aside>
+
+
+    {% include comments.html %}
+
+    {% include footer.html %}
+</div>
+</body>
+</html>
