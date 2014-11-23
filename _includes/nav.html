@@ -1,9 +1,12 @@
 <div id="nav">
     <ul>
-        <li id=""><a href="{{ site.url }}">me</a></li>
-        <li id=""><a href="{{ site.url }}/lifestory.html">lifestory</a></li>
-        <li id=""><a href="{{ site.url }}/projects.html">projects</a></li>
-        <li id=""><a href="{{ site.url }}/resume.html">resume</a></li>
-        <li id=""><a target="_blank" href="http://miguelmartin75.wordpress.com/">blog</a></li>
+        <!-- This is ugly I know... but w/e -->
+        {% assign pageNames = "me|lifestory|projects|resume|blog" | split: "|" %}
+        {% for name in pageNames %}
+            <li id="{% if page.title == name or (page.title == "miguel" and name == "me") %}current{% endif %}">
+            <a href="{% if name == "me" %}{{ site.url }}{% else %}{{ site.url }}/{{ name }}.html {% endif %}">
+            {{ name }} 
+            </a></li>
+        {% endfor %}
     </ul>
 </div>
