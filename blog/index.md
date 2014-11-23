@@ -16,3 +16,6 @@ title: blog
         </article>
     {% endfor %}
 </div>
+
+
+<small id="archive"><a href="{{ site.url }}/blog/archive">archive</a></small>
