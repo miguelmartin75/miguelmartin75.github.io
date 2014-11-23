@@ -28,11 +28,6 @@ footer, header, hgroup, menu, nav, section
 
 body 
 {
-    font-family: "Open Sans", "Helvetica Neue",  Helvetica, Arial, sans-serif;
-    font-size: 14pt;
-    font-weight: normal;
-    background: #FFFFFF;
-    color: #000;
 }
 
 ul, ol, dl 
@@ -83,6 +78,12 @@ small
     color: grey;
 }
 
+time
+{
+    font-family: "Lucida Console", Monaco, monospace;
+    text-transform: uppercase;
+}
+
 .large
 {
     font-size: 18px;
@@ -110,10 +111,17 @@ small
 
 #container
 {
-	width: 800px;
-  	margin: 0 auto;
-    padding-top: 10px;
-    padding-bottom: 25px;
+    width: 800px;
+    height: 100%;
+    padding-right: 20px;
+    padding-left: 20px;
+    margin-top: 10px;
+    margin: 0 auto;
+
+    font-family: "Open Sans", "Helvetica Neue",  Helvetica, Arial, sans-serif;
+    font-size: 15pt;
+    font-weight: normal;
+    color: #000;
 }
 
 #content
