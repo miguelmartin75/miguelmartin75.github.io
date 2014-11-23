@@ -1,8 +1,10 @@
 {% include top.html %}
 <div id="container">
     <h1 id="title">
-        <strong>{{ page.title }}</strong>
-        <small><time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date_to_string }}</time></small>
+        <strong>
+            <span>{{ page.title }}</span>
+            <small><time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date_to_string }}</time></small>
+        </strong>
     </h1>
 
     <div id="content">
@@ -10,6 +12,7 @@
         {{ content }}
     </div>
 
+    {% if site.related_posts.length > 0 %}
     <aside id="related">
         <h2>Related Posts</h2>
 
@@ -22,7 +25,7 @@
             {% endfor %}
         </ul>
     </aside>
-
+    {% endif %}
 
     {% include comments.html %}
 
