@@ -44,7 +44,7 @@ Most of my projects are open-sourced on GitHub/BitBucket, however some will be c
                 <tr>
                     <td>A fast, lightweight, signal library, for C++11, using the Fastest Possible C++ Delegates, with a little extra features.</td>
                     <td>C++</td>
-                    <td>Git, Vim, CMake, Xcode</td>
+                    <td>Git, Vim, CMake</td>
                 </tr>
             </table>
         </div>
@@ -68,12 +68,10 @@ Most of my projects are open-sourced on GitHub/BitBucket, however some will be c
                 <tr>
                     <td>Magnum is 2D/3D graphics engine written in C++11 and modern OpenGL. Its goal is to simplify low-level graphics development and interaction with OpenGL using recent C++11 features and to abstract away platform-specific issues.</td>
                     <td>C++</td>
-                    <td>Git, Vim, CMake, Xcode</td>
+                    <td>Git, Vim, CMake</td>
                 </tr>
             </table>
         </div>
     </div>
 
 </div>
-
-    </div>

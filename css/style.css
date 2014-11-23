@@ -28,12 +28,11 @@ footer, header, hgroup, menu, nav, section
 
 body 
 {
-	font-family: "Helvetica Neue",  Helvetica, Arial, sans-serif;
-    	font-size: 14px;
-	font-weight: normal;
-	line-height: 18px;
-	background: #FFFFFF;
-    	color: #666;
+    font-family: "Open Sans", "Helvetica Neue",  Helvetica, Arial, sans-serif;
+    font-size: 14pt;
+    font-weight: normal;
+    background: #FFFFFF;
+    color: #000;
 }
 
 ul, ol, dl 
@@ -48,10 +47,13 @@ blockquote, q
 
 h1
 {
-    color: black;
 	font-size: 50px;	
-    padding-bottom: 20px;
-    padding-top: 10px;
+    color: black;
+}
+
+h2
+{
+    font-size: 30px;
 }
 
 strong
@@ -61,13 +63,8 @@ strong
 
 a
 {
-    color: grey;
-    text-decoration: none;
-}
-
-a:hover
-{
-    color: black;
+    font-weight: bold;
+    color: rgb(20, 20, 200);
 }
 
 a:visited
@@ -75,7 +72,40 @@ a:visited
    color: grey; 
 }
 
+a:hover
+{
+    color: black;
+}
 
+small
+{
+    font-size: 12px;
+}
+
+.large
+{
+    font-size: 18px;
+}
+
+#title
+{
+    font-size: 50pt;
+    margin-top: -5pt;
+    margin-bottom: -5pt;
+}
+
+#related h2
+{
+    font-size: 30pt;
+}
+
+#related ul
+{
+    font-size: 12pt;
+    padding-left: 25px;
+    list-style: none;
+    color: #111;
+}
 
 #container
 {
@@ -83,10 +113,6 @@ a:visited
   	margin: 0 auto;
     padding-top: 10px;
     padding-bottom: 25px;
-}
-.large
-{
-    font-size: 18px;
 }
 
 #content
@@ -116,28 +142,25 @@ a:visited
         padding-top: 5px;
         padding-bottom: 5px;
     }
-    #content a
-    {
-        font-weight: bold;
-        color: rgb(20, 20, 200);
-    }
-    #content a:hover
-    {
-        color: black;
-    }
 
     #content ul
     {
         list-style-type: none;
-        padding-left: 20px; // indent the list
     }
 
+
+    #content #top-bar
+    {
+        font-size: 25pt;
+    }
 
     #content #contact
     {
+        float: right;
     }
         #content #contact a
         {
+            text-decoration: none;
             font-weight: normal;
             color: grey;
         }
@@ -145,28 +168,31 @@ a:visited
         {
             color: black;
         }
-
+        #content #contact a:visited
+        {
+            color: grey;
+        }
 	#content #nav
 	{
+
 	}
         #content #nav a
         {
-            
             font-weight: normal;
         }
 		#content #nav a
 		{
-    			color: grey;
-		}		
-		#content #nav a:visited
-		{
-    			color: grey;
-		}
-		
-		#content #nav a:hover
-		{
-    			color: black;
-       		}
+            color: grey;
+            text-decoration: none;
+        }		
+        #content #nav a:visited
+        {
+            color: grey;
+        }
+        #content #nav a:hover
+        {
+            color: black;
+       	}
 
 		#content #nav ul
 		{
@@ -180,8 +206,6 @@ a:visited
     		margin: auto;
    			padding: auto;
     		display: inline;
-     	   	font-size: 20px;
-    	    line-height: 24px;
     	}
 
 		#content #nav li#current a
@@ -192,16 +216,13 @@ a:visited
     #content #projects
     {
         display: block;
-        width: 600px;
         padding-left: 20px;
     }
-
         #content #projects .project
         {
             display: block;
             padding-top: 10px;
             padding-bottom: 10px;
-            width: 600px;
         }
             #content #projects .project h1
             {
@@ -232,7 +253,6 @@ a:visited
             #content #projects .project .info
             {
                 padding-left: 20px;
-                display: block;
             }
 
             #content #projects .project .info th
@@ -240,17 +260,8 @@ a:visited
                 text-align: left;
                 color: black;
                 font-weight: bold;
-                font-size: 18px;
-                padding-right: 20px;
-                width: 100px;
+                padding-right: 30px;
             }
-
-
-#contact 
-{
-    font-size: 20px;
-	float: right;    
-}
 
 #contact a:hover
 {
@@ -259,8 +270,9 @@ a:visited
 
 #container footer
 {
-	margin-top: 40px;
+    color: #515151;
+    margin-top: 40px;
 	padding-top: 20px;
     padding-bottom: 30px;
-    font-size: 13px;
+    font-size: 13pt;
 }
