@@ -1,6 +1,17 @@
 <!DOCTYPE html>
 <html>
 <head>
+
+    <script>
+    // redirect if we're not using HTTPS
+    var hostName = "miguel-martin.com";
+    if((host == window.location.host) && (window.location.protocol != "https:"))
+    {
+        window.location.protocol = "https:";
+    }
+
+    </script>
+
     <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <title>{{ page.html_title }}</title>
@@ -10,4 +21,5 @@
     <!--[if IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
+
 </head>
