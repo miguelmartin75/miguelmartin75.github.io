@@ -1,12 +1,14 @@
 <div id="nav">
     <ul>
-        <!-- This is ugly I know... but w/e -->
-        {% assign pageNames = "me|lifestory|projects|resume|blog" | split: "|" %}
-        {% for name in pageNames %}
-            <li id="{% if page.title == name or (page.title == "miguel" and name == "me") %}current{% endif %}">
-            <a href="{% if name == "me" %}{{ site.url }}{% else %}{{ site.url }}/{{ name }}{% endif %}">
-            {{ name }} 
-            </a></li>
+        {% for p in site.page_list %}
+        {% assign name = p[0] %}
+        {% assign url = p[1] %}
+
+        <li id="{% if page.title == name or (page.title == "miguel" and name == "me") %}current{% endif %}">
+        <a href="{{ url }}">
+        {{ name }}
+        </a>
+        </li>
         {% endfor %}
     </ul>
 </div>
