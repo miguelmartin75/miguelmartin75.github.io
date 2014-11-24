@@ -9,7 +9,7 @@ and moved to my website, which is hosted by GitHub pages using Jekyll. Soon
 I'll be deleting my old WordPress blog. So watch out world!
 
 The reason I switched from WordPress to GitHub Pages with Jekyll is mainly
-because:
+due to:
 
 # Styles
 I can have custom styles without paying a thing! For example, I finally have 
