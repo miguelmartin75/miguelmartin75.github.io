@@ -348,6 +348,8 @@ html, body
     color: #515151;
     font-size: 13px;
     border-top: 1px solid #ddd;
+    
+    padding-top: 10px;
 
     height: 40px;
     width: 100%;
