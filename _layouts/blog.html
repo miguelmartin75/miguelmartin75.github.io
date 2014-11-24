@@ -1,0 +1,15 @@
+{% include top.html %}
+<body>
+<div id="container">
+    <h1 id="title">
+        <strong>{{ page.title }}</strong>
+    </h1>
+    <div id="content">
+        {% include header.html %}
+        {{ content }}
+    </div>
+    {% include archive.html %}
+    {% include footer.html %}
+</div>
+</body>
+</html>

@@ -1,5 +1,5 @@
 ---
-layout: site
+layout: blog
 html_title: miguel's blog
 title: blog
 ---
@@ -18,4 +18,3 @@ title: blog
 </div>
 
 
-<small id="archive"><a href="{{ site.url }}/blog/archive">archive</a></small>

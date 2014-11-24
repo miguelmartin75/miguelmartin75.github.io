@@ -1,5 +1,5 @@
 ---
-layout: site
+layout: blog
 html_title: blog archive
 title: archive
 ---
