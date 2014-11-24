@@ -145,10 +145,16 @@ pre code
     color: black;
 }
 
+html, body
+{
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
 #container
 {
     width: 800px;
-    height: 100%;
     padding-right: 20px;
     padding-left: 20px;
     margin-top: 10px;
@@ -158,6 +164,9 @@ pre code
     font-size: 14pt;
     font-weight: normal;
     color: #333;
+
+    min-height: 100%;
+    position: relative;
 }
 
 #disqus_thread
@@ -168,7 +177,6 @@ pre code
 #content
 {
     overflow: auto;
-    padding-bottom: 100px;
 }
     #content h1, h2, h3, h4, h5
     {
@@ -237,7 +245,6 @@ pre code
         }
 	#content #nav
 	{
-
 	}
         #content #nav a
         {
@@ -331,12 +338,21 @@ pre code
     color: black;
 }
 
+#content
+{
+    padding-bottom: 80px; /* footer height */
+}
+
 #container footer
 {
     color: #515151;
-    margin-top: 40px;
-	padding-top: 20px;
-    padding-bottom: 30px;
     font-size: 13px;
     border-top: 1px solid #ddd;
+
+    height: 40px;
+    width: 100%;
+
+    position: absolute;
+    bottom: 0;
+    left: 0;
 }
