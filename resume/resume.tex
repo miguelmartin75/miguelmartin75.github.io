@@ -1,0 +1,151 @@
+\documentclass[10pt,oneside,a4paper]{article}
+
+\usepackage{geometry}
+\usepackage{multicol}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{setspace}
+\pagestyle{empty}
+
+\geometry{legalpaper, hmargin=1in, vmargin=0.5in}
+
+\setstretch{1.0}
+\setlength{\parindent}{0pt}
+\titlespacing*{\section}{0pt}{0.5em}{0pt}
+\titlespacing*{\hrulefill}{0pt}{0pt}{2em}
+
+\newcommand{\project}[5] 
+{
+    {
+    \textbf{#1} \hfill {\footnotesize\textbf{#2}}\newline
+    \emph{#3} \hfill \emph{#4}
+    }
+
+    {
+        \begin{description}[leftmargin=0.5cm, itemindent=0cm]
+        \item {#5}
+        \end{description}
+    }
+}
+
+\newcommand{\info}[2] 
+{
+    {
+        \section*{#1}
+        \hrulefill\newline
+    }
+
+    {#2}
+}
+
+\begin{document}
+
+{
+    \raggedleft
+    \footnotesize
+    \textbf{Last Modified:} \today
+
+    \centering
+    {\huge\textbf{Miguel Martin}}
+
+    \textbf{Email:} miguel@miguel-martin.com\hfill\textbf{Website:} miguel-martin.com\newline
+
+}
+
+\info{Experience}
+{
+    {
+        \project{anax}{github.com/miguelmartin75/anax}
+        {Personal Project}{2013 - Present}
+        {
+            An open source entity system written in C++11, as a portable library.
+            \begin{itemize}
+                \item 142 stars on GitHub
+            \end{itemize}
+        }
+        \project{Virtual Robot}{bitbucket.com/miguelmartin/virtual-robot}
+        {Personal Project}{2011}
+        {
+            An educational piece of software aimed to teach the basics of programming,
+            written for my electronics class in grade 10.
+            \begin{itemize}
+                \item Written in Java
+                \item Multi-threaded Java Swing application
+                \item Uses the MVC pattern
+            \end{itemize}
+        }
+        \project{pine}{github.com/miguelmartin75/pine}
+        {Personal Project}{2013 - 2014}
+        {
+            Pine is a general, lightweight, header-only C++11 library, which is designed to make organisation of a game much simpler. 
+            \begin{itemize}
+                \item Further enhanced my API design skills
+                \item Increased knowledge of C++ templates
+                \item Heavily documented
+            \end{itemize}
+        }
+        Please visit my "projects" section on my website for more projects and details: miguel-martin.com/projects.
+    }
+}
+
+\info{Education}
+{
+    \textbf{University of Adelaide}\newline
+    \emph{Bachelor of Computer Science (Advanced) \hfill 2014 - Present}
+    \begin{description}[leftmargin=0.5cm, itemindent=0cm]
+        \item Expected Graduation Year: 2016.
+        \item GPA: 6.0/7.0
+        \item Received University of Adelaide Principals' Scholarship in 2014.
+        \item Key Courses:
+            \begin{itemize}
+                \item Object Oriented Programming\dotfill High Distinction
+                \item Algorithm Design and Data Structures\dotfill Distinction
+                \item Mathematics IA\dotfill Distinction
+                \item Mathematics IB\dotfill Distinction
+                \item Systems Programming in C\dotfill TBA
+                \item Computer Networks and Applications\dotfill TBA
+            \end{itemize}
+    \end{description}
+}
+
+\info{Technology Summary}
+{
+    \begin{multicols}{3}
+    \subsection*{Languages}
+    {
+        \begin{description}
+            \item C++\dotfill 3 years
+            \item Java\dotfill 2.5 years
+            \item C\#\dotfill 2 years
+            \item Python\dotfill 0.5 years
+            \item Objective-C\dotfill 0.5 years
+        \end{description}
+    }
+
+    \columnbreak
+
+    \subsection*{Version Control}
+    {
+        \begin{description}
+            \item Git\dotfill 2 years
+            \item SVN\dotfill 1 year
+            \item Mercurial\dotfill 0.5 years
+        \end{description}
+    }
+
+    \columnbreak
+
+    \subsection*{Tools}
+    {
+        \begin{description}
+            \item Visual Studio\dotfill 2 years
+            \item Vim\dotfill 2 years
+            \item Xcode\dotfill 2 years
+            \item Make\dotfill 1.5 years
+            \item CMake\dotfill 1 year
+        \end{description}
+    }
+    \end{multicols}
+}
+
+\end{document}
