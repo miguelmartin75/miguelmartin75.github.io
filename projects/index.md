@@ -4,7 +4,7 @@ html_title: miguel's projects
 title: projects
 ---
 
-Most of my projects are open-sourced on GitHub/BitBucket, however some will be close-source (as some I wanting to sell). I reccomend checking out my <a href="https://www.github.com/miguelmartin75" target="_blank">GitHub profile</a>, as it will have a detailed list of all my projects, with a bigger description and determine how often I contribute to them.
+Most of my projects are open-sourced on GitHub/BitBucket, however some will be close-source (to keep private). I recommend checking out my <a href="https://www.github.com/miguelmartin75" target="_blank">GitHub profile</a>, as it will have a detailed list of all my projects, with a bigger description and determine how often I contribute to them.
 
 ## Completed Projects
 
