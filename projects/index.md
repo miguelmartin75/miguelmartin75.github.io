@@ -23,7 +23,7 @@ Most of my projects are open-sourced on GitHub/BitBucket, however some will be c
                 </tr>
                 <tr>
                     <td><p>An open source entity system written in C++. Mainly used for game development, but could possibly be used for other purposes.</p></td>
-                    <td>C++ and Shell</td>
+                    <td>C++ and Bash</td>
                     <td>Git, Vim, CMake, Xcode</td>
                 </tr>
             </table>
