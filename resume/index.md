@@ -5,4 +5,4 @@ title: resume
 redirect: "{{ site.url }}/resume.pdf"
 ---
 
-Redirecting to [resume.pdf](resume.pdf)... 
+If you are not redirected automatically, please click [resume.pdf](resume.pdf).
