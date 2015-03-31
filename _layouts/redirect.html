@@ -1,0 +1,16 @@
+{% include top_start.html %}
+<meta http-equiv="refresh" content="0; url="{{ page.redirect }}">
+{% include top_end.html %}
+<body>
+<div id="container">
+    <h1 id="title">
+        <strong>{{ page.title }}</strong>
+    </h1>
+    <div id="content">
+        {% include header.html %}
+        {{ content }}
+    </div>
+    {% include footer.html %}
+</div>
+</body>
+</html>
