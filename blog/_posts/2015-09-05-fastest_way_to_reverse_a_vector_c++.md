@@ -10,12 +10,12 @@ In C++, the most trivial way to return a reversed vector/container is to use the
 std::vector<int> reverse{myVec.rbegin(), myVec.rend()};
 {% endhighlight %}
 
-which is fine for most cases. However, this constructs a new vector of length `myVec.size()` and copies the content of the old, which can be quite expensive for large `sizeof(T)` and/or large `myVec.size()`. Note we can do it with `std::reverse` in-place but this modifies the contents of the vector and is still an O(n) operation.
+which is fine for most cases. However, this constructs a new vector of length `myVec.size()` and copies the content of the old, which can be quite expensive for large `sizeof(T)` and/or large `myVec.size()`. Note we can do it in-place with `std::reverse`, but this is still an O(n) operation.
 
-In most cases, we don't really want to return a reversed vector, but rather index from the reverse, which is quite simple to do with the reverse iterators it provides or if you want to use a for range loop in C++11 by swapping the iterators begin with rbegin and end with rend, e.g. with [`boost::reversed`](boost_reversed).
+Most of the time we want to just iterate the vector from reverse, which is quite simple to do with the reverse iterators it provides or if you want to use a for range loop in C++11 by swapping the iterators begin with rbegin and end with rend, e.g. with [`boost::reversed`](boost_reversed).
 
-However, if we actually do want to return a new vector that is reversed, then we cannot use `boost::reversed`, but there is a some-what smarter way to reverse a vector than to construct a new one. In C++ specifically, this has some flaws, which I will discuss further down. The idea is quite simple: instead of copying the elements from `rbegin()` to `rend()` to a new vector, we would simply leave the contents of the vector and switch around it's iterators. This can essentially be achieved
-with a new type, for example, `reversed_vec<T>` which would essentially switch the iterators, change the implementation of operator[] and .at(), and contain the unchanged data; alternatively you could just return the vector and only access data via reverse iterators or by vec[vec.size() - 1 - i], which is possible, but annoying.
+However, if we actually want to return a new vector that is reversed, then we cannot use [`boost::reversed`](boost_reversed) (since iterators will be invalidated), but there is a some-what smarter way to reverse a vector than to construct a new one. In C++ specifically, this has some flaws, which I will discuss further down. The idea is quite simple: instead of copying the elements from `rbegin()` to `rend()` to a new vector, we would simply move the contents of the vector and switch around it's iterators. This can essentially be achieved
+with a new type, for example, `reversed_vec<T>` which would essentially switch the iterators, change the implementation of operator[] and .at(), and contain the unchanged data. Alternatively, you could just return the vector and only access data via reverse iterators or by vec[vec.size() - 1 - i], which is possible, but annoying.
 
 As I mentioned, creating a new type has some flaws, which I will explain later on. If you don't quite understand what I am describing, here is a (somewhat) practical example of what I mean:
 
@@ -26,7 +26,7 @@ std::vector<int> reverse_fib(int N)
 {
     std::vector<int> result;
     result.reverse(N + 1);
-    for(int i = 0; i < 2 && i < N; ++i)
+    for(int i = 0; i < 2 && i <= N; ++i)
     {
         result.emplace_back(i);
     }
@@ -47,7 +47,7 @@ reversed_vec<int> reverse_fib(int N)
 {
     std::vector<int> result;
     result.reverse(N + 1);
-    for(int i = 0; i < 2 && i < N; ++i)
+    for(int i = 0; i < 2 && i <= N; ++i)
     {
         result.emplace_back(i);
     }
