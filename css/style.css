@@ -84,6 +84,11 @@ time
     text-transform: uppercase;
 }
 
+code
+{
+    font-family: "Consolas", "Liberation Mono", Menlo, Courier, monospace;
+}
+
 pre code 
 { 
     display: block; 
@@ -91,14 +96,13 @@ pre code
     overflow-x: auto; 
     word-wrap: normal; 
 
-    font-size: 70%;
+    font-size: 90%;
     line-height: 1.35;
     padding-top: 10px;
     padding-bottom: 10px;
 
     background-color: #f5f5f5;
     border-radius: 3px;
-    font-family: "Consolas", "Liberation Mono", Menlo, Courier, monospace;
 }
 
 .large
