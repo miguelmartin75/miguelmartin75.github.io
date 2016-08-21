@@ -7,14 +7,27 @@ title: blog
 <div id="posts">
     {% for post in site.posts %}
         <article class="post">
-            <h1 class="post-title">
-            <a href="{{ post.url }}">{{post.title}}</a>
-            <small><time datetime="{{ post.date | date_to_xmlschema }}" class="post-date">{{ post.date | date_to_string }}</time></small>
-            </h1>
+            <div class="post-title">
+                <h1>
+                    <a href="{{ post.url }}">{{post.title}}</a>
+                </h1>
+                <time style="padding-top: 5px" datetime="{{ post.date | date_to_xmlschema }}">
+                    {% assign d = post.date | date: "%-d"  %}
+                    {{ post.date | date: "%B" }} 
+                    {% case d %}
+                        {% when '1' or '21' or '31' %}{{ d }}st,
+                        {% when '2' or '22' %}{{ d }}nd,
+                        {% when '3' or '23' %}{{ d }}rd,
+                        {% else %}{{ d }}th,
+                    {% endcase %}
+                    {{ post.date | date: "%Y" }}
+                </time>
+            </div>
 
-            {{ post.content }}
+
+            {{ post.excerpt }}
+
+            <a href="{{ post.url }}">Continue Reading...</a>
         </article>
     {% endfor %}
 </div>
-
-

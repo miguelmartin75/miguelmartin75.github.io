@@ -23,7 +23,7 @@ time, mark, audio, video
 article, aside, details, figcaption, figure, 
 footer, header, hgroup, menu, nav, section 
 {
-	display: block;
+    display: block;
 }
 
 body 
@@ -32,17 +32,17 @@ body
 
 ul, ol, dl 
 {
-	display: block;
+    display: block;
 }
 
 blockquote, q 
 {
-	quotes: none;
+    quotes: none;
 }
 
 h1
 {
-	font-size: 50px;	
+    font-size: 35px;	
     color: black;
 }
 
@@ -58,8 +58,7 @@ strong
 
 a
 {
-    font-weight: bold;
-    color: rgb(20, 20, 200);
+    color: #069;
 }
 
 a:visited
@@ -74,19 +73,25 @@ a:hover
 
 small
 {
-    font-size: 12pt;
+    font-size: 9pt;
     color: grey;
 }
 
 time
 {
     font-family: "Lucida Console", Monaco, monospace;
-    text-transform: uppercase;
 }
 
 code
 {
     font-family: "Consolas", "Liberation Mono", Menlo, Courier, monospace;
+}
+
+.code
+{
+    font-family: "Consolas", "Liberation Mono", Menlo, Courier, monospace;
+    vertical-align: top;
+    padding-left: 5px;
 }
 
 pre code 
@@ -95,6 +100,7 @@ pre code
     white-space: pre; 
     overflow-x: auto; 
     word-wrap: normal; 
+    vertical-align: top;
 
     font-size: 90%;
     line-height: 1.35;
@@ -105,16 +111,68 @@ pre code
     border-radius: 3px;
 }
 
+.bar 
+{
+    border-top: 1px solid #ddd;
+    padding-top: 5px;
+}
+
 .large
 {
     font-size: 18px;
+}
+
+.title 
+{
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+    margin-bottom: 20px;
+    padding-bottom: 5px;
+}
+
+    .title .heading
+    {
+        font-size: 35pt;
+    }
+
+    .title .sub-heading 
+    {
+        font-size: 14pt;
+    }
+
+.sub-heading
+{
+}
+
+.post 
+{
+    padding-bottom: 10px;
+}
+
+#content .post-title 
+{
+    padding-bottom: 2px;
+    margin-bottom: 5px;
+    font-size: 11pt;
+    border-bottom: 1px solid #ddd;
+}
+
+#content .post-title h1
+{
+    font-size: 18pt;
+    border-bottom: none;
+}
+
+#content .post-title a
+{
+    text-decoration: none;
 }
 
 #title
 {
     font-size: 50pt;
     margin-top: -5pt;
-    margin-bottom: -5pt;
+    margin-bottom: 2pt;
 }
 
 #related h2
@@ -165,7 +223,7 @@ html, body
     margin: 0 auto;
 
     font-family: "Open Sans", "Helvetica Neue",  Helvetica, Arial, sans-serif;
-    font-size: 14pt;
+    font-size: 11pt;
     font-weight: normal;
     color: #333;
 
@@ -184,7 +242,7 @@ html, body
 }
     #content h1, h2, h3, h4, h5
     {
-        border-bottom: 1px solid #eee;
+        border-bottom: 1px solid #ddd;
     }
     #content h1
     {
@@ -256,36 +314,36 @@ html, body
         }
 		#content #nav a
 		{
-            color: grey;
-            text-decoration: none;
-        }		
-        #content #nav a:visited
-        {
-            color: grey;
-        }
-        #content #nav a:hover
-        {
-            color: black;
-       	}
+                    color: grey;
+                    text-decoration: none;
+                }		
+                #content #nav a:visited
+                {
+                    color: grey;
+                }
+                #content #nav a:hover
+                {
+                    color: black;
+                }
 
 		#content #nav ul
 		{
-			list-style-type: none;
-            padding: 0px 0px 0px 0px;
+                    list-style-type: none;
+                    padding: 0px 0px 0px 0px;
 		}
 
 		#content #nav li 
  	  	{
-    		text-align: center;
-    		margin: auto;
-   			padding: auto;
-    		display: inline;
-    	}
+                    text-align: center;
+                    margin: auto;
+                    padding: auto;
+                    display: inline;
+                }
 
 		#content #nav li#current a
-		{
-    		color: black;
-		}
+                {
+                    color: black;
+                }
 
     #content #projects
     {
@@ -302,7 +360,6 @@ html, body
             {
                 font-size: 20px;
                 display: block;
-                font-weight: bold;
                 padding-bottom: 5px;
             }
 
@@ -351,7 +408,6 @@ html, body
 {
     color: #515151;
     font-size: 13px;
-    border-top: 1px solid #ddd;
     
     padding-top: 10px;
 
