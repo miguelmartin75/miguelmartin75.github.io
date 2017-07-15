@@ -2,7 +2,6 @@ host: miguel-martin.com
 url: "http://miguel-martin.com"
 page_list:
     me: '/'
-    lifestory: '/lifestory'
     projects: '/projects'
     resume: '/resume'
     blog: '/blog'
