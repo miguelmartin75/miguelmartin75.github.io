@@ -11,31 +11,41 @@
 
 \setstretch{1.0}
 \setlength{\parindent}{0pt}
-\titlespacing*{\section}{0pt}{0.5em}{0pt}
-\titlespacing*{\hrulefill}{0pt}{0pt}{2em}
+\titlespacing*{\section}{0pt}{0.1em}{0pt}
+\titlespacing*{\subsection}{0pt}{\parskip}{-\parskip}
+\titlespacing*{\subsubsection}{0pt}{\parskip}{-\parskip}
 
 \newcommand{\project}[5] 
 {
     {
-    \textbf{#1} \hfill {\footnotesize\textbf{#2}}\newline
-    \emph{#3} \hfill \emph{#4}
+        \textbf{#1} \hfill {\footnotesize\textbf{#2}}\newline
+        \emph{#3} \hfill \emph{#4}
     }
-
     {
-        \begin{description}[leftmargin=0.5cm, itemindent=0cm]
+        \begin{description}[leftmargin=0.25cm, itemindent=0cm]
         \item {#5}
         \end{description}
     }
 }
 
-\newcommand{\info}[2] 
+\newcommand{\ed}[5] 
 {
     {
-        \section*{#1}
-        \hrulefill\newline
+        \textbf{#1} \hfill {\footnotesize\textbf{#2}}\newline
+        \emph{#3} \hfill \emph{#4}
     }
+    {
+        \newline
+        {#5}
+    }
+}
 
-    {#2}
+
+\newcommand{\info}[2] 
+{
+    \section*{#1}
+    \hrulefill
+    \par{#2}
 }
 
 \begin{document}
@@ -47,111 +57,122 @@
 
     \centering
     {\huge\textbf{Miguel Martin}}
-
-    \textbf{Email:} miguel@miguel-martin.com\hfill\textbf{Website:} miguel-martin.com\newline
+    \vspace{0.5em}
+    \centering
+    \begin{tabular}{p{0.45\linewidth} p{0.2em} p{0.45\linewidth}}
+        \begin{tabular}{l l}
+            \textbf{Email:} & miguel@miguel-martin.com \\
+            \textbf{Website:} & miguel-martin.com
+        \end{tabular}
+        & &
+        \begin{tabular}{l l}
+            \textbf{GitHub:} & github.com/miguelmartin75 \\
+            \textbf{Linked-in:} & linkedin.com/in/miguelmartin75 
+        \end{tabular}
+    \end{tabular}
 
 }
-
 
 \info{Experience}
 {
     {
-        \project{Booking \& Cleaning Android Application}{}
-        {Personal, Group Project}{2015}
+        \project{Microsoft}{microsoft.com}{Software Engineer Intern}{Nov 27th 2018 - Feb 17th 2018}
         {
-            This Android application was designed for a train company to improve communication within a train, which would save time from walking back and forth within the train.
+            Key Responsibilities:
+
             \begin{itemize}
-                \item Increased experience with MySQL 
-                \item Used Android SDK
-                \item Agile Project Management used, including pair programming
+                \item Maintain existing system and migrate to migrate server-less architecture using Azure Functions (C\#)
+                \item Develop new Machine Learning model for system (Python, Keras)
+                \item Create visualisation tool to aid product using web technologies (NodeJS, jQuery)
+                \item Communicate with other teams about product
+            \end{itemize}
+        }
+        \project{Media Intelligence Co.}{mediaintelligence.co}
+        {Startup}{Jan 2017 - Sep 2017}
+        {
+            Key Responsibilities:
+
+            \begin{itemize}
+                \item Lead developer for AI team, using Machine Learning and Computer Vision
+                \item Developed Eye Gaze Tracking system used for research-based project
+                \item Researched potential solutions and evaluate each given quantity of data and time restrictions
+                \item Provided guidance for feasibly and limitations of future projects
+            \end{itemize}
+        }
+        \project{Jemsoft}{jemsoft.co}
+        {Startup}{Feb 2016 - Jan 2017}
+        {
+            Key Responsibilities:
+
+            \begin{itemize}
+                \item Implemented underlying Computer Vision/Machine Learning algorithms in Monocular API, e.g. CNNs, face recognition
+                \item Generalised specific problems to be added to Monocular API
+                \item Used Modern C++ (C++14)
             \end{itemize}
         }
         \project{anax}{github.com/miguelmartin75/anax}
-        {Personal Project}{2013 - Present}
+        {Personal Project}{2013 - Early 2016}
         {
-            An open source entity system written in C++11, as a portable library.
+            A cross-platform open source entity system written in C++11.
+
             \begin{itemize}
-                \item 160 stars on GitHub
+                \item Written in my spare time to learn modern C++ and for personal interest
+                \item Used by the game development community; over 250 stars on GitHub
             \end{itemize}
         }
-        \project{Virtual Robot}{bitbucket.com/miguelmartin75/virtual-robot}
-        {Personal Project}{2011}
-        {
-            An educational piece of software aimed to teach the basics of programming,
-            written for my electronics class in grade 10.
-            \begin{itemize}
-                \item Multi-threaded Java Swing application
-                \item Uses the MVC pattern
-            \end{itemize}
-        }
-        Please visit my "projects" section on my website for more projects and details: miguel-martin.com/projects.
     }
 }
 
 
 \info{Education}
 {
-    \textbf{University of Adelaide}\newline
-    \emph{Bachelor of Computer Science (Advanced) \hfill 2014 - Present}
-    \begin{description}[leftmargin=0.5cm, itemindent=0cm]
-        \item Expected Graduation Year: 2016.
-        \item GPA: 6.0/7.0
-        \item Received University of Adelaide Principals' Scholarship in 2014.
-        \item Key Courses:
-            \begin{itemize}
-                \item Object Oriented Programming\dotfill High Distinction
-                \item Systems Programming in C\dotfill High Distinction
-                \item Algorithm Design and Data Structures\dotfill Distinction
-                \item Mathematics IA\dotfill Distinction
-                \item Mathematics IB\dotfill Distinction
-                \item Web and Database Computing \dotfill Distinction
-                \item Computer Networks and Applications\dotfill Distinction 
-            \end{itemize}
-    \end{description}
+    \ed{University of Adelaide}{GPA: 6.75/7.0}
+    {Bachelor of Computer Science (Honours)}{2017 - Present}
+    {
+    	Expected graduation: July 2019
+    }
+    \newline
+    \newline
+    \ed{University of Adelaide}{GPA: 6.167/7.0}
+    {Bachelor of Computer Science (Advanced)}{2014 - December 2016}
+    {
+    }
 }
 
-\info{Technology Summary}
+\info{Achievements}
 {
-    \begin{multicols}{3}
-  
-    \subsection*{Programming Languages}
-    {
-        \begin{description}
-            \item C++\dotfill 3 years
-            \item Java\dotfill 2.5 years
-            \item C\#\dotfill 2 years
-            \item C\dotfill 1.5 years
-            \item HTML/CSS/JavaScript\dotfill 1.5 years
-            \item MySQL\dotfill 0.75 years
-            \item Python\dotfill 0.5 years
-            \item Objective-C\dotfill 0.5 years
-        \end{description}
-    }
+    \begin{itemize}[topsep=0pt,leftmargin=*]
+        \item Received University of Adelaide Principals' Scholarship in 2014
+        \item 2nd place for ACM Western Division contest held at Flinders University in October 2016 (\textit{competitive programming}) \\
+    \end{itemize}
+}
 
-    \columnbreak
+\info{Technical Knowledge and Interests}
+{
+    \begin{itemize}[topsep=0pt,leftmargin=*]
+        \item[]
+            \textbf{Languages:} C++, Java, C\#, C, Python, Objective-C, Rust
 
-    \subsection*{Version Control}
-    {
-        \begin{description}
-            \item Git\dotfill 2 years
-            \item SVN\dotfill 1 year
-            \item Mercurial\dotfill 0.5 years
-        \end{description}
-    }
+        \item[]
+            \textbf{Computer Vision and Machine Learning}
+            {
+                Great interest in Machine Learning, overlapping with Computer Vision. Received \textbf{HD} in Computer Vision course. Familiar sub-topics:
+                \begin{itemize}
+                    \item Supervised and Unsupervised learning
+                    \item Feature selection and dimension reduction
+                    \item Deep Learning and sub-topics (e.g. convolutional neural networks, transfer learning)
+                    \item Regression and classification
+                    \item Deep learning frameworks: Caffe and Keras 
+                \end{itemize}
+            }
+        \item[] 
+            \textbf{Competitive Programming}: Committee member at the Adelaide Competitive Programming Club. Interested in Competitive Programming to constantly improve my programming and problem solving skill set. 
+        \item[]
+            \textbf{Compilers and Interpreters}: Crafted toy interpreter in grade 12 for research project due to interest.
+        \item[]
+            \textbf{Game Development and Graphics}: Interested in computer graphics and game development due to this being the reason I started to program.
 
-    \columnbreak
-
-    \subsection*{Operating Systems}
-    {
-        \begin{description}
-            \item Mac OS X
-            \item Linux
-            \item Windows
-            \item Android (development)
-            \item iOS (development)
-        \end{description}
-    }
-    \end{multicols}
+    \end{itemize}
 }
 
 \end{document}
