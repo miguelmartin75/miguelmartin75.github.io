@@ -2,6 +2,9 @@ import type { GatsbyConfig } from "gatsby";
 import MonacoWebpackPlugin from 'monaco-editor-webpack-plugin';
 
 const config: GatsbyConfig = {
+  flags: {
+    DEV_SSR: true
+  },
   siteMetadata: {
     title: `Miguel's Blog`,
     siteUrl: `https://miguel-martin.com/`

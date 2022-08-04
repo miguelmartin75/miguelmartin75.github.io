@@ -1,5 +1,5 @@
 import React from "react"
-import MonacoEditor from 'react-monaco-editor';
+//import MonacoEditor from 'react-monaco-editor';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { docco } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 
@@ -73,22 +73,20 @@ class CellBlock extends React.Component {
       scrollBeyondLastLine: false,
     };
 
+    // <MonacoEditor
+    //   height={this.state.height}
+    //   language="python"
+    //   theme="vs-dark"
+    //   value={codeText}
+    //   options={options}
+    //   editorDidMount={editorDidMount}
+    //   onChange={onChange}
+    // />
     return (
       <StyledCellBlock>
-        <MonacoEditor
-          height={this.state.height}
-          language="python"
-          theme="vs-dark"
-          value={codeText}
-          options={options}
-          editorDidMount={editorDidMount}
-          onChange={onChange}
-        />
-        <noscript>
-          <SyntaxHighlighter class={className} language="python" style={docco}>
-            {codeText}
-          </SyntaxHighlighter>
-        </noscript>
+        <SyntaxHighlighter class={className} language="python" style={docco}>
+          {codeText}
+        </SyntaxHighlighter>
       </StyledCellBlock>
     );
   }
@@ -100,20 +98,21 @@ class CellBlock extends React.Component {
     if (this.props.className) {
       className = this.props.className;
       lang = className.split("-")[1];
-
       const {children} = this.props;
-      const isLangInteractive = className.includes("python") || className.includes("js") ;
       if(!codeText) {
         codeText = children[0];
       }
-      if(isLangInteractive && className.includes("interactive")) {
-        return this.renderMonaco(codeText, className)
-      }
     }
+
+    //   const isLangInteractive = className.includes("python") || className.includes("js") ;
+    //   if(isLangInteractive && className.includes("interactive")) {
+    //     return this.renderMonaco(codeText, className)
+    //   }
+    // }
 
     return (
       <StyledCellBlock>
-        <SyntaxHighlighter class={className} language={lang} style={docco}>
+        <SyntaxHighlighter language={lang} style={docco}>
           {codeText}
         </SyntaxHighlighter>
       </StyledCellBlock>
