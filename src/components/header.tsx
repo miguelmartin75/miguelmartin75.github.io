@@ -5,6 +5,9 @@ import { Link } from "gatsby"
 import {IconButton, Heading, Flex, NavLink, jsx, Box, Text} from 'theme-ui';
 import ColorSwitcher from "./colorSwitcher";
 
+import WebGl from '../components/webgl';
+import main from "../toy.js";
+
 const Header = () => (
 <header
   sx={{
@@ -12,6 +15,11 @@ const Header = () => (
     mb: 3
   }}>
   <Flex as="nav">
+    <WebGl func={main} sx={{
+      position: 'absolute',
+      top: 0,
+      left: 0,
+    }}></WebGl>
     <NavLink href="/" p={3}>
       home
     </NavLink>
@@ -30,12 +38,8 @@ const Header = () => (
         color: 'primary',}}>
       <Heading>miguel's blog</Heading>
     </Box>
-    </div>
-    <div sx={{ mx: 'auto' }} />
-    <NavLink href="/todo" p={3}>
-      contact
-    </NavLink>
     <ColorSwitcher></ColorSwitcher>
+    </div>
   </Flex>
 </header>
 )

@@ -1,7 +1,12 @@
+/** @jsx jsx */
+
 import * as React from "react"
-import { Link, graphql } from "gatsby"
+import { graphql } from "gatsby"
 import Layout from '../components/layout';
-import {Container, Card, Heading, Text} from 'theme-ui';
+import {Container, Text, Link, jsx} from 'theme-ui';
+
+import WebGl from '../components/webgl';
+import main from "../toy.js";
 
 // TODO
 //import {Helmet} from "react-helmet";
@@ -20,9 +25,10 @@ const IndexPage = ({data}) => {
               itemType="http://schema.org/Article"
             >
               <header>
-                <Link to={post.frontmatter.slug} itemProp="url">
+                <pre sx={{display: 'inline'}}><time>{post.frontmatter.date}</time> </pre>
+                <Link href={post.frontmatter.slug} itemProp="url">
                   <span itemProp="headline">{title}</span>
-                </Link> - {post.frontmatter.date}
+                </Link>
               </header>
               <section>
                 <Text
@@ -41,11 +47,9 @@ const IndexPage = ({data}) => {
     <Layout>
       <title>Miguel's Blog</title>
       <Container>
-        <Text>
-          A repository of my writing.
-        </Text>
         <ul>{postList}</ul>
       </Container>
+      <WebGl func={main} sx={{position: 'absolute', top: 0, left: 0}}></WebGl>
     </Layout>
   )
 }
@@ -54,7 +58,7 @@ export default IndexPage
 
 export const pageQuery = graphql`
   query AllPosts {
-    allMarkdownRemark {
+    allMarkdownRemark(filter: {frontmatter: {state: {ne: "draft"}}}, sort: {fields: frontmatter___date, order: DESC}) {
       edges {
         node {
           frontmatter {

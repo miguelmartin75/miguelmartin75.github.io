@@ -19,7 +19,7 @@ export default merge(baseTheme, {
     512
   ],
   fonts: {
-    body: '"Raleway", sans-serif',
+    body: '"Helvetica", sans-serif',
     heading: 'inherit',
     monospace: 'Menlo, monospace'
   },
@@ -43,28 +43,43 @@ export default merge(baseTheme, {
     body: 1.5,
     heading: 1.125
   },
-  //colors: {
-  //  text: '#2a2a2a',
-  //  background: '#f6f6f6',
-  //  primary: '#8ecdff',
-  //  secondary: '#6c47cf',
-  //  muted: '#f9f9f9',
-  //  modes: {
-  //    dark: {
-  //      text: 'blue',
-  //      background: '#000000',
-  //      primary: '#8ecdff',
-  //      secondary: '#6c47cf',
-  //      muted: '#f9f9f9'
-  //    }
-  //  }
-  //},
+  colors: {
+    text: '#2a2a2a',
+    background: '#FCF8E8',
+    primary: '#DF7861',
+    secondary: '#76549A',
+    muted: '#94B49F',
+    modes: {
+      dark: {
+        text: '#EEEEEE',
+        background: '#1B2430',
+        primary: '#8ecdff',
+        secondary: '#6c47cf',
+        muted: '#8f8f8f',
+      }
+    }
+  },
   styles: {
     pre: {
       fontFamily: 'monospace',
+      color: 'inherit',
     },
     hr: {
       color: alpha('text', 0.5),
+    },
+    a: {
+      color: 'primary',
+      fill: 'text',
+    }
+  },
+  links: {
+    bold: {
+      fontWeight: 'bold',
+    },
+    nav: {
+      fontWeight: 'bold',
+      color: 'inherit',
+      textDecoration: 'none',
     }
   }
 })

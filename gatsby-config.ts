@@ -30,13 +30,21 @@ const config: GatsbyConfig = {
       "path": "./static/images/"
     },
     __key: "images"
-  }, {
+  }, 
+  {
     resolve: 'gatsby-source-filesystem',
     options: {
       "name": "pages",
       "path": "./src/pages/"
     },
     __key: "pages"
+  }, {
+    resolve: 'gatsby-source-filesystem',
+    options: {
+      "name": "static",
+      "path": "./static/"
+    },
+    __key: "static"
   }, {
     resolve: 'gatsby-source-filesystem',
     options: {
@@ -54,17 +62,17 @@ const config: GatsbyConfig = {
       gfm: true,
       // Plugins configs
       plugins: [
+        `gatsby-remark-autolink-headers`,
         {
           resolve: `gatsby-remark-katex`,
           options: {
             // Add any KaTeX options from https://github.com/KaTeX/KaTeX/blob/master/docs/options.md here
             strict: `ignore`
           }
-        }
+        },
       ],
     },
   },
-
   ]
 };
 

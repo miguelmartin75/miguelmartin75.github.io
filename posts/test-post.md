@@ -6,7 +6,7 @@ title: "My first blog post"
 
 # this is a h1
 
-hello
+Interactive codeblock:
 
 ```python-interactive
 print("HI")
@@ -17,10 +17,6 @@ y: float = 5
 
 ```
 
-
-This is my first post on my new fake blog! How exciting!
-
-I'm sure I'll write a lot more interesting things in the future.
 
 Oh, and here's a great quote from this Wikipedia on
 [salted duck eggs](https://en.wikipedia.org/wiki/Salted_duck_egg).
@@ -40,23 +36,35 @@ This is a paragraph.
 
 This is a paragraph.
 
-```js
-print("HI")
-```
-
 ```python
-print("HI")
+print("HI from python")
+x + 2
+y = 4324 * 43
+z = input("Hello")
+
+print(x + y + z)
 ```
 
 # Header 1
 
+```js
+console.log("HI")
+```
+
 ## Header 2
 
-# Header 1
 
-## Header 2
+Here is some math $x + 1$ that is inline.
+
+Here is some math that is not inlined: 
+
+$$ 
+x + 1 
+$$
+
 
 ### Header 3
+
 
 #### Header 4
 
