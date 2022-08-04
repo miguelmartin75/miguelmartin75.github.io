@@ -8,6 +8,7 @@
     "gatsby"
   ],
   "scripts": {
+    "deploy": "gatsby build --prefix-paths && gh-pages -d public",
     "develop": "gatsby develop",
     "start": "gatsby develop",
     "build": "gatsby build",
@@ -16,24 +17,44 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@mdx-js/mdx": "^1.6.22",
     "@mdx-js/react": "^1.6.22",
+    "@theme-ui/color": "^0.14.6",
+    "@theme-ui/preset-base": "^0.14.6",
+    "@theme-ui/preset-dark": "^0.14.5",
+    "@theme-ui/preset-future": "^0.14.6",
+    "@theme-ui/preset-roboto": "^0.14.5",
+    "@theme-ui/preset-sketchy": "^0.14.6",
+    "@theme-ui/preset-tailwind": "^0.14.6",
     "gatsby": "^4.14.1",
     "gatsby-plugin-google-analytics": "^4.14.0",
     "gatsby-plugin-image": "^2.14.1",
     "gatsby-plugin-manifest": "^4.14.0",
     "gatsby-plugin-mdx": "^3.14.0",
-    "gatsby-plugin-sharp": "^4.14.1",
     "gatsby-plugin-sitemap": "^5.14.0",
-    "gatsby-source-filesystem": "^4.14.0",
+    "gatsby-plugin-theme-ui": "^0.14.5",
+    "gatsby-remark-katex": "^6.17.0",
+    "gatsby-transformer-remark": "^5.17.0",
     "gatsby-transformer-sharp": "^4.14.0",
+    "katex": "^0.13.24",
+    "monaco-editor-webpack-plugin": "^7.0.1",
     "react": "^17.0.1",
-    "react-dom": "^17.0.1"
+    "react-dom": "^17.0.1",
+    "react-helmet": "^6.1.0",
+    "react-icons": "^4.3.1",
+    "react-monaco-editor": "^0.48.0",
+    "react-syntax-highlighter": "^15.5.0",
+    "rehype-react": "^7.1.1",
+    "semantic-ui-css": "^2.4.1",
+    "semantic-ui-react": "^2.1.2",
+    "styled-components": "^5.3.5",
+    "theme-ui": "^0.14.5",
+    "utterances-react": "^0.1.3"
   },
   "devDependencies": {
     "@types/node": "^17.0.31",
     "@types/react": "^17.0.44",
     "@types/react-dom": "^17.0.16",
+    "gh-pages": "^4.0.0",
     "typescript": "^4.6.4"
   }
 }
