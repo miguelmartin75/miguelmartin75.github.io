@@ -7,6 +7,7 @@ import { Themed, Divider, Box, Link, jsx } from "theme-ui"
 import Layout from '../components/layout';
 import CellBlock from '../components/cellBlock';
 import Utterances from "utterances-react"
+import { useColorMode } from 'theme-ui'
 
 import 'katex/dist/katex.min.css';
 
@@ -25,33 +26,49 @@ export default function Template({
     },
   }).Compiler
 
-  const issueName = frontmatter.slug
-  console.log(issueName)
+  const issueName = frontmatter.title
+
+  let comments = null;
+  //console.log("frontmatter=", frontmatter);
+  if (frontmatter.state && frontmatter.state === 'final') {
+    const [colorMode] = useColorMode()
+    let commentTheme;
+    if(colorMode === 'light') {
+      commentTheme = 'github-light'
+    }
+    else if(colorMode === 'dark') {
+      commentTheme = 'github-dark'
+    }
+    //comments = <div>with comments</div>;
+    comments = <Utterances
+      repo="miguelmartin/miguelmartin75.github.io"
+      issueTerm={issueName}
+      label=""
+      theme={commentTheme}
+      crossorigin="anonymous"
+      async={false}
+      style={`
+      & .utterances {
+        max-width: 950px;
+      }
+    `}
+    />;
+  } else {
+    //comments = <div>no comments</div>;
+  }
 
   return (
     <Layout>
-      <div className="blog-post">
+      <div className="post-container">
         <Box>
           <Themed.h1 sx={{m: 0}}>{frontmatter.title}</Themed.h1>
           <pre sx={{m: 0, p: 0, mt: 10}}><time>{frontmatter.date}</time></pre>
         </Box>
         <Divider></Divider>
-        <div className="blog-post-content">
+        <div className="content">
           { renderAst(htmlAst) }
         </div>
-        <Utterances
-          repo="miguelmartin/miguelmartin75.github.io"
-          issueTerm={issueName}
-          label=""
-          theme="github-light"
-          crossorigin="anonymous"
-          async={false}
-          style={`
-          & .utterances {
-            max-width: 950px;
-          }
-        `}
-        />
+        {comments}
       </div>
     </Layout>
   )
@@ -65,6 +82,7 @@ export const pageQuery = graphql`
         date(formatString: "MMMM DD, YYYY")
         slug
         title
+        state
       }
     }
   }

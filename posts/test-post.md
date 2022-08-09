@@ -1,7 +1,8 @@
 ---
 slug: "/blog/my-first-post"
 date: "2022-05-21"
-title: "My first blog post"
+title: "Test post"
+state: final
 ---
 
 # this is a h1

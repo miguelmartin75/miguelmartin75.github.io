@@ -20,8 +20,11 @@ const Header = () => (
       top: 0,
       left: 0,
     }}></WebGl>
-    <NavLink href="/" p={3}>
-      home
+    <NavLink href="/" p={2}>
+      blog
+    </NavLink>
+    <NavLink href="/notes" p={2}>
+      notes
     </NavLink>
     <div sx={{ mx: 'auto' }} />
 
@@ -32,11 +35,11 @@ const Header = () => (
       justifyContent: 'center',
     }}>
     <Box sx={{        
-        px: 3,
-        py: 1,
+        px: 2,
+        py: 0,
         textTransform: 'lowercase',
         color: 'primary',}}>
-      <Heading>miguel's blog</Heading>
+      <Heading>miguel</Heading>
     </Box>
     <ColorSwitcher></ColorSwitcher>
     </div>
