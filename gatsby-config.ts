@@ -51,6 +51,13 @@ const config: GatsbyConfig = {
   }, {
     resolve: 'gatsby-source-filesystem',
     options: {
+      "name": "papers",
+      "path": "./notes/papers"
+    },
+    __key: "papers"
+  }, {
+    resolve: 'gatsby-source-filesystem',
+    options: {
       "name": "static",
       "path": "./static/"
     },
