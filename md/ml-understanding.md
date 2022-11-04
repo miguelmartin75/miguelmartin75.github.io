@@ -9,11 +9,8 @@ tags: ml
   - even in "ideal" world - probably not possible for some tasks due to complexity of problems
 - or be able to guarantee that the model is correct every time => in that case we would effectively need trust
 
-
 - This is only issue for models that are non-interpretable (e.g. not a decision tree or linear model)
-
 - main use case is model debugging
-
 - Heart of machine learning is the data
 
 # Approaches to the problem
@@ -33,8 +30,6 @@ tags: ml
 - Which weights are redundant?
 ### Search
 - Can I design a network and/or the structure of the problem being solved to be more interpretable?
-## Non-linear correlations for output features
-What maxim described here - unsure if this is super related to model understanding
 ## What a neural network does
 - Extraction of rules
 - Feature

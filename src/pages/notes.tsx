@@ -11,21 +11,34 @@ import main from "../toy.js";
 // TODO
 //import {Helmet} from "react-helmet";
 
-const largerTopicTags = ["ml", "paper-notes", "musing", "idea", "reading-list"];
-const largerTopicNames = ["Machine Learning", "Paper Notes", "musing", "idea", "Reading List"];
-
 const NotePage = ({data}) => {
   const notes = data.allMarkdownRemark.edges
 
-  notes.sort((a, b) => {a.node.frontmatter.title < b.node.frontmatter.title});
-
-  // TODO
-  // const notesByTag = 
+  notes.sort((a, b) => {
+    const t1 = a.node.frontmatter.title || a.node.frontmatter.slug || a.node.fields.slug
+    const t2 = a.node.frontmatter.title || a.node.frontmatter.slug || a.node.fields.slug
+    return t1 < t2
+  });
 
   const notesList = notes.map(temp => {
       const post = temp.node
       const title = post.frontmatter.title || post.frontmatter.slug || post.fields.slug
       const slug = post.frontmatter.slug || post.fields.slug
+
+      // TODO changeme
+      let extra = "";
+      if (post.frontmatter.tags) {
+        extra += ` | ${post.frontmatter.tags}`
+      } else {
+        extra += " | []"
+      }
+
+      if (post.frontmatter.state) {
+        extra += ` | ${post.frontmatter.state}`
+      } else {
+        extra += " | no state"
+      }
+
       return (
         <li key={slug}>
             <article
@@ -36,7 +49,7 @@ const NotePage = ({data}) => {
               <header>
                 <Link href={slug} itemProp="url">
                   <span itemProp="headline">{title}</span>
-                </Link>
+                </Link> {extra}
               </header>
               <section>
                 <Text
@@ -73,6 +86,8 @@ export const pageQuery = graphql`
             title
             date
             slug
+            tags
+            state
           }
           fields {
             slug

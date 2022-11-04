@@ -55,6 +55,29 @@ export default function Template({pageContext}) {
     //comments = <div>no comments</div>;
   }
 
+  let extraInfo = (
+    <div>
+      <div>Tags: {frontmatter.tags || "None"}</div>
+      <div>State: {frontmatter.state || "None"}</div>
+    </div>
+  );
+  if (frontmatter.state === "publish") {
+    extraInfo = (
+        <div>Tags: {frontmatter.tags || "None"}</div>
+    );
+  }
+
+  let paperInfo = null;
+  if (frontmatter.source) {
+  console.log("ay");
+    paperInfo = (
+      <div>
+        <div>Source: {<Link href={frontmatter.source}>{frontmatter.source}</Link> || "None"}</div>
+        <div>Code: {frontmatter.code || "None"}</div>
+      </div>
+    );
+  }
+
   return (
     <Layout>
       <div className="post-container">
@@ -64,6 +87,15 @@ export default function Template({pageContext}) {
         </Box>
         <Divider></Divider>
         <div className="content">
+          <div
+            sx={{
+              display: 'grid',
+              gridGap: 3,
+              gridTemplateColumns: `repeat(auto-fit, minmax(128px, 1fr))`,
+            }}>
+            {extraInfo}
+            {paperInfo}
+          </div>
           { renderAst(htmlAst) }
         </div>
         {comments}

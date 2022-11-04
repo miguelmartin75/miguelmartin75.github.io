@@ -1,5 +1,4 @@
 ---
-slug: "/blog/neural-archs"
 date: "2022-07-01"
 title: "Understanding Transformers (from Scratch)"
 ---
@@ -19,7 +18,6 @@ One annoyance would just be how do we test the performance on e.g. imagenet for
 an "equivalent" fully connected network
 
 ---
-
 
 
 If MLPs are universal approximators, why are transformers so much more

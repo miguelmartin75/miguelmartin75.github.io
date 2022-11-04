@@ -59,7 +59,7 @@ export default IndexPage
 
 export const pageQuery = graphql`
   query AllPosts {
-    allMarkdownRemark(filter: {frontmatter: {state: {eq: "publish"}, slug: {regex: "$\/blog.*/g"}}}, sort: {fields: frontmatter___date, order: DESC}) {
+    allMarkdownRemark(filter: {frontmatter: {state: {eq: "publish"}}}, sort: {fields: frontmatter___date, order: DESC}) {
       edges {
         node {
           frontmatter {
