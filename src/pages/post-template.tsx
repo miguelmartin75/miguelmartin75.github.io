@@ -12,10 +12,8 @@ import { useColorMode } from 'theme-ui'
 import 'katex/dist/katex.min.css';
 
 
-export default function Template({
-  data, // this prop will be injected by the GraphQL query below.
-}) {
-  const { markdownRemark } = data // data.markdownRemark holds your post data
+export default function Template({pageContext}) {
+  const { markdownRemark } = pageContext
   const { frontmatter, htmlAst } = markdownRemark
 
   const renderAst = new rehypeReact({
@@ -73,17 +71,3 @@ export default function Template({
     </Layout>
   )
 }
-
-export const pageQuery = graphql`
-  query($id: String!) {
-    markdownRemark(id: { eq: $id }) {
-      htmlAst
-      frontmatter {
-        date(formatString: "MMMM DD, YYYY")
-        slug
-        title
-        state
-      }
-    }
-  }
-`

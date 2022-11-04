@@ -1,6 +1,5 @@
 ---
 title: PCA
-state: draft
 ---
 
 # Background

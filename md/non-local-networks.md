@@ -1,6 +1,5 @@
 ---
 title: Non-Local Networks
-state: draft
 ---
 
 # Original Notes from GDocs

@@ -19,20 +19,22 @@ const NotePage = ({data}) => {
 
   notes.sort((a, b) => {a.node.frontmatter.title < b.node.frontmatter.title});
 
-  //const notesByTag = 
+  // TODO
+  // const notesByTag = 
 
   const notesList = notes.map(temp => {
       const post = temp.node
-      const title = post.frontmatter.title || post.frontmatter.slug
+      const title = post.frontmatter.title || post.frontmatter.slug || post.fields.slug
+      const slug = post.frontmatter.slug || post.fields.slug
       return (
-        <li key={post.frontmatter.slug}>
+        <li key={slug}>
             <article
               class-name="post-list-item"
               itemScope
               itemType="http://schema.org/Article"
             >
               <header>
-                <Link href={post.frontmatter.slug} itemProp="url">
+                <Link href={slug} itemProp="url">
                   <span itemProp="headline">{title}</span>
                 </Link>
               </header>
@@ -64,12 +66,15 @@ export default NotePage
 
 export const pageQuery = graphql`
   query Notes {
-    allMarkdownRemark(filter: {frontmatter: {slug: {regex: "$\/notes.*/g"}}}) {
+    allMarkdownRemark(filter: {frontmatter: {state: {eq: null}}}) {
       edges {
         node {
           frontmatter {
             title
             date
+            slug
+          }
+          fields {
             slug
           }
           children {

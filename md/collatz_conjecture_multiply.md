@@ -3,7 +3,6 @@ slug: "/blog/collatz-conjecture-multiply"
 date: "2022-08-06"
 title: "How to Multiply with the 3n + 1 series (Collatz Conjecture)"
 tags: math
-state: draft
 ---
 
 I stumbled across an [interesting paper](https://link.springer.com/article/10.1007/s00224-020-09986-5), which shows that you can multiply two numbers by using the Collatz conjecture (and assuming it to be true for the numbers you are dealing with).

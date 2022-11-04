@@ -1,6 +1,5 @@
 ---
 title: Metal & MacOS Notes
-state: draft
 ---
 
 ** [MTKView](https://developer.apple.com/documentation/metalkit/mtkview?language=objc)

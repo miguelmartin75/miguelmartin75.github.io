@@ -1,6 +1,5 @@
 ---
 title: "TODOs"
-slug: "/notes/todos"
 ---
 
 # vim

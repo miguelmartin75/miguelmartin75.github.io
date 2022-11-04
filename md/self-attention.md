@@ -1,6 +1,5 @@
 ---
 title: Self-Attention
-state: draft
 ---
 
 Sequence to sequence operation

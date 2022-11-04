@@ -16,9 +16,10 @@ const IndexPage = ({data}) => {
 
   const postList = posts.map(temp => {
       const post = temp.node
+      const slug = post.frontmatter.slug || post.fields.slug
       const title = post.frontmatter.title || post.frontmatter.slug
       return (
-        <li key={post.frontmatter.slug}>
+        <li key={slug}>
             <article
               class-name="post-list-item"
               itemScope
@@ -26,7 +27,7 @@ const IndexPage = ({data}) => {
             >
               <header>
                 <pre sx={{display: 'inline'}}><time>{post.frontmatter.date}</time> </pre>
-                <Link href={post.frontmatter.slug} itemProp="url">
+                <Link href={slug} itemProp="url">
                   <span itemProp="headline">{title}</span>
                 </Link>
               </header>
@@ -58,12 +59,15 @@ export default IndexPage
 
 export const pageQuery = graphql`
   query AllPosts {
-    allMarkdownRemark(filter: {frontmatter: {state: {ne: "draft"}, slug: {regex: "$\/blog.*/g"}}}, sort: {fields: frontmatter___date, order: DESC}) {
+    allMarkdownRemark(filter: {frontmatter: {state: {eq: "publish"}, slug: {regex: "$\/blog.*/g"}}}, sort: {fields: frontmatter___date, order: DESC}) {
       edges {
         node {
           frontmatter {
             title
             date
+            slug
+          }
+          fields {
             slug
           }
           children {

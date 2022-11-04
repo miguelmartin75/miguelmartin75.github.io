@@ -1,6 +1,5 @@
 ---
 title: Process / Key for Notes
-slug: "/notes/key"
 ---
 
 

@@ -2,7 +2,6 @@
 slug: "/blog/neural-archs"
 date: "2022-07-01"
 title: "Understanding Transformers (from Scratch)"
-state: draft
 ---
 
 # Notes

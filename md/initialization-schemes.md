@@ -1,8 +1,9 @@
+---
+title: Initialization schemes
+tags: ml
+---
 
-
-Hypothesis.
-
-Some conditions should be true for a randomly initialized network to learn effectively:
+Hypothesis: some conditions should be true for a randomly initialized network to learn effectively:
 
 1. Initialization => should be unbiased w.r.t data used
    a. Either pick a better initialization scheme, or
@@ -10,7 +11,7 @@ Some conditions should be true for a randomly initialized network to learn effec
 2. A randomly initialized architecture should map each input to a "different mapping" for each input - as it is unbiased
 
 
-* [[id:1415410F-EBC0-4C34-89E8-4B1A2EDEC428][Rethinking the value of network pruning]]
+# [[id:1415410F-EBC0-4C34-89E8-4B1A2EDEC428][Rethinking the value of network pruning]]
 
 Xavier http://proceedings.mlr.press/v9/glorot10a/glorot10a.pdf
 

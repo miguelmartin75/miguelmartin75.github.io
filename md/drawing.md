@@ -1,6 +1,5 @@
 ---
 title: Drawing
-state: draft
 ---
 
 # Fundamentals
