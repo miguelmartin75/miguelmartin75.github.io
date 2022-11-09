@@ -21,12 +21,19 @@ const config: GatsbyConfig = {
     options: {
       "trackingId": "UA-43056617-3"
     }
-  }, "gatsby-plugin-image", "gatsby-plugin-sitemap", {
+  },
+  "gatsby-plugin-image",
+  "gatsby-plugin-sitemap",
+  {
     resolve: 'gatsby-plugin-manifest',
     options: {
       "icon": "static/images/icon.png"
     }
-  }, "gatsby-plugin-mdx", "gatsby-plugin-sharp", "gatsby-transformer-sharp", {
+  },
+  "gatsby-plugin-mdx",
+  "gatsby-plugin-sharp",
+  "gatsby-transformer-sharp",
+  {
     resolve: 'gatsby-source-filesystem',
     options: {
       "name": "images",
@@ -41,35 +48,31 @@ const config: GatsbyConfig = {
       "path": "./src/pages/"
     },
     __key: "pages"
-  }, {
+  },
+  {
     resolve: 'gatsby-source-filesystem',
     options: {
-      "name": "notes",
-      "path": "./notes"
+      "name": "md",
+      "path": "./md/"
     },
     __key: "notes"
-  }, {
+  },
+  {
     resolve: 'gatsby-source-filesystem',
     options: {
-      "name": "papers",
-      "path": "./notes/papers"
+      "name": "md-private",
+      "path": "./md/md-private/"
     },
-    __key: "papers"
-  }, {
+    __key: "notes_private"
+  },
+  {
     resolve: 'gatsby-source-filesystem',
     options: {
       "name": "static",
       "path": "./static/"
     },
     __key: "static"
-  }, {
-    resolve: 'gatsby-source-filesystem',
-    options: {
-      "name": "pages",
-      "path": "./posts"
-    },
-    __key: "markdownPages"
-  }, 
+  },
   {
     resolve: `gatsby-transformer-remark`,
     options: {
@@ -85,6 +88,18 @@ const config: GatsbyConfig = {
           options: {
             // Add any KaTeX options from https://github.com/KaTeX/KaTeX/blob/master/docs/options.md here
             strict: `ignore`
+          }
+        },
+        {
+          resolve: 'gatsby-transformer-remark',
+          options: {
+            plugins: [{
+              resolve: "@idmyn/gatsby-remark-wiki-link",
+              options: {
+                pageResolver: (name) => [name.replace(/ /g, '-').toLowerCase()],
+                hrefTemplate: (permalink) => `/content/${permalink}`
+              }
+            }],
           }
         },
       ],

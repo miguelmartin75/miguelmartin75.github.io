@@ -16,7 +16,7 @@ const NotePage = ({data}) => {
 
   notes.sort((a, b) => {
     const t1 = a.node.frontmatter.title || a.node.frontmatter.slug || a.node.fields.slug
-    const t2 = a.node.frontmatter.title || a.node.frontmatter.slug || a.node.fields.slug
+    const t2 = b.node.frontmatter.title || b.node.frontmatter.slug || b.node.fields.slug
     return t1 < t2
   });
 

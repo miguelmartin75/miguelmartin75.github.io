@@ -4,7 +4,8 @@ const path = require("path")
 exports.onCreateNode = ({ node, getNode, actions }) => {
   const { createNodeField } = actions
   if (node.internal.type === `MarkdownRemark`) {
-    const slug = createFilePath({ node, getNode, basePath: `md` })
+    const slug = createFilePath({ node, getNode, basePath: `md`, trailingSlash: false})
+    console.log("slug=", slug)
     createNodeField({
       node,
       name: `slug`,
@@ -28,6 +29,9 @@ exports.createPages = ({graphql, actions}) => {
                   title
                   state
                   slug
+                  tags
+                  source
+                  code
                 }
                 fields {
                   slug

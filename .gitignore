@@ -4,3 +4,5 @@ public
 package-lock.json
 *.DS_Store
 yarn.lock
+*.obsidian
+*.zk

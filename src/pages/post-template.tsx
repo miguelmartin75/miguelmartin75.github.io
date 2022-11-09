@@ -69,11 +69,10 @@ export default function Template({pageContext}) {
 
   let paperInfo = null;
   if (frontmatter.source) {
-  console.log("ay");
     paperInfo = (
       <div>
         <div>Source: {<Link href={frontmatter.source}>{frontmatter.source}</Link> || "None"}</div>
-        <div>Code: {frontmatter.code || "None"}</div>
+        <div>Code: {<Link href={frontmatter.code}>{frontmatter.code}</Link> || "None"}</div>
       </div>
     );
   }
