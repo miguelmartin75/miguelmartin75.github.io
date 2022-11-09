@@ -5,12 +5,14 @@ exports.onCreateNode = ({ node, getNode, actions }) => {
   const { createNodeField } = actions
   if (node.internal.type === `MarkdownRemark`) {
     const slug = createFilePath({ node, getNode, basePath: `md`, trailingSlash: false})
-    console.log("slug=", slug)
-    createNodeField({
-      node,
-      name: `slug`,
-      value: '/content' + slug,
-    })
+    if(slug && !slug.includes(".zk")) {
+      console.log("slug=", slug)
+      createNodeField({
+        node,
+        name: `slug`,
+        value: '/content' + slug,
+      })
+    }
   }
 }
 
@@ -42,20 +44,22 @@ exports.createPages = ({graphql, actions}) => {
         `
       ).then((result) => {
         const nodes = result.data.posts.nodes
-        const postTemplate = path.resolve('src/pages/post-template.tsx')
+        const postTemplate = path.resolve('src/templates/post-template.tsx')
 
         nodes.forEach(node => {
-          const slug = node.frontmatter.slug || node.fields.slug
-          console.log("Path=", path, node)
+          if (node.fields) {
+            const slug = node.frontmatter.slug || node.fields.slug
+            console.log("Path=", path, node)
 
-          createPage({
-            path: slug,
-            component: postTemplate,
-            context: {
-              slug: slug,
-              markdownRemark: node,
-            },
-          })
+            createPage({
+              path: slug,
+              component: postTemplate,
+              context: {
+                slug: slug,
+                markdownRemark: node,
+              },
+            })
+          }
         })
       })
     )

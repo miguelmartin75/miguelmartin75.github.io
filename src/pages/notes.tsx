@@ -12,7 +12,8 @@ import main from "../toy.js";
 //import {Helmet} from "react-helmet";
 
 const NotePage = ({data}) => {
-  const notes = data.allMarkdownRemark.edges
+  let notes = data.allMarkdownRemark.edges
+  notes = notes.filter(a => a.node.fields);
 
   notes.sort((a, b) => {
     const t1 = a.node.frontmatter.title || a.node.frontmatter.slug || a.node.fields.slug
