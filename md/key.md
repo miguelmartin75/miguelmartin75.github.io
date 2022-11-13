@@ -12,4 +12,3 @@ title: Process / Key for Notes
 # Paper Notes
 - source: the paper
 - code: where there is code
-    

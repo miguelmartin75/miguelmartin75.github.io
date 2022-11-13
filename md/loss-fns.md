@@ -2,7 +2,7 @@
 title: Interesting Loss Functions
 ---
 
-# TODO Triplet Loss
+# Triplet Loss #todo 
 
 # MLM
 

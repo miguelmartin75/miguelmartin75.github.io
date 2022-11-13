@@ -15,12 +15,6 @@ const NotePage = ({data}) => {
   let notes = data.allMarkdownRemark.edges
   notes = notes.filter(a => a.node.fields);
 
-  notes.sort((a, b) => {
-    const t1 = a.node.frontmatter.title || a.node.frontmatter.slug || a.node.fields.slug
-    const t2 = b.node.frontmatter.title || b.node.frontmatter.slug || b.node.fields.slug
-    return t1 < t2
-  });
-
   const notesList = notes.map(temp => {
       const post = temp.node
       const title = post.frontmatter.title || post.frontmatter.slug || post.fields.slug

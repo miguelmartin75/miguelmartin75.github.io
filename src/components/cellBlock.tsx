@@ -9,6 +9,11 @@ const StyledCellBlock = styled.div`
 display: grid;
 `;
 
+const InlineCellBlock = styled.div`
+display: inline;
+`;
+
+
 class CellBlock extends React.Component {
   constructor(props) {
     super(props);
@@ -98,11 +103,12 @@ class CellBlock extends React.Component {
     if (this.props.className) {
       className = this.props.className;
       lang = className.split("-")[1];
-      const {children} = this.props;
-      if(!codeText) {
-        codeText = children[0];
-      }
     }
+    const {children} = this.props;
+    if(!codeText) {
+      codeText = children[0];
+    }
+    const isMultiLine = codeText.endsWith("\n")
 
     //   const isLangInteractive = className.includes("python") || className.includes("js") ;
     //   if(isLangInteractive && className.includes("interactive")) {
@@ -110,6 +116,12 @@ class CellBlock extends React.Component {
     //   }
     // }
 
+    console.log("code=", codeText, isMultiLine)
+    if (!isMultiLine) {
+      return (
+        <InlineCellBlock><code>{codeText}</code></InlineCellBlock>
+      )
+    }
     return (
       <StyledCellBlock>
         <SyntaxHighlighter language={lang} style={docco}>

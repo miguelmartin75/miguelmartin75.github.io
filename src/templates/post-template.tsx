@@ -71,8 +71,8 @@ export default function Template({pageContext}) {
   if (frontmatter.source) {
     paperInfo = (
       <div>
-        <div>Source: {<Link href={frontmatter.source}>{frontmatter.source}</Link> || "None"}</div>
-        <div>Code: {<Link href={frontmatter.code}>{frontmatter.code}</Link> || "None"}</div>
+        <div>Source: {<Link href={frontmatter.source}>{frontmatter.source || "None"}</Link>}</div>
+        <div>Code: {<Link href={frontmatter.code}>{frontmatter.code || "None"}</Link>}</div>
       </div>
     );
   }

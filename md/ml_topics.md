@@ -2,5 +2,5 @@
 title: "Machine Learning Topics"
 ---
 
-- TODO [Sparse Matrices](notes/study/sparse-matrices.md)
-- TODO [PCA](notes/study/pca.md)
+- [Sparse Matrices](notes/study/sparse-matrices.md) #todo 
+- [PCA](notes/study/pca.md) #todo 

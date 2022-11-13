@@ -7,7 +7,7 @@ Hypothesis: some conditions should be true for a randomly initialized network to
 
 1. Initialization => should be unbiased w.r.t data used
    a. Either pick a better initialization scheme, or
-   b. Perform semi-supervised learning technique to minimize entropy (TODO: cite here) - http://www.iro.umontreal.ca/~lisa/pointeurs/semi-supervised-entropy-nips2004.pdf
+   b. Perform semi-supervised learning technique to minimize entropy ( #todo cite here) - http://www.iro.umontreal.ca/~lisa/pointeurs/semi-supervised-entropy-nips2004.pdf
 2. A randomly initialized architecture should map each input to a "different mapping" for each input - as it is unbiased
 
 

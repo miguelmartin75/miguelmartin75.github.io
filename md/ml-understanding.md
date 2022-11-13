@@ -4,7 +4,7 @@ tags: ml
 ---
 
 
-# TODO Model Understanding
+# Model Understanding #todo 
 
 - in an ideal world we would understand problem
   - even in "ideal" world - probably not possible for some tasks due to complexity of problems
@@ -34,6 +34,4 @@ tags: ml
 ## What a neural network does
 - Extraction of rules
 - Feature
-
-# TODO Related Resources
 
