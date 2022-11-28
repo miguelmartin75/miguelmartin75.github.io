@@ -25,12 +25,17 @@ Tag meaning:
 - Diffusion
     - [Imagen](https://imagen.research.google/) #next #p1 
     - [DALLE-2](https://openai.com/dall-e-2/) #next #p1 
-- NeRF
+- [[NeRFs]]
     - [NeRF](https://www.matthewtancik.com/nerf) #todo #p0 
     - [RawNeRF](https://bmild.github.io/rawnerf/) #todo #p0 
     - [Neural Feature Fusion Fields](https://www.robots.ox.ac.uk/~vadim/n3f/) #todo 
     - [Common Objects in 3D](https://arxiv.org/pdf/2109.00512.pdf) - https://github.com/facebookresearch/co3d
     - [NeuralRecon](https://zju3dv.github.io/neuralrecon/)
+    - [mipnerf](https://github.com/google/mipnerf)
 - [Rethinking the value of network pruning](1810.05270) #done 
 - [EgoVLP](2206.01670) #done 
 - [AudioMAE](2207.06405) #done 
+- RL
+    - [Learning how to Active Learn: A Deep Reinforcement Learning Approach](https://arxiv.org/abs/1708.02383)
+    - [Offline RL for Natural Language Generation with Implicit Language Q Learning](https://arxiv.org/abs/2206.11871)
+
