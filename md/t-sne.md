@@ -11,7 +11,7 @@ Author is Laurens (works at FAIR)
 # Summary
 
 - optimization process to preserve clustering properties at lower dimensions
-    - minimize objective function which measures discrepency between discrepancy between similarties in data and similarties in the map
+    - minimize objective function which measures discrepancy between discrepancy between similarities in data and similarities in the map
 - dimension reduction, done with
     - PCA main concern is squared error (maximize variance), i.e. preserves large pairwise distances.
 

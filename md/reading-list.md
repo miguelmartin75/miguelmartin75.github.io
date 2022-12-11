@@ -14,12 +14,12 @@ Tag meaning:
 # List
 
 - Self-supervised
-    - [Masked Auto-encoders are Scalable Vision Transformers](https://arxiv.org/abs/2111.06377) :todo:
-    - [Masked Autoencoders As Spatiotemporal Learners](https://arxiv.org/abs/2205.09113) :todo:
-    - [DINO](https://arxiv.org/abs/2104.14294) :todo:
+    - [Masked Auto-encoders are Scalable Vision Transformers](https://arxiv.org/abs/2111.06377) #todo
+    - [Masked Autoencoders As Spatiotemporal Learners](https://arxiv.org/abs/2205.09113) #todo 
+    - [DINO](https://arxiv.org/abs/2104.14294) #todo 
 - Architecture Fundamentals
-    - [MLP-Mixer](https://arxiv.org/abs/2105.01601) :todo:
-    - [Pay Attention to MLPs](https://arxiv.org/abs/2105.08050) :todo:
+    - [MLP-Mixer](https://arxiv.org/abs/2105.01601) #todo
+    - [Pay Attention to MLPs](https://arxiv.org/abs/2105.08050) #todo
 - NLP
     - [PaLM](https://ai.googleblog.com/2022/04/pathways-language-model-palm-scaling-to.html) #next #p0 
 - Diffusion
