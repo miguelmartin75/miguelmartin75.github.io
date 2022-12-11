@@ -19,7 +19,6 @@ title: "Neovim Notes"
 - From query results -> action
     - to quickfix: 
         - `telescope.actions.send_selected_toqflist()`
-    - 
 
 # Basics
 

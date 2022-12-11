@@ -10,7 +10,7 @@ exports.onCreateNode = ({ node, getNode, actions }) => {
       createNodeField({
         node,
         name: `slug`,
-        value: '/content' + slug,
+        value: '/content' + slug.toLowerCase(),
       })
     }
   }
