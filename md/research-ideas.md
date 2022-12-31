@@ -1,5 +1,5 @@
 ---
-title: Ideas
+title: Research Ideas
 ---
 
 # Exploiting High Quality Datasets

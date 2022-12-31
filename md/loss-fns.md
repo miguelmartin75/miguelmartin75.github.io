@@ -4,6 +4,21 @@ title: Interesting Loss Functions
 
 # Triplet Loss #todo 
 
+- positive example
+- negative example
+- anchor
+	- has the same identity as anchor
+
+High-level goal:
+- influence anchor and positive example to be closer, and
+- influence anchor and negative example to be further apart
+
+e.g. use L2 distance or some other distance metric
+
+Qs:
+- Why not just sample 1 positive and 1 negative?
+
+
 # MLM
 
 Used for BERT/RoBERTa: https://arxiv.org/pdf/1907.11692.pdf

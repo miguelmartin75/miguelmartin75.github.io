@@ -91,15 +91,10 @@ const config: GatsbyConfig = {
           }
         },
         {
-          resolve: 'gatsby-transformer-remark',
+          resolve: "@idmyn/gatsby-remark-wiki-link",
           options: {
-            plugins: [{
-              resolve: "@idmyn/gatsby-remark-wiki-link",
-              options: {
-                pageResolver: (name) => [name.replace(/ /g, '-').toLowerCase()],
-                hrefTemplate: (permalink) => `/content/${permalink}`
-              }
-            }],
+            pageResolver: (name) => [name.replace(/ /g, '-').toLowerCase()],
+            hrefTemplate: (permalink) => `/content/${permalink}`
           }
         },
       ],

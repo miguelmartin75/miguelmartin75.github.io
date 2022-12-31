@@ -6,12 +6,11 @@ title: Machine Learning + 3D
 
 ## Environments
 
--   [https://www.internalfb.com/intern/wiki/Surreal/TimeMachine/Digitally_Lifted_Reality_(DLR)_Dataset/](https://www.internalfb.com/intern/wiki/Surreal/TimeMachine/Digitally_Lifted_Reality_(DLR)_Dataset/)
--   [https://aihabitat.org/](https://aihabitat.org/)
+- [https://aihabitat.org/](https://aihabitat.org/)
 
 ## General
 
--   [KinectFusion](https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/ismar2011.pdf)
+- [KinectFusion](https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/ismar2011.pdf)
   
 
 ## Objects
