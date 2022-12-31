@@ -97,6 +97,17 @@ const config: GatsbyConfig = {
             hrefTemplate: (permalink) => `/content/${permalink}`
           }
         },
+        {
+            resolve: `gatsby-remark-table-of-contents`,
+            options: {
+              exclude: "Table of Contents",
+              tight: false,
+              ordered: false,
+              fromHeading: 1,
+              toHeading: 6,
+              className: "table-of-contents"
+            },
+        },
       ],
     },
   },
