@@ -2,6 +2,8 @@
 title: LLVM ORC Notes
 ---
 
+[[Compilers]]
+
 # Code
 
 ## [Design Overview](https://llvm.org/docs/ORCv2.html#design-overview)

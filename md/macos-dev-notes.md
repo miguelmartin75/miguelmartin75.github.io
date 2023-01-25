@@ -10,6 +10,12 @@ MVC
     -   NSResponder handles events
 -   Controller (NSViewController)
 
+- https://www.cocoawithlove.com/2009/01/demystifying-nsapplication-by.html
+- https://zserge.com/posts/fenster/
+
+# Opening a Window
+
+
 # xi editor
 
 <https://github.com/xi-editor/xi-mac>
