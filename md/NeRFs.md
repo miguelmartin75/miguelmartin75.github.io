@@ -2,7 +2,7 @@
 title: NeRFs
 ---
 
-Related [[Structure From Motion]]
+Related [[structure-from-motion]]
 
 - RawNeRF: [[2111.13679]]
 - [mipnerf](https://github.com/google/mipnerf)

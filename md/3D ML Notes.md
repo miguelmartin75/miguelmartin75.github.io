@@ -6,11 +6,11 @@ title: Machine Learning + 3D
 
 ## Environments
 
--   [https://aihabitat.org/](https://aihabitat.org/)
+- [https://aihabitat.org/](https://aihabitat.org/)
 
 ## General
 
--   [KinectFusion](https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/ismar2011.pdf)
+- [KinectFusion](https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/ismar2011.pdf)
   
 
 ## Objects

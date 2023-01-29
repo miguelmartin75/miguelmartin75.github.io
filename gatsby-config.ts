@@ -91,16 +91,22 @@ const config: GatsbyConfig = {
           }
         },
         {
-          resolve: 'gatsby-transformer-remark',
+          resolve: "@idmyn/gatsby-remark-wiki-link",
           options: {
-            plugins: [{
-              resolve: "@idmyn/gatsby-remark-wiki-link",
-              options: {
-                pageResolver: (name) => [name.replace(/ /g, '-').toLowerCase()],
-                hrefTemplate: (permalink) => `/content/${permalink}`
-              }
-            }],
+            pageResolver: (name) => [name.replace(/ /g, '-').toLowerCase()],
+            hrefTemplate: (permalink) => `/content/${permalink}`
           }
+        },
+        {
+            resolve: `gatsby-remark-table-of-contents`,
+            options: {
+              exclude: "Table of Contents",
+              tight: false,
+              ordered: false,
+              fromHeading: 1,
+              toHeading: 6,
+              className: "table-of-contents"
+            },
         },
       ],
     },
