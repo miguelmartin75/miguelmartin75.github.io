@@ -12,7 +12,6 @@ Tag meaning:
 - #done => have read
 
 # List
-
 - Self-supervised
     - [Masked Auto-encoders are Scalable Vision Transformers](https://arxiv.org/abs/2111.06377) #todo
     - [Masked Autoencoders As Spatiotemporal Learners](https://arxiv.org/abs/2205.09113) #todo 
@@ -29,17 +28,19 @@ Tag meaning:
     - [NeRF](https://www.matthewtancik.com/nerf) #todo #p0 
     - [RawNeRF](https://bmild.github.io/rawnerf/) #todo #p0 
     - [Neural Feature Fusion Fields](https://www.robots.ox.ac.uk/~vadim/n3f/) #todo 
+    - https://ibrnet.github.io/ #todo #p0 
+    - https://arxiv.org/pdf/2112.01517.pdf
     - [Common Objects in 3D](https://arxiv.org/pdf/2109.00512.pdf) - https://github.com/facebookresearch/co3d
     - [NeuralRecon](https://zju3dv.github.io/neuralrecon/)
     - [mipnerf](https://github.com/google/mipnerf)
 - 3D
 	- [ClothCap](https://www.youtube.com/watch?v=dVxj8tzx04U) #todo 
-	- 
-- [Rethinking the value of network pruning](1810.05270) #done 
-- [EgoVLP](2206.01670) #done 
-- [AudioMAE](2207.06405) #done 
 - RL
     - [Learning how to Active Learn: A Deep Reinforcement Learning Approach](https://arxiv.org/abs/1708.02383)
     - [Offline RL for Natural Language Generation with Implicit Language Q Learning](https://arxiv.org/abs/2206.11871)
 - Data structures with ML
 	- [The Case for Learned Index Structures](https://arxiv.org/pdf/1712.01208.pdf) #todo 
+- Done
+	- [Rethinking the value of network pruning](1810.05270) #done 
+	- [EgoVLP](2206.01670) #done 
+	- [AudioMAE](2207.06405) #done 
