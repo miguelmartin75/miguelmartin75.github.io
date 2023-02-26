@@ -59,7 +59,6 @@ Memory: https://github.com/bytecodealliance/wasm-micro-runtime/blob/dd62b32b201d
 - execute fn `wasm_application_execute_func`
 	- `core/iwasm/common/wasm_application.c` line 282 `execute_func`
 	- $O(N*M)$ lookup function names with strcmp $M$ is the largest function string name
-	- 
 - find/name a module:
 	- `wasm_runtime_register_module`
 	- `wasm_runtime_find_module_registered`: uses a linked list, O(n) lookup

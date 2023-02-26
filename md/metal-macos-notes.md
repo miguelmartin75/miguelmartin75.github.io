@@ -6,14 +6,18 @@ title: Metal & MacOS Notes
 - https://dev.to/javiersalcedopuyo/tutorial-metal-hellotriangle-using-swift-5-and-no-xcode-i72
 - https://medium.com/@shoheiyokoyama/rendering-graphics-content-using-the-metalkit-framework-ea3503f34535
 # Basics
-## Handling Input #todo 
+## Handling Input
+
+- for an NSView, NSWindow or NSApplication, you can override the methods NSResponder provides:
+	- https://developer.apple.com/documentation/appkit/nsresponder
+- NSWindow defines a [delegate](https://developer.apple.com/documentation/appkit/nswindowdelegate?language=objc)
 
 ## [MTKView](https://developer.apple.com/documentation/metalkit/mtkview?language=objc)
 
 "Default implementation of a Metal-aware view that can be used to render graphcis using metal"
 
 ## The Delegate
-The Metal API uses the delegate pattern for drawing.
+The MetalKit API uses the delegate pattern for drawing.
 
 `MTKViewDelegate`
 - `draw` => asked to render
@@ -123,3 +127,8 @@ commandBuffer.present(view.currentDrawable!)
 ```swift
 commandBuffer.commit()
 ```
+
+# Resources
+
+## Textures
+https://developer.apple.com/library/archive/documentation/3DDrawing/Conceptual/MTLBestPracticesGuide/ResourceOptions.html
