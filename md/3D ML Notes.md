@@ -2,50 +2,69 @@
 title: Machine Learning + 3D
 ---
 
-# 3D Scan Data & Papers
+## Localization and Mapping
+Survey [https://arxiv.org/pdf/2006.12567.pdf](https://arxiv.org/pdf/2006.12567.pdf):
+- Overview
+	- Below components can be integrated into Spatial Machine Intelligence System (SMIS) to solve real-world challenges 
+	- Odometry Estimation
+		- calculate the relative change in pose w.r.t translation and rotation between two or more frames of sensor data
+		- Tracks self motion
+		- Process to integrate pose changes w.rt initial state to derive the global pose (position/orientation)
+		- "Can be used to provide pose information and as a odometry motion model to assist feedback loop of robot control"
+		- "deep learning is applied to model the motion dynamics in an end-to-end fashion or extract useful features to support a pre-built system in a hybrid way"
+	- Global localization
+		- Retrieves global pose of mobile agents in a known scene with prior knowledge
+		- Achieved by matching inquiry input data with pre-built 2D or 3D map, other spatial references, or a scene that has been visited before
+		- Can be 
+	- Mapping
+		- Builds / reconstructs a consistent model to describe the surrounding environment
+		- DL used to discover scene geometry and semantics from raw data (images or otherwise)
+		- Sub-divided into: geometric, semantic, general mapping
+	- SLAM (localization and mapping)
+		- jointly optimizes odometry estimation, global localization and mapping as one, to boost perf in localization and mapping
+		- SLAM modules ***local optimization*** to ensure consistency of the entire system w.r.t camera motion and scene geometry
+		- ***global optimization*** aims to constrain the drift of global trajectories
+		- ***keyframe detection*** is used to enable efficient inference
+		- ***loop-closure detection*** 
+		- ***uncertainty estimation***: metric of belief in learned poses and mapping
+- Personal notes per topic
+	- Global localization might be useful for EgoExo
 
-## Environments
+- Odometry Estimation
+	- Visual Estimation
 
-- [https://aihabitat.org/](https://aihabitat.org/)
+Refs:
+	- [https://github.com/mapillary/OpenSfM](https://github.com/mapillary/OpenSfM)
+	- [https://colmap.github.io/](https://colmap.github.io/)
+	- [https://github.com/openMVG/awesome_3DReconstruction_list](https://github.com/openMVG/awesome_3DReconstruction_list)
+	- [https://github.com/SilenceOverflow/Awesome-SLAM](https://github.com/SilenceOverflow/Awesome-SLAM)
+	- [https://github.com/changhao-chen/deep-learning-localization-mapping](https://github.com/changhao-chen/deep-learning-localization-mapping)
 
-## General
+# 3D Reconstruction
 
-- [KinectFusion](https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/ismar2011.pdf)
-  
+- Environments
+	- [https://aihabitat.org/](https://aihabitat.org/)
+- General
+	- [KinectFusion](https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/ismar2011.pdf)
+- Objects
+	- Apple's [ObjectCapture](https://developer.apple.com/videos/play/wwdc2021/10076/)
+- Datasets
+	-   [Redwood-3DScan](https://github.com/isl-org/redwood-3dscan)
+	-   [https://paperswithcode.com/dataset/ycb-video](https://paperswithcode.com/dataset/ycb-video)
+- Hands
+	-   [FreiHAND](https://arxiv.org/pdf/1909.04349.pdf)
+	-   Data collection: Semi-automated human in the loop annotations
+	-   GHUM (also for people)
+- Humans/Avatars
+	- Scanners (Hardware)
+		-   [http://www.shapeanalysis.com/CAESAR.htm](http://www.shapeanalysis.com/CAESAR.htm)
+		-   [3dMD](https://3dmd.com/)
+		-   [MPI Dynamic FAUST](https://dfaust.is.tue.mpg.de/) custom setup (BUFF paper)
+	- Their custom setup is 22 RBG cameras and 22 LED panels in an array. Not realistic unless there’s a common setup location for data collection.
+	- Lots of markers on the humans
+	- If a shared environment (i.e. for EgoExo), then bigger hardware setups might be practical if budget allows.
 
-## Objects
-
-Methods/Papers
-
--   Apple's [ObjectCapture](https://developer.apple.com/videos/play/wwdc2021/10076/)
-  
-
-## Datasets
-
--   [Redwood-3DScan](https://github.com/isl-org/redwood-3dscan)
--   [https://paperswithcode.com/dataset/ycb-video](https://paperswithcode.com/dataset/ycb-video)
-  
-
-## Hands
-
--   [FreiHAND](https://arxiv.org/pdf/1909.04349.pdf)
--   Data collection: Semi-automated human in the loop annotations
--   GHUM (also for people)
-
-## Humans/Avatars
-
-Scanners (Hardware)
-
--   [http://www.shapeanalysis.com/CAESAR.htm](http://www.shapeanalysis.com/CAESAR.htm)
--   [3dMD](https://3dmd.com/)
--   [MPI Dynamic FAUST](https://dfaust.is.tue.mpg.de/) custom setup (BUFF paper)
-
--   Their custom setup is 22 RBG cameras and 22 LED panels in an array. Not realistic unless there’s a common setup location for data collection.
--   Lots of markers on the humans
-
-If a shared environment (i.e. for EgoExo), then bigger hardware setups might be practical if budget allows.
-
-### Datasets, Methods, Collections Methods
+## Datasets, Methods, Collections Methods
 
 tl;dr
 
@@ -100,7 +119,6 @@ A lot of papers use [SMPL-X](https://smpl-x.is.tue.mpg.de/) (or SMPL), a paramet
 Synthetic datasets
 -   [AGORA](https://github.com/pixelite1201/agora_evaluation)
 -   [surreal](https://www.di.ens.fr/willow/research/surreal/)
-
 
 Other resources:
 -   List of [human datasets](https://khanhha.github.io/posts/3D-human-datasets/)
