@@ -34,17 +34,12 @@ $$
 Extrinsic parameters correspond to rotation and translation vectors, which allow you to translate a 3D point to a coordinate system
 
 ## How does COLMAP work
+- [[Structure-from-Motion Revisited (COLMAP)]]
 
-1. Extract features
-	- SIFT features extracted
-	- Assuming not given, camera parameters are estimated (https://colmap.github.io/cameras.html)
-		- #todo Not sure how camera parameters are found
-		- This is done to model distortion effects
-	- 
-
-## Alternatives to COLMAP
+## Survey of SfM
 
 - you can end2end learning camera poses or implicitly for the downstream application for a NeRF
+
 
 ## Implementing SfM from Scratch with Python
 

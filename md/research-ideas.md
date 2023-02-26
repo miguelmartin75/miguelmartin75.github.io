@@ -3,11 +3,14 @@ title: Research Ideas
 ---
 
 
+## Video NeRF without estimated camera poses
+Related: [[NeRFs]], [[2112.01517]]
+- #todo https://arxiv.org/pdf/2102.07064.pdf
 
-## "convolutions" are not needed
-
-FCC instead of conv in ViT
-
+Problems to solve:
+- dynamic content in scene
+- no camera params
+	- learn by applying affine transform over time, keeping focal length fixed
 
 
 ## Exploiting High Quality Datasets
