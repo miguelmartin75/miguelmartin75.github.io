@@ -9,7 +9,7 @@ state: draft
 - [ ] solutions
 	- [ ] COLMAP
 Refs:
-- [[Structure-from-Motion Revisited (COLMAP)]]
+- [[Structure-from-Motion Revisited (COLMAP paper)]]
 
 ## Introduction
 
@@ -34,7 +34,7 @@ $$
 Extrinsic parameters correspond to rotation and translation vectors, which allow you to translate a 3D point to a coordinate system
 
 ## How does COLMAP work
-- [[Structure-from-Motion Revisited (COLMAP)]]
+- [[Structure-from-Motion Revisited (COLMAP paper)]]
 
 ## Survey of SfM
 

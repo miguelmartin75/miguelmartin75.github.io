@@ -4,7 +4,7 @@ title: NeRFs
 
 Related [[structure-from-motion]]
 
-- RawNeRF: [[2111.13679]]
+- RawNeRF: [[NeRF in the Dark]]
 - [mipnerf](https://github.com/google/mipnerf)
 - https://github.com/NVlabs/instant-ngp
 - https://arxiv.org/abs/2103.10380

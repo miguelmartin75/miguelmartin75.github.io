@@ -1,6 +1,7 @@
 ---
 title: Faster-RCNN
 source: https://arxiv.org/abs/1506.01497
+tags: paper ml
 ---
 
 - x = Image (in=HxWx3) 

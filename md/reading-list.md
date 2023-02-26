@@ -48,6 +48,6 @@ Tag meaning:
 - Data structures with ML
 	- [The Case for Learned Index Structures](https://arxiv.org/pdf/1712.01208.pdf) #todo 
 - Done
-	- [Rethinking the value of network pruning](1810.05270) #done 
-	- [EgoVLP](2206.01670) #done 
-	- [AudioMAE](2207.06405) #done 
+	- [Rethinking the value of network pruning](Rethinking%20the%20value%20of%20network%20pruning.md) #done 
+	- [EgoVLP](EgoVLP.md) #done 
+	- [AudioMAE](AudioMAE.md) #done 

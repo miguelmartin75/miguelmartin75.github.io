@@ -35,7 +35,6 @@
 		- LLVM JIT
 		- AOT? I don't think this is possible - putting this here to investigate
 - [shared mem](https://github.com/WebAssembly/threads/blob/main/proposals/threads/Overview.md#shared-linear-memory)
-	- 
 
 # build
 

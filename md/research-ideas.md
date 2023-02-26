@@ -4,7 +4,7 @@ title: Research Ideas
 
 
 ## Video NeRF without estimated camera poses
-Related: [[NeRFs]], [[2112.01517]]
+Related: [[NeRFs]], [[Efficient Neural Radiance Fields for Interactive Free-viewpoint Video]]
 - #todo https://arxiv.org/pdf/2102.07064.pdf
 
 Problems to solve:

@@ -1,5 +1,6 @@
 ---
 title: Sparsity
+state: todo
 ---
 
 # Network Sparsity
