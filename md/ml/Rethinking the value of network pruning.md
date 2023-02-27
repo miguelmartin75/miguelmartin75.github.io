@@ -2,6 +2,7 @@
 title: Rethinking the value of network pruning
 source: https://arxiv.org/abs/1810.05270
 tags: paper ml
+state: draft
 ---
 
 # Summary

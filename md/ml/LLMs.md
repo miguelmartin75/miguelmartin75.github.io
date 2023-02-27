@@ -1,6 +1,6 @@
 ---
 title: Large Language Models (LLMs)
-tags: ml list
+tags: ml survey
 ---
 
 - [[Galactica]]

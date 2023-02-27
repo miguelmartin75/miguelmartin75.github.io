@@ -2,6 +2,7 @@
 title: An Approximation Algorithm for Optimal Subarchitecture Extraction
 source: https://arxiv.org/abs/2010.08512
 tags: paper ml
+state: todo
 ---
 # Summary #todo
 

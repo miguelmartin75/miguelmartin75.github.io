@@ -1,6 +1,6 @@
 ---
 title: Self-Attention
-tag: ml
+tag: ml arch
 ---
 
 Sequence to sequence operation

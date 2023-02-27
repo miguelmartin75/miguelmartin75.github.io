@@ -1,6 +1,7 @@
 ---
 title: AlphaZero
-tags: paper ml study notes
+tags: paper ml
+state: draft
 ---
 
 <https://tmoer.github.io/AlphaZero/>

@@ -1,5 +1,7 @@
 ---
 title: PCA
+tags: ml
+state: todo
 ---
 
 # Background

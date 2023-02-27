@@ -2,6 +2,7 @@
 title: "The Lottery Ticket Hypothesis Finding Sparse, Trainable Neural Networks"
 source: https://arxiv.org/abs/1803.03635
 tags: paper ml
+state: draft
 ---
 
 - Pruning can reduce network by 90% without compromising accuracy

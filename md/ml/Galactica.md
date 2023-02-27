@@ -1,7 +1,7 @@
 ---
 title: Galactica
 source: https://www.galactica.org/static/paper.pdf
-code: 
+code: https://github.com/paperswithcode/galai
 tags: paper ml
 ---
 

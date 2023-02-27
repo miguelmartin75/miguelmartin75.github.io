@@ -39,7 +39,6 @@ Tag meaning:
     - [NeuralRecon](https://zju3dv.github.io/neuralrecon/)
     - [mipnerf](https://github.com/google/mipnerf)
     - https://github.com/zju3dv/ENeRF
-    - 
 - 3D
 	- [ClothCap](https://www.youtube.com/watch?v=dVxj8tzx04U) #todo 
 - RL

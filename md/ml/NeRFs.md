@@ -1,8 +1,8 @@
 ---
 title: NeRFs
+tags: ml survey
+state: todo
 ---
-
-Related [[structure-from-motion]]
 
 - RawNeRF: [[NeRF in the Dark]]
 - [mipnerf](https://github.com/google/mipnerf)

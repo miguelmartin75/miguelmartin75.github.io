@@ -1,6 +1,6 @@
 ---
 title: Initialization schemes
-tags: ml
+tags: ml survey
 ---
 
 Hypothesis: some conditions should be true for a randomly initialized network to learn effectively:

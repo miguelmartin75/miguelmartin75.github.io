@@ -1,6 +1,7 @@
 ---
 date: "2022-07-01"
 title: "Understanding Transformers (from Scratch)"
+tags: ml post
 ---
 
 # Notes

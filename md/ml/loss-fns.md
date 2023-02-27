@@ -1,5 +1,6 @@
 ---
 title: Interesting Loss Functions
+tags: ml survey
 ---
 
 # Triplet Loss

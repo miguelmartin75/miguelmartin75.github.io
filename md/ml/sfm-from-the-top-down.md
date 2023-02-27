@@ -1,6 +1,6 @@
 ---
 title: SfM from Scratch
-state: draft
+state: doing
 ---
 
 # Structure from Motion from The Top Down #todo

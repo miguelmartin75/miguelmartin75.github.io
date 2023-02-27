@@ -1,5 +1,6 @@
 ---
 title: t-SNE
+tags: ml paper dimension-reduction
 state: revisit
 ---
 
