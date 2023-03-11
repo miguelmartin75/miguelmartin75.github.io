@@ -5,7 +5,6 @@ source: https://arxiv.org/abs/2206.01670
 code: https://github.com/showlab/EgoVLP/
 ---
 
-
 Summary is:
 - Highlights challenges with narrations:
   - 1) Same action occurs in different scenarios/videos, e.g. using a phone

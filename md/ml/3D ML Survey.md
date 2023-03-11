@@ -1,5 +1,6 @@
 ---
 title: Machine Learning + 3D
+tags: ml survey post
 ---
 
 ## Localization and Mapping
