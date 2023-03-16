@@ -14,10 +14,11 @@ Refs:
 ## Introduction
 
 - SfM enables you to learn camera poses with respect to time on an (approximately) constant scene
-- This is useful for a lot of downstream applications, with notably NeRFs
+- This is useful for a lot of downstream applications, notably NeRFs
 - The de-facto solution in the community is COLMAP (TODO paper ref)
 - This leaves me with a question: how does it work? Can we implement it? Can we do better than COLMAP?
 
+# Background
 ## Camera Parameters
 
 source: https://docs.opencv.org/4.x/dc/dbb/tutorial_py_calibration.html
@@ -33,16 +34,12 @@ $$
 
 Extrinsic parameters correspond to rotation and translation vectors, which allow you to translate a 3D point to a coordinate system
 
-## How does COLMAP work
-- [[Structure-from-Motion Revisited (COLMAP paper)]]
-
 ## Survey of SfM
 
 - you can end2end learning camera poses or implicitly for the downstream application for a NeRF
 
 
 ## Implementing SfM from Scratch with Python
-
 
 ### The data
 TODO

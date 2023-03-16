@@ -26,3 +26,4 @@ Steps of incremental SfM:
 - Bundle adjustments
 	- 
 - Refine reconstructing using bundle adjustment (BA)
+	- 
