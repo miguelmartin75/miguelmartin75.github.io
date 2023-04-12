@@ -14,15 +14,12 @@ title: Workflow
 	- arch: relating to the architecture of machine learning
 
 ### Paper Notes
-- source: the paper
-- code: where there is code
-
-# Terms/Vocab
-- axis: one dimension/silce of my life or notes
-- goals
-- milestone
-
-## Reading a Paper
-- Summary
-	- Method
-	- Contributions
+- Tags
+	- source: the paper
+	- code: where there is code
+	- website: project page
+- Content
+	- Summary
+		- Method
+		- Contributions
+	- Background: relevant information to understand the paper

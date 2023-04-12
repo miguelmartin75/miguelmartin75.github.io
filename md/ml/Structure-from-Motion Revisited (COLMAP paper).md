@@ -24,6 +24,6 @@ Steps of incremental SfM:
 - Triangulation of scene points
 	- 
 - Bundle adjustments
-	- 
+	- Non-linear refinement of camera parameters $P_c$ and point parameters $X_k$ the minimizes reprojection error:
+		- 
 - Refine reconstructing using bundle adjustment (BA)
-	- 

@@ -3,6 +3,7 @@ title: Galactica
 source: https://www.galactica.org/static/paper.pdf
 code: https://github.com/paperswithcode/galai
 tags: paper ml
+state: revisit
 ---
 
 Related: [[LLMs]]

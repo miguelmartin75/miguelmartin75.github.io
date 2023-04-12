@@ -2,6 +2,7 @@
 title: Faster-RCNN
 source: https://arxiv.org/abs/1506.01497
 tags: paper ml
+state: todo
 ---
 
 - x = Image (in=HxWx3) 

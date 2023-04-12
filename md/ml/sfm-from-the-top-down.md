@@ -1,5 +1,6 @@
 ---
 title: SfM from Scratch
+tags: ml post teach
 state: doing
 ---
 
