@@ -1,0 +1,1 @@
+https://ai.googleblog.com/2019/08/video-understanding-using-temporal.html

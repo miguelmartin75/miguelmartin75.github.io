@@ -27,9 +27,10 @@ source: https://arxiv.org/pdf/2304.04848.pdf
 		- $x = \text{norm}(K * hom(D(u)))$
 	- D is modelled with an invertible network
 - Optimization
-	- Geometric loss using known 3D coordiantes (in practice, initial estimates can be obtained - TODO not sure how)
+	- Geometric loss using known 3D coordinates (in practice, initial estimates can be obtained - TODO not sure how)
 		- Supervised learning with 3D - 2D pairs with L2 loss
 	- Photometric Loss
 		- Color predicted by $C_{\theta}(X_{\text{3d}})$ should match color of the point $X$ projected there (assuming constant lightning, exposure and Lambertian marker material)
+	- NeRF can be trained with this model, jointly optimizing it's parameters
 
 FisheyeNeRF dataset
