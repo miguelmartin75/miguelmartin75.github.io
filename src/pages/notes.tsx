@@ -14,6 +14,13 @@ import main from "../toy.js";
 const NotePage = ({data}) => {
   let notes = data.allMarkdownRemark.edges
   notes = notes.filter(a => a.node.fields);
+  notes.sort((a, b) => {
+    const apost = a.node
+    const atitle = apost.frontmatter.title || apost.frontmatter.slug || apost.fields.slug
+    const bpost = b.node
+    const btitle = bpost.frontmatter.title || bpost.frontmatter.slug || bpost.fields.slug
+    return atitle < btitle
+  });
 
   const notesList = notes.map(temp => {
       const post = temp.node
