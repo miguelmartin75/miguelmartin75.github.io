@@ -14,7 +14,7 @@ title: Metal & MacOS Notes
 
 ## [MTKView](https://developer.apple.com/documentation/metalkit/mtkview?language=objc)
 
-"Default implementation of a Metal-aware view that can be used to render graphcis using metal"
+"Default implementation of a Metal-aware view that can be used to render graphics using metal"
 
 ## The Delegate
 The MetalKit API uses the delegate pattern for drawing.
@@ -132,3 +132,6 @@ commandBuffer.commit()
 
 ## Textures
 https://developer.apple.com/library/archive/documentation/3DDrawing/Conceptual/MTLBestPracticesGuide/ResourceOptions.html
+
+# CPU/GPU sync
+https://developer.apple.com/documentation/metal/resource_synchronization/synchronizing_cpu_and_gpu_work
