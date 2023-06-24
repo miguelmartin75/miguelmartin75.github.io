@@ -31,3 +31,6 @@ qs:
 	- not sure?
 
 how do we handle 
+
+# wasm
+https://github.com/treeform/nim_emscripten_tutorial
