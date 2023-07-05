@@ -1,1 +1,0 @@
-reference docs: https://www.intel.com/content/www/us/en/docs/graphics-for-linux/developer-reference/1-0/alchemist-arctic-sound-m.html

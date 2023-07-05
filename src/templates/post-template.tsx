@@ -77,11 +77,12 @@ export default function Template({pageContext}) {
     );
   }
 
+          // <Themed.h1 sx={{m: 0}}>{frontmatter.title}</Themed.h1>
   return (
     <Layout>
       <div className="post-container">
         <Box>
-          <Themed.h1 sx={{m: 0}}>{frontmatter.title}</Themed.h1>
+          <h1 sx={{m: 0}}>{frontmatter.title}</h1>
           <pre sx={{m: 0, p: 0, mt: 10}}><time>{frontmatter.date}</time></pre>
         </Box>
         <Divider></Divider>

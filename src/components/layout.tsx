@@ -5,7 +5,7 @@ import { Global } from "@emotion/react"
 import Footer from '../components/footer';
 import Header from '../components/header';
 import { 
-  Themed,
+  Theme,
   Container,
   Box,
   jsx,
@@ -21,7 +21,7 @@ export interface LayoutProps  {
 }
 
 const Layout = (props: LayoutProps) => (
-  <Themed.root>
+  // <Theme.root>
     <Container sx={{
         maxWidth: 900,
         mx: 'auto',
@@ -38,7 +38,7 @@ const Layout = (props: LayoutProps) => (
       </main>
     </Container>
 
-  </Themed.root>
+  // </Theme.root>
 );
 
 export default Layout
