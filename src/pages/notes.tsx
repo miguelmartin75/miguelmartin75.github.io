@@ -16,8 +16,12 @@ const NotePage = ({data}) => {
 
   const notesList = notes.map(temp => {
       const post = temp.node
-      const title = post.frontmatter.title || post.frontmatter.slug || post.fields.slug
-      const slug = post.frontmatter.slug || post.fields.slug
+      let title = post.frontmatter.title || post.frontmatter.slug
+      let slug = post.frontmatter.slug
+      if(post.fields) {
+        title = title || post.fields.slug
+        slug = slug || post.fields.slug
+      }
 
       // TODO changeme
       let extra = "";
@@ -84,6 +88,8 @@ query Notes {
           slug
           tags
           state
+          source
+          code
         }
         fields {
           slug

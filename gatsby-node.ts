@@ -16,6 +16,24 @@ exports.onCreateNode = ({ node, getNode, actions }) => {
   }
 }
 
+exports.createSchemaCustomization = ({ actions }) => {
+  const { createTypes } = actions
+  const typeDefs = `
+    type MarkdownRemark implements Node {
+      frontmatter: Frontmatter
+    }
+    type Frontmatter {
+      title: String
+      author: String
+      slug: String
+      source: String
+      code: String
+      tags: String
+    }
+  `
+  createTypes(typeDefs)
+}
+
 exports.createPages = ({graphql, actions}) => {
   const {createPage} = actions
   return new Promise((resolve, _) => {
@@ -35,6 +53,7 @@ exports.createPages = ({graphql, actions}) => {
                   source
                   code
                 }
+                tableOfContents
                 fields {
                   slug
                 }
@@ -49,7 +68,7 @@ exports.createPages = ({graphql, actions}) => {
         nodes.forEach(node => {
           if (node.fields) {
             const slug = node.frontmatter.slug || node.fields.slug
-            console.log("Path=", path, node)
+            // console.log("Path=", path, node)
 
             createPage({
               path: slug,

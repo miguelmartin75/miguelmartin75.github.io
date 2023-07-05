@@ -51,8 +51,9 @@ export default function Template({pageContext}) {
       }
     `}
     />;
+    console.log("comments included");
   } else {
-    //comments = <div>no comments</div>;
+    comments = <div>no comments</div>;
   }
 
   let extraInfo = (
@@ -78,6 +79,20 @@ export default function Template({pageContext}) {
   }
 
           // <Themed.h1 sx={{m: 0}}>{frontmatter.title}</Themed.h1>
+  // let tocItems = pageContext.tableOfContents
+  // console.log(tocItems)
+  // let tocEl = (
+  //   <nav>
+  //     {
+  //       tocItems.items.map(p => {
+  //         <li key={p.url}>
+  //           <a href={p.url}>{p.title}</a>
+  //         </li>
+  //       })
+  //     }
+  //   </nav>
+  // )
+  
   return (
     <Layout>
       <div className="post-container">

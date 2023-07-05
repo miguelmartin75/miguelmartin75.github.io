@@ -16,8 +16,12 @@ const IndexPage = ({data}) => {
 
   const postList = posts.map(temp => {
       const post = temp.node
-      const slug = post.frontmatter.slug || post.fields.slug
-      const title = post.frontmatter.title || post.frontmatter.slug
+      // const slug = post.frontmatter.slug || post.fields.slug
+      let slug = post.frontmatter.slug
+      if(post.fields) {
+        slug = post.frontmatter.slug || post.fields.slug
+      }
+      const title = post.frontmatter.title || slug
       return (
         <li key={slug}>
             <article
@@ -59,13 +63,15 @@ export default IndexPage
 
 export const pageQuery = graphql`
   query AllPosts {
-    allMarkdownRemark(filter: {frontmatter: {state: {eq: "publish"}}}, sort: {fields: frontmatter___date, order: DESC}) {
+    allMarkdownRemark(filter: {frontmatter: {state: {eq: "publish"}}}, sort: {frontmatter: {date: DESC}}) {
       edges {
         node {
           frontmatter {
             title
             date
             slug
+            source
+            code
           }
           fields {
             slug
