@@ -27,24 +27,23 @@ export default function Template({pageContext}) {
   const issueName = frontmatter.title
 
   let comments = null;
-  //console.log("frontmatter=", frontmatter);
-  if (frontmatter.state && frontmatter.state === 'final') {
+  if (frontmatter.state && frontmatter.state === 'publish') {
     const [colorMode] = useColorMode()
-    let commentTheme;
-    if(colorMode === 'light') {
-      commentTheme = 'github-light'
-    }
-    else if(colorMode === 'dark') {
-      commentTheme = 'github-dark'
-    }
-    //comments = <div>with comments</div>;
+    let commentTheme = 'github-light';
+    // if(colorMode === 'light') {
+    //   commentTheme = 'github-light';
+    // }
+    // else if(colorMode === 'dark') {
+    //   commentTheme = 'github-dark'
+    // }
+    console.log("colorMode=", colorMode);
     comments = <Utterances
-      repo="miguelmartin/miguelmartin75.github.io"
+      repo="miguelmartin75/miguelmartin75.github.io"
       issueTerm={issueName}
       label=""
       theme={commentTheme}
       crossorigin="anonymous"
-      async={false}
+      async={true}
       style={`
       & .utterances {
         max-width: 950px;
@@ -78,7 +77,7 @@ export default function Template({pageContext}) {
     );
   }
 
-          // <Themed.h1 sx={{m: 0}}>{frontmatter.title}</Themed.h1>
+  // <Themed.h1 sx={{m: 0}}>{frontmatter.title}</Themed.h1>
   // let tocItems = pageContext.tableOfContents
   // console.log(tocItems)
   // let tocEl = (
@@ -112,8 +111,8 @@ export default function Template({pageContext}) {
             {paperInfo}
           </div>
           { renderAst(htmlAst) }
+          {comments}
         </div>
-        {comments}
       </div>
     </Layout>
   )
