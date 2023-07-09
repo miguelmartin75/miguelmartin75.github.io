@@ -1,1 +1,1 @@
-{"componentChunkName":"component---src-pages-notes-tsx","path":"/notes/","result":{"data":{"allMarkdownRemark":{"edges":[{"node":{"frontmatter":{"title":"","date":null,"slug":null,"tags":null,"state":null,"source":null,"code":null},"fields":null,"children":[]}}]}},"pageContext":{}},"staticQueryHashes":["2744905544"],"slicesMap":{}}
+{"componentChunkName":"component---src-pages-notes-tsx","path":"/notes/","result":{"data":{"allMarkdownRemark":{"edges":[]}},"pageContext":{}},"staticQueryHashes":["2744905544"],"slicesMap":{}}
