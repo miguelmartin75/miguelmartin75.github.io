@@ -53,7 +53,7 @@ exports.createPages = ({graphql, actions}) => {
                   source
                   code
                 }
-                tableOfContents
+                timeToRead
                 fields {
                   slug
                 }

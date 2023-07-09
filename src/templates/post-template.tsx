@@ -3,7 +3,7 @@
 import rehypeReact from "rehype-react"
 import React from "react"
 import { graphql } from "gatsby"
-import { Themed, Divider, Box, Link, jsx } from "theme-ui"
+import { Themed, Grid, Divider, Box, Link, jsx } from "theme-ui"
 import Layout from '../components/layout';
 import CellBlock from '../components/cellBlock';
 import Utterances from "utterances-react"
@@ -14,7 +14,7 @@ import 'katex/dist/katex.min.css';
 
 export default function Template({pageContext}) {
   const { markdownRemark } = pageContext
-  const { frontmatter, htmlAst } = markdownRemark
+  const { frontmatter, htmlAst, timeToRead, tableOfContents } = markdownRemark
 
   const renderAst = new rehypeReact({
     createElement: React.createElement,
@@ -36,7 +36,7 @@ export default function Template({pageContext}) {
     // else if(colorMode === 'dark') {
     //   commentTheme = 'github-dark'
     // }
-    console.log("colorMode=", colorMode);
+    // console.log("colorMode=", colorMode);
     comments = <Utterances
       repo="miguelmartin75/miguelmartin75.github.io"
       issueTerm={issueName}
@@ -50,7 +50,7 @@ export default function Template({pageContext}) {
       }
     `}
     />;
-    console.log("comments included");
+    //console.log("comments included");
   } else {
     comments = <div>no comments</div>;
   }
@@ -78,12 +78,12 @@ export default function Template({pageContext}) {
   }
 
   // <Themed.h1 sx={{m: 0}}>{frontmatter.title}</Themed.h1>
-  // let tocItems = pageContext.tableOfContents
-  // console.log(tocItems)
+  // console.log("HI");
+  // console.log(tableOfContents.items);
   // let tocEl = (
   //   <nav>
   //     {
-  //       tocItems.items.map(p => {
+  //       tableOfContents.map(p => {
   //         <li key={p.url}>
   //           <a href={p.url}>{p.title}</a>
   //         </li>
@@ -91,13 +91,36 @@ export default function Template({pageContext}) {
   //     }
   //   </nav>
   // )
+  // let toc = {__html: tableOfContents}
+  // for(var x in tableOfContents.items) {
+  //   console.log('toc', x)
+  // }
+
+  if(!timeToRead) {
+    timeToRead = "<1"
+  }
+
+  let minPostfix = "minutes"
+  if(timeToRead == 1) {
+    minPostfix = "minute"
+  }
+
   
   return (
     <Layout>
       <div className="post-container">
         <Box>
           <h1 sx={{m: 0}}>{frontmatter.title}</h1>
+          <div
+            sx={{
+              display: 'grid',
+              gridGap: 4,
+              gridTemplateColumns: ['auto', '1fr 256px'],
+            }}
+          >
           <pre sx={{m: 0, p: 0, mt: 10}}><time>{frontmatter.date}</time></pre>
+          <pre sx={{textAlign: "right"}}>Time to read: {timeToRead} {minPostfix}</pre>
+          </div>
         </Box>
         <Divider></Divider>
         <div className="content">

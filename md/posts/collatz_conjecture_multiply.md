@@ -6,6 +6,14 @@ tags: math
 state: publish
 ---
 
+# Table of Contents
+
+```toc
+
+```
+
+# Introduction
+
 I stumbled across an [interesting paper](https://link.springer.com/article/10.1007/s00224-020-09986-5), which shows that you can multiply two numbers by using the Collatz conjecture (and assuming it to be true for the numbers you are dealing with).
 
 This post contains my summary and understanding of how this method works.

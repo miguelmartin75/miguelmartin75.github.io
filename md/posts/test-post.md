@@ -4,6 +4,10 @@ title: "Test post"
 state: publish
 ---
 
+```toc
+
+```
+
 # this is a h1
 
 Interactive codeblock:
