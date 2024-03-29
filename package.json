@@ -22,6 +22,7 @@
     "@mdx-js/mdx": "^2.3.0",
     "@mdx-js/react": "^2.3.0",
     "@theme-ui/color": "^0.16.0",
+    "@theme-ui/mdx": "^0.16.2",
     "@theme-ui/preset-base": "^0.16.0",
     "@theme-ui/preset-dark": "^0.16.0",
     "@theme-ui/preset-future": "^0.16.0",
