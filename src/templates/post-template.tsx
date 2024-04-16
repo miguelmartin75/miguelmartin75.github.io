@@ -108,6 +108,7 @@ export default function Template({pageContext}) {
   
   return (
     <Layout>
+      <title>{frontmatter.title}</title>
       <div className="post-container">
         <Box>
           <h1 sx={{m: 0}}>{frontmatter.title}</h1>
