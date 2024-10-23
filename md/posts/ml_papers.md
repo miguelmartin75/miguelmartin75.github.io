@@ -1,5 +1,5 @@
 ---
-title: Essential Modern Machine Learning Papers and Learning Resources
+title: Recommended Machine Learning Papers and Learning Resources
 state: publish
 date: "2024-03-28"
 ---
@@ -83,7 +83,7 @@ There is an emphasis on vision and language based papers with bias on vision. Th
 	- [MM1](https://arxiv.org/abs/2403.09611): Apple's extension to LLaVa with a good number of experiments/ablations
 	- [LLaVa](https://llava-vl.github.io/)
 - LLMs
-	- [PaLM](https://arxiv.org/pdf/2204.02311.pdf): showing that LLMs have emergent properties/behaviors that only occur (e.g. reasoning, humor)
+	- [PaLM](https://arxiv.org/pdf/2204.02311.pdf): showing that LLMs have emergent properties/behaviors that only occur with scale (e.g. reasoning, humor)
 	- [GPT-2](https://openai.com/research/gpt-2-1-5b-release)
 	- [[OPT]]: Meta's "first attempt" at LLMs
 	- [[Galactica]]: showing that with good quality data you can out-perform other models trained on more data
