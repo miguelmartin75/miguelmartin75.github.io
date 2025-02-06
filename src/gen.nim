@@ -25,29 +25,35 @@ proc toFriendlyName*(x: string): string =
     else:
       result[i] = x[i]
 
-let mdFiles = collect:
-  for x in mdDir.walkDirRec:
-    let p = x.splitFile
-    if p.ext == ".md":
-      (p, x)
+proc genRoute(r: Route) =
+  let src = readFile(r.src.string)
+  for node in mdParse(src):
+    continue
 
-let routes = collect:
-  for (x, src) in mdFiles:
-    let 
-      relPath = src.relativePath(mdDir)
-      uri = relPath.changeFileExt("html")
-      dst = outDir / uri
-      friendlyName = x.name.string.toFriendlyName
+proc genSite =
+  let mdFiles = collect:
+    for x in mdDir.walkDirRec:
+      let p = x.splitFile
+      if p.ext == ".md":
+        (p, x)
 
-    Route(
-      name: x.name.string,
-      friendlyName: friendlyName,
-      src: src,
-      dst: dst,
-      uri: uri,
-    )
+  let routes = collect:
+    for (x, src) in mdFiles:
+      let 
+        relPath = src.relativePath(mdDir)
+        uri = relPath.changeFileExt("html")
+        dst = outDir / uri
+        friendlyName = x.name.string.toFriendlyName
 
-print routes[1]
-# echo mdFiles[0].dir.string
-# echo mdFiles[0].name.string
-# echo mdFiles[0].ext
+      Route(
+        name: x.name.string,
+        friendlyName: friendlyName,
+        src: src,
+        dst: dst,
+        uri: uri,
+      )
+
+  for r in routes:
+    genRoute(r)
+
+genSite()
