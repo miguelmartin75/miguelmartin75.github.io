@@ -2,4 +2,4 @@
 --nimcache:"build/cache"
 
 task gen, "generate website":
-    setCommand "r", "src/gen.nim"
+  setCommand "r", "src/gen.nim"

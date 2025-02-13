@@ -11,46 +11,68 @@ type
     mnkCodeBlock
     mnkChecklist
 
-  # MdParseCtx* = object
-  #   src: string
-
-  # StringSlice = object
-  #   data: ptr char
-  #   n: int
-
   MdNode* = object
-    # ctx: ptr MdParseCtx
-    # text: string
     text*: string  # TODO StringSlice
     case kind*: MdNodeKind
     of mnkHeader:
       level*: int
     of mnkListItem, mnkChecklist, mnkParagraph:
       indent*: int
+      number*: int
     of mnkCodeBlock:
       lang*: string
     of mnkLink:
       link*: string  # TODO StringSlice
       linkKind*: MdLinkKind
 
+proc `==`*(a, b: MdNode): bool =
+  if a.kind == b.kind and a.text == b.text:
+    case a.kind:
+    of mnkHeader:
+      return a.level == b.level
+    of mnkListItem, mnkChecklist, mnkParagraph:
+      return a.indent == b.indent
+    of mnkCodeBlock:
+      return a.lang == b.lang
+    of mnkLink:
+      return a.link == b.link and a.linkKind == b.linkKind
+  return false
+
 iterator mdParse*(src: string): MdNode =
+  var 
+    i = 0
+    indent = 0
+    listNumber = 1
+    text = ""
+
   template eatWhitespace = 
     i += 1
     while i < src.len and src[i] == ' ':
       i += 1
 
-  template consumeUntil(delim: char, outStr: var string) =
+  template consumeUntil(delim: char, outStr: var string, inclDelim: bool = true) =
     while i < src.len and src[i] != delim:
       outStr &= src[i]
       i += 1
-    
-  
-  # TODO: parse
-  var i = 0
-  var text = ""
+    if inclDelim and i < src.len and src[i] == delim:
+      i += 1
+
+  template handleListItem =
+    # TODO: fixme
+    i += 1
+    consumeUntil('\n', text)
+    yield MdNode(
+      text: text,
+      kind: mnkListItem,
+      indent: indent,
+      number: listNumber,
+    )
+    text = ""
+
+
   while i < src.len:
     case src[i]
-    of '[', '!':
+    of '[', '!':  # TODO: this is incorrect ...
       var linkKind = if src[i] == '[': 
         mlkPlain
       else:
@@ -76,6 +98,7 @@ iterator mdParse*(src: string): MdNode =
         link: link,
         linkKind: linkKind,
       )
+      text = ""
     of '#':
       i += 1
       var level = 1
@@ -89,8 +112,51 @@ iterator mdParse*(src: string): MdNode =
         kind: mnkHeader,
         level: level,
       )
+    of '0'..'9':
+      while i < src.len and src[i] in '0'..'9':
+        text &= src[i]
+        i += 1
+
+      if i < src.len and src[i] == '.':
+        listNumber += 1
+        text = ""
+        handleListItem()
     of '-', '*':
-      i += 1
+      listNumber = -1
+      text = ""
+      handleListItem()
+    of '`':
+      var c1 = 0
+      while i < src.len and src[i] == '`':
+        c1 += 1
+
+      if c1 == 3:
+        var lang = ""
+        var c2 = 0
+        var inLangSection = true
+        while i < src.len:
+          if src[i] == '`':
+            c2 += 1
+            if c2 == 3:
+              yield MdNode(
+                text: text,
+                kind: mnkCodeBlock,
+                lang: lang,
+              )
+              text = ""
+          else:
+            c2 = 0
+            if src[i] == '\n':
+              inLangSection = false
+
+            if inLangSection:
+              lang &= src[i]
+            else:
+              text &= src[i]
+      else:
+        while c1 > 0:
+          text &= '`'
+          c1 -= 1
     else:
-      # echo "hi"
+      text &= src[i]
       i += 1
