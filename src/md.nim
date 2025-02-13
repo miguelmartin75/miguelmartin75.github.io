@@ -20,7 +20,7 @@ type
       indent*: int
       number*: int
     of mnkCodeBlock:
-      lang*: string
+      language*: string
     of mnkLink:
       link*: string  # TODO StringSlice
       linkKind*: MdLinkKind
@@ -33,7 +33,7 @@ proc `==`*(a, b: MdNode): bool =
     of mnkListItem, mnkChecklist, mnkParagraph:
       return a.indent == b.indent
     of mnkCodeBlock:
-      return a.lang == b.lang
+      return a.language == b.language
     of mnkLink:
       return a.link == b.link and a.linkKind == b.linkKind
   return false
@@ -100,6 +100,9 @@ iterator mdParse*(src: string): MdNode =
       )
       text = ""
     of '#':
+      # TODO: maybe end of paragraph
+      text = ""
+
       i += 1
       var level = 1
       while i < src.len and src[i] == '#':
@@ -112,6 +115,7 @@ iterator mdParse*(src: string): MdNode =
         kind: mnkHeader,
         level: level,
       )
+      text = ""
     of '0'..'9':
       while i < src.len and src[i] in '0'..'9':
         text &= src[i]
@@ -122,13 +126,20 @@ iterator mdParse*(src: string): MdNode =
         text = ""
         handleListItem()
     of '-', '*':
+      # TODO: maybe end of paragraph
+
       listNumber = -1
       text = ""
       handleListItem()
     of '`':
+      # TODO: maybe end of paragraph
+      text = ""
+
+      var sI = i
       var c1 = 0
       while i < src.len and src[i] == '`':
         c1 += 1
+        i += 1
 
       if c1 == 3:
         var lang = ""
@@ -141,18 +152,29 @@ iterator mdParse*(src: string): MdNode =
               yield MdNode(
                 text: text,
                 kind: mnkCodeBlock,
-                lang: lang,
+                language: lang,
               )
               text = ""
+              break
           else:
             c2 = 0
-            if src[i] == '\n':
+            if inLangSection and src[i] == '\n':
               inLangSection = false
+              i += 1
+              continue
 
             if inLangSection:
               lang &= src[i]
             else:
               text &= src[i]
+          i += 1
+
+        if i >= src.len and c2 != 3:
+          yield MdNode(
+            text: src[sI..^1],
+            kind: mnkParagraph,
+          )
+          text = ""
       else:
         while c1 > 0:
           text &= '`'
