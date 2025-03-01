@@ -1,4 +1,9 @@
 type
+  MdTextStyle* = enum
+    mdtsNormal
+    mdtsItalics
+    mdtsBold
+
   MdLinkKind* = enum
     mlkPlain
     mlkImage
@@ -8,27 +13,40 @@ type
     mnkListItem
     mnkLink
     mnkParagraph
+    mnkQuote  # TODO
     mnkCodeBlock
     mnkChecklist
 
+  MdText* = object
+    text*: string
+    style*: MdTextStyle
+
   MdNode* = object
+    # TODO
+    # text*: seq[MdText]
     text*: string  # TODO StringSlice
     case kind*: MdNodeKind
-    of mnkHeader:
+    of mnkHeader, mnkQuote:
       level*: int
     of mnkListItem, mnkChecklist, mnkParagraph:
       indent*: int
       number*: int
     of mnkCodeBlock:
-      language*: string
+      language*: string  # TODO StringSlice
     of mnkLink:
       link*: string  # TODO StringSlice
       linkKind*: MdLinkKind
 
+proc maybeDropLastEol*(x: string): string {.inline.} =
+  if x.len > 0 and x[^1] == '\n':
+    return x[0..^2]
+  else:
+    return x
+
 proc `==`*(a, b: MdNode): bool =
   if a.kind == b.kind and a.text == b.text:
     case a.kind:
-    of mnkHeader:
+    of mnkHeader, mnkQuote:
       return a.level == b.level
     of mnkListItem, mnkChecklist, mnkParagraph:
       return a.indent == b.indent
@@ -69,6 +87,14 @@ iterator mdParse*(src: string): MdNode =
     )
     text = ""
 
+  template maybeEndParagraph =
+    if text.len > 0:
+      yield MdNode(
+        text: text.maybeDropLastEol,
+        kind: mnkParagraph,
+      )
+      text = ""
+
 
   while i < src.len:
     case src[i]
@@ -83,6 +109,8 @@ iterator mdParse*(src: string): MdNode =
             continue
         i += 1
         mlkImage
+
+      maybeEndParagraph()
 
       eatWhitespace()
       consumeUntil(']', text)
@@ -100,8 +128,7 @@ iterator mdParse*(src: string): MdNode =
       )
       text = ""
     of '#':
-      # TODO: maybe end of paragraph
-      text = ""
+      maybeEndParagraph()
 
       i += 1
       var level = 1
@@ -126,15 +153,12 @@ iterator mdParse*(src: string): MdNode =
         text = ""
         handleListItem()
     of '-', '*':
-      # TODO: maybe end of paragraph
+      maybeEndParagraph()
 
       listNumber = -1
       text = ""
       handleListItem()
     of '`':
-      # TODO: maybe end of paragraph
-      text = ""
-
       var sI = i
       var c1 = 0
       while i < src.len and src[i] == '`':
@@ -142,6 +166,8 @@ iterator mdParse*(src: string): MdNode =
         i += 1
 
       if c1 == 3:
+        maybeEndParagraph()
+
         var lang = ""
         var c2 = 0
         var inLangSection = true
@@ -150,7 +176,7 @@ iterator mdParse*(src: string): MdNode =
             c2 += 1
             if c2 == 3:
               yield MdNode(
-                text: text,
+                text: text.maybeDropLastEol,
                 kind: mnkCodeBlock,
                 language: lang,
               )
@@ -176,9 +202,23 @@ iterator mdParse*(src: string): MdNode =
           )
           text = ""
       else:
-        while c1 > 0:
+        while i < src.len and src[i] == '`':
           text &= '`'
           c1 -= 1
+          i += 1
+    of ' ':
+      if text.len > 0:
+        text &= src[i]
+      i += 1
+    of '\n':
+      if text.len > 0:
+        if text[^1] == '\n':
+          # TODO: end paragraph, not maybe
+          maybeEndParagraph()
+        text &= src[i]
+      i += 1
     else:
       text &= src[i]
       i += 1
+
+  maybeEndParagraph()

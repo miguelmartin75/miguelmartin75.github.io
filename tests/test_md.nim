@@ -26,7 +26,79 @@ suite "headers+body":
     check:
       nodes == gt
 
+  test "h1 with body":
+    let 
+      inp = &"""
+# h1
+hello world.
+second line
+"""
+      nodes = mdParse(inp).toSeq
+      gt = @[
+        MdNode(
+          text: " h1",
+          kind: mnkHeader,
+          level: 1,
+        ),
+        MdNode(
+          text: "hello world.\nsecond line",
+          kind: mnkParagraph,
+        )
+      ]
+
+    check:
+      nodes == gt
+    
+
 suite "codeblock":
+  test "paragraph -> codeblock":
+      let codeInner = """
+var x = 3
+x += 1
+"""
+      let inp = &"""
+This is a test
+```c++
+{codeInner}
+```
+"""
+      let nodes = mdParse(inp).toSeq
+      check:
+        nodes == @[
+          MdNode(
+            text: "This is a test",
+            kind: mnkParagraph,
+          ),
+          MdNode(
+            text: codeInner,
+            kind: mnkCodeBlock,
+            language: "c++",
+          ),
+        ]
+  test "codeblock -> paragraph":
+      let codeInner = """
+var x = 3
+x += 1"""
+      let inp = &"""
+```c++
+{codeInner}```
+
+This is a test
+"""
+      let nodes = mdParse(inp).toSeq
+      check:
+        nodes == @[
+          MdNode(
+            text: codeInner,
+            kind: mnkCodeBlock,
+            language: "c++",
+          ),
+          MdNode(
+            text: "This is a test",
+            kind: mnkParagraph,
+          ),
+        ]
+
   test "not ending":
     for prefix in ["", "  "]:
       for lang in ["", "c++"]:
@@ -51,7 +123,8 @@ math.ceil(x)
 """
     let inp = &"""
 ```python
-{inner}```
+{inner}
+```
 """
     let nodes = mdParse(inp).toSeq
     check:
@@ -73,11 +146,52 @@ a b c
     check:
       nodes == @[
         MdNode(
-          text: "a b c\n",
+          text: "a b c",
           kind: mnkCodeBlock,
           language: "",
         )
       ]
+
+suite "paragraph":
+  test "basic":
+    let 
+      inp = &"""
+hello world.
+second line
+"""
+      nodes = mdParse(inp).toSeq
+      gt = @[
+        MdNode(
+          text: "hello world.\nsecond line",
+          kind: mnkParagraph,
+        )
+      ]
+
+    check:
+      nodes == gt
+
+  test "seperate paragraph":
+    let 
+      inp = &"""
+line.
+
+line.
+"""
+      nodes = mdParse(inp).toSeq
+      gt = @[
+        MdNode(
+          text: "line.",
+          kind: mnkParagraph,
+        ),
+        MdNode(
+          text: "line.",
+          kind: mnkParagraph,
+        )
+      ]
+
+    check:
+      nodes == gt
+
 
 suite "lists":
   test "nested list":
