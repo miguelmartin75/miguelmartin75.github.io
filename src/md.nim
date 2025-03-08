@@ -128,6 +128,7 @@ iterator mdParse*(src: string): MdNode =
       )
       text = ""
     of '#':
+      # TODO: this is wrong
       maybeEndParagraph()
 
       i += 1

@@ -184,7 +184,7 @@ line.
           kind: mnkParagraph,
         ),
         MdNode(
-          text: "line.",
+          text: "\nline.",
           kind: mnkParagraph,
         )
       ]
