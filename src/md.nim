@@ -16,6 +16,9 @@ type
     mnkQuote  # TODO
     mnkCodeBlock
     mnkChecklist
+    mnkTable
+    mnkTableRow
+    mnkTableCol
 
   MdText* = object
     text*: string
@@ -36,6 +39,7 @@ type
     of mnkLink:
       link*: string  # TODO StringSlice
       linkKind*: MdLinkKind
+    kids: seq[MdNode]
 
 proc maybeDropLastEol*(x: string): string {.inline.} =
   if x.len > 0 and x[^1] == '\n':

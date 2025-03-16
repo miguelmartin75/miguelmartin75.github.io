@@ -1,6 +1,9 @@
-import std/[strutils, sugar, paths, dirs]
-import md
-import pretty
+import std/[strutils, sugar, paths, dirs, htmlparser]
+# import pretty
+# TODO: use my own markdown parser when ready
+# import md
+import markdown
+import karax/[karaxdsl, vdom]
 
 # TODO: convert to inputs?
 const
@@ -27,8 +30,21 @@ proc toFriendlyName*(x: string): string =
 
 proc genRoute(r: Route) =
   let src = readFile(r.src.string)
-  for node in mdParse(src):
-    continue
+  echo r.src.string, " -> ", r.dst.string
+  let 
+    # TODO: use my own md parser
+    content = markdown(src, config=initGfmConfig())
+    outputHtml = buildHtml(html(lang = "en")):
+      head:
+        title: text "miguel's blog"
+      body:
+        text "TODO"
+        main(class="max-w-2xl mx-auto"):
+          verbatim(content)
+    outDir = r.dst.splitFile.dir
+  
+  doAssert outDir.existsOrCreateDir(), outDir.string
+  writeFile(r.dst.string, $outputHtml)
 
 proc genSite =
   let mdFiles = collect:

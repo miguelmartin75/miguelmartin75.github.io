@@ -1,0 +1,59 @@
+{
+  "version": 2,
+  "packages": {
+    "dotenv": {
+      "version": "2.0.1",
+      "vcsRevision": "4b8613cb4c46331729e88f594c5ae2b727381a57",
+      "url": "https://github.com/euantorano/dotenv.nim",
+      "downloadMethod": "git",
+      "dependencies": [],
+      "checksums": {
+        "sha1": "9a9e39544f129e6666935796610da79fbe724510"
+      }
+    },
+    "ws": {
+      "version": "0.5.0",
+      "vcsRevision": "9536bf99ddf5948db221ccb7bb3663aa238a8e21",
+      "url": "https://github.com/treeform/ws",
+      "downloadMethod": "git",
+      "dependencies": [],
+      "checksums": {
+        "sha1": "ae4daf4ae302d0431f3c2d385ae9d2fe767a3246"
+      }
+    },
+    "karax": {
+      "version": "1.3.3",
+      "vcsRevision": "d86349c63d8ece330d749eb037a9fa5ffca87c79",
+      "url": "https://github.com/karaxnim/karax/",
+      "downloadMethod": "git",
+      "dependencies": [
+        "ws",
+        "dotenv"
+      ],
+      "checksums": {
+        "sha1": "6683189b4456437c2809be72e3404adde77f5c34"
+      }
+    },
+    "markdown": {
+      "version": "0.8.8",
+      "vcsRevision": "5a7a7bafd1da23b25332316a7b888e6586f4177a",
+      "url": "https://github.com/soasme/nim-markdown",
+      "downloadMethod": "git",
+      "dependencies": [],
+      "checksums": {
+        "sha1": "a59d1205efe2e0bbc3657481e188ce7e7de3d943"
+      }
+    },
+    "unittest2": {
+      "version": "0.2.3",
+      "vcsRevision": "845b6af28b9f68f02d320e03ad18eccccea7ddb9",
+      "url": "https://github.com/status-im/nim-unittest2",
+      "downloadMethod": "git",
+      "dependencies": [],
+      "checksums": {
+        "sha1": "6936b4e4676c9b37537d93f31cb8fc46f4ebaacb"
+      }
+    }
+  },
+  "tasks": {}
+}

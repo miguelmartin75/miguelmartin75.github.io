@@ -11,3 +11,5 @@ bin           = @["nssg"]
 requires "nim >= 2.0.6"
 requires "unittest2"
 
+requires "karax"
+requires "markdown"
