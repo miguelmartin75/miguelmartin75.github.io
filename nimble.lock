@@ -1,6 +1,16 @@
 {
   "version": 2,
   "packages": {
+    "cligen": {
+      "version": "1.7.0",
+      "vcsRevision": "4193f802796f15559c81c6dd56724d6f20345917",
+      "url": "https://github.com/c-blake/cligen.git",
+      "downloadMethod": "git",
+      "dependencies": [],
+      "checksums": {
+        "sha1": "300bd7fdb6e48d2d98e34ed0661206b50331e99c"
+      }
+    },
     "dotenv": {
       "version": "2.0.1",
       "vcsRevision": "4b8613cb4c46331729e88f594c5ae2b727381a57",
@@ -52,6 +62,16 @@
       "dependencies": [],
       "checksums": {
         "sha1": "6936b4e4676c9b37537d93f31cb8fc46f4ebaacb"
+      }
+    },
+    "yaml": {
+      "version": "2.2.0",
+      "vcsRevision": "9e43c0ab26381889a3d932b1e811def60f7408e1",
+      "url": "https://github.com/flyx/NimYAML",
+      "downloadMethod": "git",
+      "dependencies": [],
+      "checksums": {
+        "sha1": "1f85746f3c7e692f8814296c7aff786e2b7dbf5e"
       }
     }
   },

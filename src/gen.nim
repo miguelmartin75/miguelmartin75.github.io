@@ -1,22 +1,33 @@
-import std/[strutils, sugar, paths, dirs, htmlparser]
-# import pretty
-# TODO: use my own markdown parser when ready
-# import md
-import markdown
-import karax/[karaxdsl, vdom]
-
-# TODO: convert to inputs?
-const
-  mdDir = "./md".Path
-  outDir = "./gen".Path
+import 
+  std/[strutils, sugar, paths, dirs, htmlparser, tables],
+  markdown,
+  karax/[karaxdsl, vdom]
+  # yaml
 
 type
+  SimpleYaml = Table[string, string]
   Route = object
     name: string
     friendlyName: string
     src: Path
     dst: Path
     uri: Path
+
+proc parseYamlSimple(inp: string): SimpleYaml = 
+  for line in inp.splitLines:
+    if line.len == 0:
+      continue
+
+    let sp = line.split(": ")
+    doAssert sp.len == 2
+
+    var 
+      k = sp[0]
+      v = sp[1]
+    if v.startsWith('"'):
+      doAssert v.endsWith('"')
+      v = v[1..^2]
+    result[k] = v
 
 proc toFriendlyName*(x: string): string =
   result.setLen(x.len)
@@ -28,15 +39,46 @@ proc toFriendlyName*(x: string): string =
     else:
       result[i] = x[i]
 
-proc genRoute(r: Route) =
-  let src = readFile(r.src.string)
-  echo r.src.string, " -> ", r.dst.string
+proc splitMdAndYaml(mdFile: string): tuple[md: string, yaml: SimpleYaml] = 
   let 
+    startIdx = mdFile.find("---")
+    endIdx = if startIdx != -1:
+      mdFile.find("---", startIdx + 3) - 1
+    else:
+      startIdx
+
+    yamlData = if endIdx != -1:
+      doAssert startIdx != -1
+      mdFile[(startIdx + 3).. endIdx] 
+    else:
+      ""
+
+    mdData = if endIdx != -1:
+      mdFile[(endIdx + 3) .. ^ 1]
+    else:
+      doAssert startIdx == -1
+      mdFile
+
+  result.md = mdData
+  result.yaml = if yamlData != "":
+    parseYamlSimple(yamlData)
+  else:
+    SimpleYaml()
+
+proc genRoute(r: Route, silent: bool) =
+  let src = readFile(r.src.string)
+  if not silent:
+    echo r.src.string, " -> ", r.dst.string
+
+  let 
+    (md, yaml) = splitMdAndYaml(src)
+
     # TODO: use my own md parser
-    content = markdown(src, config=initGfmConfig())
+    content = markdown(md, config=initGfmConfig())
     outputHtml = buildHtml(html(lang = "en")):
       head:
-        title: text "miguel's blog"
+        title: text yaml.getOrDefault("title", r.friendlyName)
+
       body:
         text "TODO"
         main(class="max-w-2xl mx-auto"):
@@ -46,17 +88,20 @@ proc genRoute(r: Route) =
   doAssert outDir.existsOrCreateDir(), outDir.string
   writeFile(r.dst.string, $outputHtml)
 
-proc genSite =
-  let mdFiles = collect:
-    for x in mdDir.walkDirRec:
-      let p = x.splitFile
-      if p.ext == ".md":
-        (p, x)
+proc genSite(inpDir = "./md", outDir = "./dist", silent = false) =
+  let 
+    inpDir = Path(inpDir)
+    outDir = Path(outDir)
+    mdFiles = collect:
+      for x in inpDir.walkDirRec:
+        let p = x.splitFile
+        if p.ext == ".md":
+          (p, x)
 
   let routes = collect:
     for (x, src) in mdFiles:
       let 
-        relPath = src.relativePath(mdDir)
+        relPath = src.relativePath(inpDir)
         uri = relPath.changeFileExt("html")
         dst = outDir / uri
         friendlyName = x.name.string.toFriendlyName
@@ -70,6 +115,13 @@ proc genSite =
       )
 
   for r in routes:
-    genRoute(r)
+    genRoute(r, silent)
 
-genSite()
+  # TODO: create posts, index, archive, bio, etc.
+
+when isMainModule:
+  import cligen
+  dispatch(genSite, help={
+    "inpDir": "input directory",
+    "outDir": "output directory",
+  })
