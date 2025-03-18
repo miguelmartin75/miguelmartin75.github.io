@@ -56,6 +56,9 @@ proc mdToHtml*(
   ),
   renderer_flags: cuint = 0,
 ): string = 
+  if data.len == 0:
+    return
+
   proc convertHtml(ch: cstring, len: cuint, userdata: pointer) {.cdecl.} =
     let s = Str8(data: ch, len: len.int64)
     cast[ptr string](userdata)[] &= $s

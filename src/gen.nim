@@ -42,10 +42,23 @@ type
   RouteKind = enum  
     rkPage
     rkBlogPost
+    rkPrivateNote
+
+  Ctx = object
+    silent: bool
+
+    privateNotes: bool
+    inpDir: Path
+    outDir: Path
+    staticDir: Path
+
+    serve: bool
+    dev: bool
+    port: int
 
   Route = object
     case kind: RouteKind
-    of rkPage:
+    of rkPage, rkPrivateNote:
       discard
     of rkBlogPost:
       readingTimeMins: float
@@ -65,11 +78,15 @@ proc parseYamlSimple(inp: string): SimpleYaml =
       continue
 
     let sp = line.split(": ")
-    doAssert sp.len == 2
+    doAssert sp.len >= 1, $sp
 
     var 
       k = sp[0]
-      v = sp[1]
+      v = if sp.len >= 2:
+        sp[1..^1].join(": ") 
+      else:
+        ""
+
     if v.startsWith('"'):
       doAssert v.endsWith('"')
       v = v[1..^2]
@@ -95,7 +112,7 @@ proc splitMdAndYaml(mdFile: string): tuple[md: string, yaml: SimpleYaml] =
     else:
       startIdx
 
-    yamlData = if endIdx != -1:
+    yamlData = if endIdx != -1 and startIdx == 0:
       doAssert startIdx != -1
       mdFile[(startIdx + 3).. endIdx] 
     else:
@@ -113,19 +130,21 @@ proc splitMdAndYaml(mdFile: string): tuple[md: string, yaml: SimpleYaml] =
   else:
     SimpleYaml()
 
-proc css(): VNode =
+proc css(ctx: Ctx): VNode =
   result = buildHtml(html):
     link(rel="icon", type="image/x-icon", href="/images/icon.svg")
     link(rel="stylesheet", href="/style.css")
 
-proc navBar(): VNode =
+proc navBar(ctx: Ctx): VNode =
   result = buildHtml(html):
     nav:
       ul:
         li: a(href="/"): text "home"
         li: a(href="/blog"): text "blog"
+        if ctx.privateNotes:
+          li: a(href="/notes"): text "notes"
       tdiv:
-        h1: text "miguel"
+        h1: a(href="/"): text "miguel"
 
 proc commentsSection(): VNode =
   result = buildHtml(html):
@@ -141,9 +160,9 @@ proc commentsSection(): VNode =
 </script>
 """)
 
-proc genRoute(r: var Route, silent: bool) =
+proc genRoute(ctx: Ctx, r: var Route) =
   let src = readFile(r.src.string)
-  if not silent:
+  if not ctx.silent:
     echo r.src.string, " -> ", r.dst.string
 
   let 
@@ -181,10 +200,10 @@ document.addEventListener('DOMContentLoaded', function() {
   })
 </script>
 """)
-        css()
+        css(ctx)
 
       body:
-        navBar()
+        navBar(ctx)
         main:
           if r.kind == rkBlogPost:
             tdiv(class="info"):
@@ -205,13 +224,34 @@ document.addEventListener('DOMContentLoaded', function() {
   discard outDir.existsOrCreateDir()
   writeFile(r.dst.string, "<!DOCTYPE html>\n\n" & $outputHtml)
 
-proc genBlog(routes: seq[Route], outDir: Path) =
+proc genNotes(ctx: Ctx, routes: seq[Route]) =
+  let outputHtml = buildHtml(html(lang = "en")):
+    head:
+      title: text "Miguel's Notes (private)"
+      css(ctx)
+    body:
+      navBar(ctx)
+      main:
+        ul:
+          for r in routes:
+            if r.kind == rkPrivateNote:
+              li: 
+                pre(style={display: "inline"}): text format(r.dt, "yyyy-MM-dd")
+                tdiv(class="hspace")
+                a(href=r.uri.string): text r.title
+
+  writeFile(
+    (ctx.outDir / Path("notes.html")).string,
+    "<!DOCTYPE html>\n\n" & $outputHtml,
+  )
+
+proc genBlog(ctx: Ctx, routes: seq[Route]) =
   let outputHtml = buildHtml(html(lang = "en")):
     head:
       title: text "Miguel's Blog"
-      css()
+      css(ctx)
     body:
-      navBar()
+      navBar(ctx)
       main:
         ul:
           for r in routes:
@@ -222,26 +262,28 @@ proc genBlog(routes: seq[Route], outDir: Path) =
                 a(href=r.uri.string): text r.title
 
   writeFile(
-    (outDir / Path("blog.html")).string,
+    (ctx.outDir / Path("blog.html")).string,
     "<!DOCTYPE html>\n\n" & $outputHtml,
   )
 
-proc runServer(routes: seq[Route], port: int, outDir: Path, staticDir: Path, silent: bool) =
-  var routesByPath = collect:
-    for r in routes:
-      {r.uri.string: r}
+proc runServer(ctx: Ctx, routes: seq[Route]) =
+  let silent = ctx.silent
+  var 
+    routesByPath = collect:
+      for r in routes:
+        {r.uri.string: r}
+    router: Router
 
   template handleCode(code: int) = 
     let key = $code
     if key in routesByPath:
       var r {.inject.} = routesByPath[key]  # inject for strformat (&)
       echoMs(&"genRoute({r.src.string}): ", silent):
-        genRoute(r, silent)
+        ctx.genRoute(r)
       resp(404, "text/html", readFile(r.dst.string))
     else:
       request.respond(code)
     
-  var router: Router
   proc assetHandler(request: Request) =
     let 
       name = request.path
@@ -258,7 +300,7 @@ proc runServer(routes: seq[Route], port: int, outDir: Path, staticDir: Path, sil
         realExt
 
       mime = getMimetype(mimeDb, ext, "")
-      fp = outDir / relPathSplit.dir / Path(relPathSplit.name.string & ext)
+      fp = ctx.outDir / relPathSplit.dir / Path(relPathSplit.name.string & ext)
       key = if name == "/":
         "index"
       else:
@@ -266,13 +308,15 @@ proc runServer(routes: seq[Route], port: int, outDir: Path, staticDir: Path, sil
 
     if key in routesByPath:
       var r = routesByPath[key]
-      if r.src.string.endsWith(".md"):
+      if ctx.dev and r.src.string.endsWith(".md"):
         echoMs(&"genRoute({r.src.string}): ", silent):
-          genRoute(r, silent)
+          ctx.genRoute(r)
     elif key == "index":
       doAssert true, "please provide an index.md"
     elif key == "blog":
-      genBlog(routes, outDir)
+      ctx.genBlog(routes)
+    elif key == "notes":
+      ctx.genNotes(routes)
 
     if not fp.fileExists:
       handleCode(404)
@@ -288,8 +332,10 @@ proc runServer(routes: seq[Route], port: int, outDir: Path, staticDir: Path, sil
     let content = readFile(fp.string)
     request.respond(200, headers, content)
 
-    copyDir(staticDir.string, outDir.string)
+    if ctx.dev:
+      copyDir(ctx.staticDir.string, ctx.outDir.string)
 
+  # TODO: reload
   proc websocketHandler(
     websocket: WebSocket,
     event: WebSocketEvent,
@@ -305,27 +351,43 @@ proc runServer(routes: seq[Route], port: int, outDir: Path, staticDir: Path, sil
     of CloseEvent:
       discard
 
-  # router.get("/", assetHandler)
   router.get("/**", assetHandler)
 
   let server = newServer(router, websocketHandler)
-  echo &"http://localhost:{port}"
-  server.serve(Port(port))
+  echo &"http://localhost:{ctx.port}"
+  server.serve(Port(ctx.port))
 
 proc genSite(
   inpDir = "./md",
   outDir = "./dist",
   staticDir = "./static",
   silent = false,
+  dev = false,
   serve = false,
   port = 3000,
+  privateNotes = false,
 ) =
   let 
     inpDir = Path(inpDir)
     outDir = Path(outDir)
     staticDir = Path(staticDir)
+    ctx = Ctx(
+      silent: silent,
+      privateNotes: privateNotes,
+      inpDir: inpDir,
+      outDir: outDir,
+      staticDir: staticDir,
+      serve: serve,
+      port: port,
+      dev: dev,
+    )
+
+    followFilter = if privateNotes:
+      {pcDir, pcLinkToDir}
+    else:
+      {pcDir}
     mdFiles = collect:
-      for x in inpDir.walkDirRec:
+      for x in inpDir.walkDirRec(followFilter=followFilter):
         let p = x.splitFile
         if p.ext == ".md":
           (p, x)
@@ -343,6 +405,8 @@ proc genSite(
       Route(
         kind: if "blog" in relPath.string:
           rkBlogPost
+        elif "private" in relPath.string:
+          rkPrivateNote
         else:
           rkPage
         ,
@@ -355,7 +419,7 @@ proc genSite(
 
   discard outDir.existsOrCreateDir()
   for r in routes.mitems:
-    genRoute(r, silent)
+    ctx.genRoute(r)
 
   routes.sort(proc(a, b: Route): int =
     if a.kind == rkPage:
@@ -365,10 +429,11 @@ proc genSite(
     else:
       return -cmp(a.dt, b.dt)
   )
-  genBlog(routes, outDir)
+  ctx.genBlog(routes)
+  ctx.genNotes(routes)
 
   if serve:
-    runServer(routes, port, outDir, staticDir, silent)
+    runServer(ctx, routes)
 
 when isMainModule:
   import cligen
