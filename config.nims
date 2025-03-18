@@ -21,6 +21,7 @@ task publish, "generate & serve website":
   exec "nim c -r src/gen.nim"
   exec &"git add -A && git commit -m '{dt}'"
   exec "git subtree push --prefix dist origin gh-pages"
+  exec "git push origin master"
 
 # begin Nimble config (version 2)
 --noNimblePath
