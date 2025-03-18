@@ -9,6 +9,7 @@ type
     mlkImage
     
   MdNodeKind* = enum
+    mnkDocument
     mnkHeader
     mnkListItem
     mnkLink
@@ -29,6 +30,10 @@ type
     # text*: seq[MdText]
     text*: string  # TODO StringSlice
     case kind*: MdNodeKind
+    of mnkDocument:
+      discard
+    of mnkTable:
+      n, m: int
     of mnkHeader, mnkQuote:
       level*: int
     of mnkListItem, mnkChecklist, mnkParagraph:
@@ -39,6 +44,10 @@ type
     of mnkLink:
       link*: string  # TODO StringSlice
       linkKind*: MdLinkKind
+    of mnkTableRow, mnkTableCol:
+      # alignment: # TODO
+      discard
+      
     kids: seq[MdNode]
 
 proc maybeDropLastEol*(x: string): string {.inline.} =
@@ -50,6 +59,8 @@ proc maybeDropLastEol*(x: string): string {.inline.} =
 proc `==`*(a, b: MdNode): bool =
   if a.kind == b.kind and a.text == b.text:
     case a.kind:
+    of mnkTable, mnkTableCol, mnkTableRow:
+      return false  # TODO
     of mnkHeader, mnkQuote:
       return a.level == b.level
     of mnkListItem, mnkChecklist, mnkParagraph:
@@ -100,6 +111,7 @@ iterator mdParse*(src: string): MdNode =
       text = ""
 
 
+  var curr = MdNode(kind: mnkDocument)
   while i < src.len:
     case src[i]
     of '[', '!':  # TODO: this is incorrect ...
