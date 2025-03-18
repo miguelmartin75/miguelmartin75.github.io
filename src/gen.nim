@@ -1,7 +1,24 @@
-import 
-  std/[strutils, sugar, paths, dirs, htmlparser, tables],
+import
+  std/[files, strformat, strutils, sugar, paths, dirs, htmlparser, tables, mimetypes],
+  std/[monotimes, strformat],
   karax/[karaxdsl, vdom],
-  md4c
+  md4c,
+  mummy, mummy/routers
+
+const mimeDb = newMimeTypes()
+
+proc nowMs*(): float64 = getMonoTime().ticks.float64 / 1e6
+template echoMs*(prefix: string, silent: bool, body: untyped) =
+  let t1 = nowMs()
+  body
+  let 
+    t2 = nowMs()
+    delta = t2 - t1
+  
+  if not silent:
+    var deltaStr = ""
+    deltaStr.formatValue(delta, ".3f")
+    echo prefix, deltaStr, "ms"
 
 type
   SimpleYaml = Table[string, string]
@@ -33,6 +50,8 @@ proc toFriendlyName*(x: string): string =
   for i in 0..<len(x):
     if x[i] == '_':
       result[i] = ' '
+    elif x[i] == '-':
+      result[i] = ' '
     elif x[i] in LowercaseLetters and (i == 0 or result[i - 1] == ' '):
       result[i] = x[i].toUpperAscii
     else:
@@ -63,6 +82,13 @@ proc splitMdAndYaml(mdFile: string): tuple[md: string, yaml: SimpleYaml] =
     parseYamlSimple(yamlData)
   else:
     SimpleYaml()
+
+proc navBar(): VNode =
+  result = buildHtml(html):
+    nav:
+      ul:
+        a(href="/"): text "blog"
+        a(href="/about"): text "about"
 
 proc genRoute(r: Route, silent: bool) =
   let src = readFile(r.src.string)
@@ -98,8 +124,8 @@ document.addEventListener('DOMContentLoaded', function() {
 """)
 
       body:
-        text "TODO"
-        main(class="max-w-2xl mx-auto"):
+        navBar()
+        main:
           verbatim(content)
     outDir = r.dst.splitFile.dir
   
@@ -112,12 +138,8 @@ proc genIndex(routes: openArray[Route], outDir: Path) =
     head:
       title: text "Miguel's Blog"
       body:
-        nav:
-          ul:
-            a(href="/"): text "blog"
-            a(href="/about"): text "about"
-
-        main(class="max-w-2xl mx-auto"):
+        navBar()
+        main:
           ul:
             for r in routes:
               if "posts" in r.src.string:
@@ -128,6 +150,71 @@ proc genIndex(routes: openArray[Route], outDir: Path) =
     (outDir / Path("index.html")).string,
     "<!DOCTYPE html>\n\n" & $outputHtml,
   )
+
+proc runServer(routes: openArray[Route], port: int, outDir: Path, silent: bool) =
+  var routesByPath = collect:
+    for r in routes:
+      {r.uri.string: r}
+
+  var router: Router
+  proc assetHandler(request: Request) =
+    let 
+      name = request.path
+      relPath = if name == "/":
+        Path("index.html")
+      else:
+        Path(name)
+      relPathSplit = relPath.splitFile
+      realExt = relPathSplit.ext
+      ext = if realExt == "":
+        ".html"
+      else:
+        realExt
+      mime = getMimetype(mimeDb, ext, "")
+      fp = outDir / relPath
+      key = relPath.string[1..^1]
+
+    if key in routesByPath:
+      let r = routesByPath[key]
+      if r.src.string.endsWith(".md"):
+        echoMs(&"genRoute({r.src.string}): ", silent):
+          genRoute(r, silent)
+
+    if not fp.fileExists:
+      request.respond(404)
+      return
+
+    if mime == "":
+      request.respond(403)
+      return
+
+    var headers: HttpHeaders
+    headers["Content-Type"] = mime
+
+    let content = readFile(fp.string)
+    request.respond(200, headers, content)
+
+  proc websocketHandler(
+    websocket: WebSocket,
+    event: WebSocketEvent,
+    message: Message
+  ) =
+    case event:
+    of OpenEvent:
+      discard
+    of MessageEvent:
+      discard
+    of ErrorEvent:
+      discard
+    of CloseEvent:
+      discard
+
+  # router.get("/", assetHandler)
+  router.get("/**", assetHandler)
+
+  let server = newServer(router, websocketHandler)
+  echo &"http://localhost:{port}"
+  server.serve(Port(port))
 
 proc genSite(
   inpDir = "./md",
@@ -149,8 +236,8 @@ proc genSite(
     for (x, src) in mdFiles:
       let 
         relPath = src.relativePath(inpDir)
-        uri = relPath.changeFileExt("html")
-        dst = outDir / uri
+        uri = relPath.changeFileExt("")
+        dst = outDir / uri.changeFileExt(".html")
         friendlyName = x.name.string.toFriendlyName
 
       Route(
@@ -166,6 +253,9 @@ proc genSite(
     genRoute(r, silent)
 
   genIndex(routes, outDir)
+
+  if serve:
+    runServer(routes, port, outDir, silent)
 
 when isMainModule:
   import cligen

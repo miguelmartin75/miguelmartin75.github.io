@@ -11,6 +11,28 @@
         "sha1": "300bd7fdb6e48d2d98e34ed0661206b50331e99c"
       }
     },
+    "nimsimd": {
+      "version": "1.3.2",
+      "vcsRevision": "3f6b2668ffb0867d0bf786a658b817763e611350",
+      "url": "https://github.com/guzba/nimsimd",
+      "downloadMethod": "git",
+      "dependencies": [],
+      "checksums": {
+        "sha1": "5202ce48d46eaf593da54e884774cdb2a884e717"
+      }
+    },
+    "crunchy": {
+      "version": "0.1.11",
+      "vcsRevision": "98eb6526982bb8aae8eec6e8781f4539fa19e049",
+      "url": "https://github.com/guzba/crunchy",
+      "downloadMethod": "git",
+      "dependencies": [
+        "nimsimd"
+      ],
+      "checksums": {
+        "sha1": "d34f03fc0f6876dbf53f99601096728ec31f47a3"
+      }
+    },
     "dotenv": {
       "version": "2.0.1",
       "vcsRevision": "4b8613cb4c46331729e88f594c5ae2b727381a57",
@@ -44,14 +66,38 @@
         "sha1": "6683189b4456437c2809be72e3404adde77f5c34"
       }
     },
-    "markdown": {
-      "version": "0.8.8",
-      "vcsRevision": "5a7a7bafd1da23b25332316a7b888e6586f4177a",
-      "url": "https://github.com/soasme/nim-markdown",
+    "zippy": {
+      "version": "0.10.11",
+      "vcsRevision": "9560f3d20479fb390c97f731ef8d100f1ed54e6c",
+      "url": "https://github.com/guzba/zippy",
       "downloadMethod": "git",
       "dependencies": [],
       "checksums": {
-        "sha1": "a59d1205efe2e0bbc3657481e188ce7e7de3d943"
+        "sha1": "12e761e18ccc0a1b0e931c74dd02bb4b74544d56"
+      }
+    },
+    "webby": {
+      "version": "0.2.1",
+      "vcsRevision": "325d6ade0970562bee7d7d53961a2c3287f0c4bc",
+      "url": "https://github.com/treeform/webby/",
+      "downloadMethod": "git",
+      "dependencies": [],
+      "checksums": {
+        "sha1": "1d9978ac16fdb56fad2ee9eaa0fcbb7860229d39"
+      }
+    },
+    "mummy": {
+      "version": "0.4.5",
+      "vcsRevision": "7523e2be68e6249706b07fc9f09d4c4deeac2f1d",
+      "url": "",
+      "downloadMethod": "git",
+      "dependencies": [
+        "zippy",
+        "webby",
+        "crunchy"
+      ],
+      "checksums": {
+        "sha1": "ad00619bd30b7855bdf21400dc4a06365534fb29"
       }
     },
     "unittest2": {
@@ -62,16 +108,6 @@
       "dependencies": [],
       "checksums": {
         "sha1": "6936b4e4676c9b37537d93f31cb8fc46f4ebaacb"
-      }
-    },
-    "yaml": {
-      "version": "2.2.0",
-      "vcsRevision": "9e43c0ab26381889a3d932b1e811def60f7408e1",
-      "url": "https://github.com/flyx/NimYAML",
-      "downloadMethod": "git",
-      "dependencies": [],
-      "checksums": {
-        "sha1": "1f85746f3c7e692f8814296c7aff786e2b7dbf5e"
       }
     }
   },
