@@ -31,8 +31,7 @@ type
     data: cstring
     len: int64
 
-proc s8(x: string): Str8 {.inline.} = Str8(data: x.cstring, len: x.len)
-proc toString(x: Str8): string {.inline.} = 
+proc `$`(x: Str8): string {.inline.} = 
   result.setLen(x.len)
   for i in 0..<x.len:
     result[i] = x.data[i]
@@ -59,7 +58,7 @@ proc mdToHtml*(
 ): string = 
   proc convertHtml(ch: cstring, len: cuint, userdata: pointer) {.cdecl.} =
     let s = Str8(data: ch, len: len.int64)
-    cast[ptr string](userdata)[] &= s.toString
+    cast[ptr string](userdata)[] &= $s
 
   doAssert md_html(
     data[0].addr, data.len.cuint, 
