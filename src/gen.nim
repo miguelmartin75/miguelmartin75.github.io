@@ -234,7 +234,7 @@ proc runServer(routes: seq[Route], port: int, outDir: Path, staticDir: Path, sil
   template handleCode(code: int) = 
     let key = $code
     if key in routesByPath:
-      var r {.inject.} = routesByPath[key]
+      var r {.inject.} = routesByPath[key]  # inject for strformat (&)
       echoMs(&"genRoute({r.src.string}): ", silent):
         genRoute(r, silent)
       resp(404, "text/html", readFile(r.dst.string))
