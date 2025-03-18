@@ -1,7 +1,19 @@
 import
-  std/[files, strformat, strutils, sugar, paths, dirs, htmlparser, tables, mimetypes],
-  std/[monotimes, strformat],
-  karax/[karaxdsl, vdom],
+  std/[
+    algorithm,
+    times,
+    os,
+    monotimes,
+    strformat,
+    strutils,
+    dirs, 
+    files,
+    sugar,
+    paths,
+    tables,
+    mimetypes
+  ],
+  karax/[karaxdsl, vdom, vstyles],
   md4c,
   mummy, mummy/routers
 
@@ -22,12 +34,25 @@ template echoMs*(prefix: string, silent: bool, body: untyped) =
 
 type
   SimpleYaml = Table[string, string]
+  RouteKind = enum  
+    rkPage
+    rkBlogPost
+
   Route = object
+    case kind: RouteKind
+    of rkPage:
+      discard
+    of rkBlogPost:
+      readingTimeMins: float
+
+    dt: DateTime
+    title: string
     name: string
     friendlyName: string
     src: Path
     dst: Path
     uri: Path
+    info: FileInfo
 
 proc parseYamlSimple(inp: string): SimpleYaml = 
   for line in inp.splitLines:
@@ -83,14 +108,35 @@ proc splitMdAndYaml(mdFile: string): tuple[md: string, yaml: SimpleYaml] =
   else:
     SimpleYaml()
 
+proc css(): VNode =
+  result = buildHtml(html):
+    link(rel="icon", type="image/x-icon", href="/images/icon.svg")
+    link(rel="stylesheet", href="/style.css")
+
 proc navBar(): VNode =
   result = buildHtml(html):
     nav:
       ul:
-        a(href="/"): text "blog"
-        a(href="/about"): text "about"
+        li: a(href="/"): text "about"
+        li: a(href="/blog"): text "blog"
+      tdiv:
+        h1: text "miguel"
 
-proc genRoute(r: Route, silent: bool) =
+proc commentsSection(): VNode =
+  result = buildHtml(html):
+    verbatim("""
+<script 
+  src="https://utteranc.es/client.js"
+  repo="miguelmartin75/miguelmartin75.github.io"
+  issue-term="title"
+  label="💬"
+  theme="github-light"
+  crossorigin="anonymous"
+  async>
+</script>
+""")
+
+proc genRoute(r: var Route, silent: bool) =
   let src = readFile(r.src.string)
   if not silent:
     echo r.src.string, " -> ", r.dst.string
@@ -98,9 +144,17 @@ proc genRoute(r: Route, silent: bool) =
   let 
     (md, yaml) = splitMdAndYaml(src)
     content = mdToHtml(md)
+    title = yaml.getOrDefault("title", r.friendlyName)
+    dt = yaml.getOrDefault("date", now().format("yyyy-MM-dd"))
+  
+  r.title = title
+  r.dt = parse(dt, "yyyy-MM-dd", local())
+
+  let
+    info = getFileInfo(r.src.string)
     outputHtml = buildHtml(html(lang = "en")):
       head:
-        title: text yaml.getOrDefault("title", r.friendlyName)
+        title: text title
         verbatim("""
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css" integrity="sha384-zh0CIslj+VczCZtlzBcjt5ppRcsAmDnRem7ESsYwWwg3m/OaJ2l4x7YBZl9Kxxib" crossorigin="anonymous">
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js" integrity="sha384-Rma6DA2IPUwhNxmrB/7S3Tno0YY7sFu9WSYMCuulLhIqYSGZ2gKCJWIqhBWqMQfh" crossorigin="anonymous"></script>
@@ -109,11 +163,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const macros = {};
 
   let mathElements = document.getElementsByTagName("x-equation");
-  console.log("elements=", mathElements);
-  console.log(mathElements.length);
   for (let element of mathElements) {
-      console.log("el=", element);
-      console.log("textContent=", element.textContent);
       katex.render(element.textContent, element, {
           throwOnError: false,
           macros
@@ -122,36 +172,52 @@ document.addEventListener('DOMContentLoaded', function() {
   })
 </script>
 """)
+        css()
 
       body:
         navBar()
         main:
-          verbatim(content)
+          if r.kind == rkBlogPost:
+            tdiv(class="info"):
+              h1: text r.title
+              tdiv(class="times"):
+                pre: text format(r.dt, "MMMM d, yyyy")
+                # ~4.7 chars per word
+                # assume markdown is ~2x
+                # 238 average wpm reading
+                pre: text &"Time to read: {info.size div (5 * 2 * 230)} mins"
+
+          tdiv(class="content"):
+            verbatim(content)
+          if r.kind == rkBlogPost:
+            commentsSection()
     outDir = r.dst.splitFile.dir
-  
-  doAssert outDir.existsOrCreateDir(), outDir.string
+
+  discard outDir.existsOrCreateDir()
   writeFile(r.dst.string, "<!DOCTYPE html>\n\n" & $outputHtml)
 
 
-proc genIndex(routes: openArray[Route], outDir: Path) =
+proc genIndex(routes: seq[Route], outDir: Path) =
   let outputHtml = buildHtml(html(lang = "en")):
     head:
       title: text "Miguel's Blog"
-      body:
-        navBar()
-        main:
-          ul:
-            for r in routes:
-              if "posts" in r.src.string:
-                li: 
-                  a(href=r.uri.string): text r.name
+      css()
+    body:
+      navBar()
+      main:
+        ul:
+          for r in routes:
+            if r.kind == rkBlogPost:
+              li: 
+                pre(style={display: "inline"}): text format(r.dt, "yyyy-MM-dd")
+                a(href=r.uri.string): text r.title
 
   writeFile(
     (outDir / Path("index.html")).string,
     "<!DOCTYPE html>\n\n" & $outputHtml,
   )
 
-proc runServer(routes: openArray[Route], port: int, outDir: Path, silent: bool) =
+proc runServer(routes: seq[Route], port: int, outDir: Path, staticDir: Path, silent: bool) =
   var routesByPath = collect:
     for r in routes:
       {r.uri.string: r}
@@ -164,21 +230,25 @@ proc runServer(routes: openArray[Route], port: int, outDir: Path, silent: bool) 
         Path("index.html")
       else:
         Path(name)
+
       relPathSplit = relPath.splitFile
       realExt = relPathSplit.ext
       ext = if realExt == "":
         ".html"
       else:
         realExt
+
       mime = getMimetype(mimeDb, ext, "")
-      fp = outDir / relPath
+      fp = outDir / relPathSplit.dir / Path(relPathSplit.name.string & ext)
       key = relPath.string[1..^1]
 
     if key in routesByPath:
-      let r = routesByPath[key]
+      var r = routesByPath[key]
       if r.src.string.endsWith(".md"):
         echoMs(&"genRoute({r.src.string}): ", silent):
           genRoute(r, silent)
+    elif name == "/":
+      genIndex(routes, outDir)
 
     if not fp.fileExists:
       request.respond(404)
@@ -193,6 +263,8 @@ proc runServer(routes: openArray[Route], port: int, outDir: Path, silent: bool) 
 
     let content = readFile(fp.string)
     request.respond(200, headers, content)
+
+    copyDir(staticDir.string, outDir.string)
 
   proc websocketHandler(
     websocket: WebSocket,
@@ -219,6 +291,7 @@ proc runServer(routes: openArray[Route], port: int, outDir: Path, silent: bool) 
 proc genSite(
   inpDir = "./md",
   outDir = "./dist",
+  staticDir = "./static",
   silent = false,
   serve = false,
   port = 3000,
@@ -226,13 +299,16 @@ proc genSite(
   let 
     inpDir = Path(inpDir)
     outDir = Path(outDir)
+    staticDir = Path(staticDir)
     mdFiles = collect:
       for x in inpDir.walkDirRec:
         let p = x.splitFile
         if p.ext == ".md":
           (p, x)
 
-  let routes = collect:
+  copyDir(staticDir.string, outDir.string)
+
+  var routes = collect:
     for (x, src) in mdFiles:
       let 
         relPath = src.relativePath(inpDir)
@@ -241,6 +317,11 @@ proc genSite(
         friendlyName = x.name.string.toFriendlyName
 
       Route(
+        kind: if "blog" in relPath.string:
+          rkBlogPost
+        else:
+          rkPage
+        ,
         name: x.name.string,
         friendlyName: friendlyName,
         src: src,
@@ -248,14 +329,22 @@ proc genSite(
         uri: uri,
       )
 
-  doAssert outDir.existsOrCreateDir(), outDir.string
-  for r in routes:
+  discard outDir.existsOrCreateDir()
+  for r in routes.mitems:
     genRoute(r, silent)
 
+  routes.sort(proc(a, b: Route): int =
+    if a.kind == rkPage:
+      return 0
+    elif b.kind == rkPage:
+      return 0
+    else:
+      return -cmp(a.dt, b.dt)
+  )
   genIndex(routes, outDir)
 
   if serve:
-    runServer(routes, port, outDir, silent)
+    runServer(routes, port, outDir, staticDir, silent)
 
 when isMainModule:
   import cligen

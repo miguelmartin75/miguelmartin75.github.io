@@ -6,12 +6,6 @@ tags: math
 state: publish
 ---
 
-# Table of Contents
-
-```toc
-
-```
-
 # Introduction
 
 I stumbled across an [interesting paper](https://link.springer.com/article/10.1007/s00224-020-09986-5), which shows that you can multiply two numbers by using the Collatz conjecture (and assuming it to be true for the numbers you are dealing with).
@@ -32,13 +26,11 @@ The number will eventually land in the cycle $4 \rightarrow 2 \rightarrow 1 \rig
 The rule can be mathematically written as:
 
 $$
-
 f(n) = 
 \begin{cases}
     \frac{n}{2} &\text{if } n \equiv 0 \text{ (mod 2)} \\
     3n + 1 &\text{otherwise}
 \end{cases}
-
 $$
 
 ### Examples
