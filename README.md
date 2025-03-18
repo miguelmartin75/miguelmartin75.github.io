@@ -26,5 +26,6 @@ nim gen
 
 ## TODOs
 
+- [ ] better deployment https://sangsoonam.github.io/2019/02/08/using-git-worktree-to-deploy-github-pages.html
 - [ ] regenerate route when source file changes
 - [ ] refresh page if re-generated and route is on a browser page (websockets)
