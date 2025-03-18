@@ -14,8 +14,17 @@ Publish site (TODO):
 nim publish
 ```
 
+Run production server (TODO)
+```
+nim prod
+```
 
 Generate site:
 ```bash
 nim gen
 ```
+
+## TODOs
+
+- [ ] regenerate route when source file changes
+- [ ] refresh page if re-generated and route is on a browser page (websockets)
