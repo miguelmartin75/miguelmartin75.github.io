@@ -63,7 +63,7 @@ Here is some math $x + 1$ that is inline.
 Here is some math that is not inlined: 
 
 $$ 
-x + 1 
+\sin \theta + 1 
 $$
 
 

@@ -3,10 +3,6 @@ title: Recommended Machine Learning Papers and Learning Resources
 state: publish
 date: "2024-03-28"
 ---
-# Table of Contents
-```toc
-```
-
 # Introduction
 
 This is a filtered curation [of papers](#papers) that I found over the years that either inspire me, blow me away (revolutionize the way I think) or are an essential read for someone within the field. Some of these papers I have not personally read in detail. 
