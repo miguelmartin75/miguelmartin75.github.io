@@ -1,0 +1,133 @@
+/* Reset some basic styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.hspace {
+  display: inline;
+  margin-left: 5px;
+}
+
+/* Set a base font and color scheme */
+body {
+  font-family: system-ui;
+  font-size: 15px;
+  line-height: 1.6;
+  color: rgb(46, 54, 59);
+  /*color: rgb(36, 44, 49);*/
+  padding: 10px;
+}
+
+a {
+  text-decoration: none;
+  color: rgb(79, 94, 104);
+}
+
+a:hover {
+  text-decoration: underline;
+  color: rgb(46, 54, 59);
+}
+
+/* Use the semantic <main> element for primary content */
+main {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 10px;
+}
+
+/* Basic spacing for headings and paragraphs */
+main h1, h2, h3 {
+  margin-bottom: 15px;
+}
+
+main p {
+  margin-bottom: 15px;
+}
+
+main ul {
+  list-style-type: square;
+  padding-left: 25px;
+}
+
+main ul:not(ul ul) {
+  margin-bottom: 15px;
+}
+
+/* Reset default browser styles */
+nav {
+  letter-spacing: 0.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 18px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+nav a:hover {
+  text-decoration: none;
+}
+
+nav ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Style the navigation links */
+nav ul li {
+  display: inline-block;
+}
+
+nav ul li a {
+  transition: background-color 0.3s ease;
+}
+
+nav ul li a {
+  display: block;
+  padding: 10px 15px;
+  text-decoration: none;
+  color: #333;
+  border-radius: 5px;
+}
+
+/* Add hover effect */
+nav ul li a:hover {
+  background-color: #f0f0f0;
+}
+
+.katex-display > .katex { white-space: normal }
+.katex-display > .base { margin: 0.25em 0 }
+.katex-display { margin: 0.5em 0; }
+
+.info {
+  text-align: center;
+  padding-bottom: 20px;
+}
+
+.info .times {
+  display: flex;
+  align-items: center; 
+  justify-content: space-between;
+  font-size: 12px;
+}
+
+
+/* small screen */
+@media (max-width: 600px) {
+  nav ul {
+    text-align: center;
+  }
+}
+
+/* large screen */
+@media (min-width: 600px) {
+  body {
+    padding: 20px;
+  }
+  main {
+    padding: 20px;
+  }
+}

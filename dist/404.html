@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <title>404</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css" integrity="sha384-zh0CIslj+VczCZtlzBcjt5ppRcsAmDnRem7ESsYwWwg3m/OaJ2l4x7YBZl9Kxxib" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js" integrity="sha384-Rma6DA2IPUwhNxmrB/7S3Tno0YY7sFu9WSYMCuulLhIqYSGZ2gKCJWIqhBWqMQfh" crossorigin="anonymous"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const macros = {};
+
+  let mathElements = document.getElementsByTagName("x-equation");
+  for (let element of mathElements) {
+      katex.render(element.textContent, element, {
+          throwOnError: false,
+          macros
+      });
+  }
+  })
+</script>
+
+    <html>
+      <link rel="icon" type="image/x-icon" href="/images/icon.svg" />
+      <link rel="stylesheet" href="/style.css" />
+    </html>
+  </head>
+  <body>
+    <html><nav>
+        <ul>
+          <li><a href="/">home</a></li>
+          <li><a href="/blog">blog</a></li>
+        </ul>
+        <div><h1><a href="/">miguel</a></h1></div>
+      </nav></html>
+    <main><div class="content"><p>uh-oh, spaghetti-o... 404</p>
+</div></main>
+  </body>
+</html>
