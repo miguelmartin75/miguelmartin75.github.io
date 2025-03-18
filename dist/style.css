@@ -12,8 +12,8 @@
 
 /* Set a base font and color scheme */
 body {
+  font-size: 1em;
   font-family: system-ui;
-  font-size: 15px;
   line-height: 1.6;
   color: rgb(46, 54, 59);
   /*color: rgb(36, 44, 49);*/
@@ -57,13 +57,14 @@ main ul:not(ul ul) {
 
 /* Reset default browser styles */
 nav {
+  font-size: 1.5em;
   letter-spacing: 0.1rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 18px;
   padding-left: 15px;
   padding-right: 15px;
+  text-align: center;
 }
 
 nav a:hover {
@@ -111,23 +112,14 @@ nav ul li a:hover {
   display: flex;
   align-items: center; 
   justify-content: space-between;
-  font-size: 12px;
+  font-size: 0.9em;
 }
 
 
 /* small screen */
 @media (max-width: 600px) {
-  nav ul {
-    text-align: center;
-  }
 }
 
 /* large screen */
 @media (min-width: 600px) {
-  body {
-    padding: 20px;
-  }
-  main {
-    padding: 20px;
-  }
 }
