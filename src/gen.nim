@@ -19,6 +19,11 @@ import
 
 const mimeDb = newMimeTypes()
 
+template resp(code: int, contentType: string, r: untyped): untyped =
+  var headers: HttpHeaders
+  headers["Content-Type"] = contentType
+  request.respond(code, headers, r)
+
 proc nowMs*(): float64 = getMonoTime().ticks.float64 / 1e6
 template echoMs*(prefix: string, silent: bool, body: untyped) =
   let t1 = nowMs()
@@ -200,22 +205,6 @@ document.addEventListener('DOMContentLoaded', function() {
   discard outDir.existsOrCreateDir()
   writeFile(r.dst.string, "<!DOCTYPE html>\n\n" & $outputHtml)
 
-when false:
-  proc genIndex(routes: seq[Route], outDir: Path) =
-    let outputHtml = buildHtml(html(lang = "en")):
-      head:
-        title: text "Miguel Miguel"
-        css()
-      body:
-        navBar()
-        main:
-          text "..."
-
-    writeFile(
-      (outDir / Path("index.html")).string,
-      "<!DOCTYPE html>\n\n" & $outputHtml,
-    )
-
 proc genBlog(routes: seq[Route], outDir: Path) =
   let outputHtml = buildHtml(html(lang = "en")):
     head:
@@ -242,6 +231,16 @@ proc runServer(routes: seq[Route], port: int, outDir: Path, staticDir: Path, sil
     for r in routes:
       {r.uri.string: r}
 
+  template handleCode(code: int) = 
+    let key = $code
+    if key in routesByPath:
+      var r {.inject.} = routesByPath[key]
+      echoMs(&"genRoute({r.src.string}): ", silent):
+        genRoute(r, silent)
+      resp(404, "text/html", readFile(r.dst.string))
+    else:
+      request.respond(code)
+    
   var router: Router
   proc assetHandler(request: Request) =
     let 
@@ -271,19 +270,16 @@ proc runServer(routes: seq[Route], port: int, outDir: Path, staticDir: Path, sil
         echoMs(&"genRoute({r.src.string}): ", silent):
           genRoute(r, silent)
     elif key == "index":
-      when false:
-        genIndex(routes, outDir)
-      else:
-        discard
+      doAssert true, "please provide an index.md"
     elif key == "blog":
       genBlog(routes, outDir)
 
     if not fp.fileExists:
-      request.respond(404)
+      handleCode(404)
       return
 
     if mime == "":
-      request.respond(403)
+      handleCode(403)
       return
 
     var headers: HttpHeaders
@@ -370,8 +366,6 @@ proc genSite(
       return -cmp(a.dt, b.dt)
   )
   genBlog(routes, outDir)
-  when false:
-    genIndex(routes, outDir)
 
   if serve:
     runServer(routes, port, outDir, staticDir, silent)
