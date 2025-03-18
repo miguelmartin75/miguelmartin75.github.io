@@ -117,7 +117,7 @@ proc navBar(): VNode =
   result = buildHtml(html):
     nav:
       ul:
-        li: a(href="/"): text "about"
+        li: a(href="/"): text "home"
         li: a(href="/blog"): text "blog"
       tdiv:
         h1: text "miguel"
@@ -152,6 +152,10 @@ proc genRoute(r: var Route, silent: bool) =
 
   let
     info = getFileInfo(r.src.string)
+    # ~4.7 chars per word
+    # assume markdown is ~2x # bytes
+    # 238 average wpm reading
+    ttr = max(1, parseInt(yaml.getOrDefault("time-to-read", &"{info.size div (5 * 2 * 230)}")))
     outputHtml = buildHtml(html(lang = "en")):
       head:
         title: text title
@@ -182,10 +186,10 @@ document.addEventListener('DOMContentLoaded', function() {
               h1: text r.title
               tdiv(class="times"):
                 pre: text format(r.dt, "MMMM d, yyyy")
-                # ~4.7 chars per word
-                # assume markdown is ~2x
-                # 238 average wpm reading
-                pre: text &"Time to read: {info.size div (5 * 2 * 230)} mins"
+                if ttr == 1:
+                  pre: text &"Time to read: {ttr} min"
+                else:
+                  pre: text &"Time to read: {ttr} mins"
 
           tdiv(class="content"):
             verbatim(content)
@@ -196,8 +200,23 @@ document.addEventListener('DOMContentLoaded', function() {
   discard outDir.existsOrCreateDir()
   writeFile(r.dst.string, "<!DOCTYPE html>\n\n" & $outputHtml)
 
+when false:
+  proc genIndex(routes: seq[Route], outDir: Path) =
+    let outputHtml = buildHtml(html(lang = "en")):
+      head:
+        title: text "Miguel Miguel"
+        css()
+      body:
+        navBar()
+        main:
+          text "..."
 
-proc genIndex(routes: seq[Route], outDir: Path) =
+    writeFile(
+      (outDir / Path("index.html")).string,
+      "<!DOCTYPE html>\n\n" & $outputHtml,
+    )
+
+proc genBlog(routes: seq[Route], outDir: Path) =
   let outputHtml = buildHtml(html(lang = "en")):
     head:
       title: text "Miguel's Blog"
@@ -210,10 +229,11 @@ proc genIndex(routes: seq[Route], outDir: Path) =
             if r.kind == rkBlogPost:
               li: 
                 pre(style={display: "inline"}): text format(r.dt, "yyyy-MM-dd")
+                tdiv(class="hspace")
                 a(href=r.uri.string): text r.title
 
   writeFile(
-    (outDir / Path("index.html")).string,
+    (outDir / Path("blog.html")).string,
     "<!DOCTYPE html>\n\n" & $outputHtml,
   )
 
@@ -227,7 +247,7 @@ proc runServer(routes: seq[Route], port: int, outDir: Path, staticDir: Path, sil
     let 
       name = request.path
       relPath = if name == "/":
-        Path("index.html")
+        Path("/index.html")
       else:
         Path(name)
 
@@ -240,15 +260,23 @@ proc runServer(routes: seq[Route], port: int, outDir: Path, staticDir: Path, sil
 
       mime = getMimetype(mimeDb, ext, "")
       fp = outDir / relPathSplit.dir / Path(relPathSplit.name.string & ext)
-      key = relPath.string[1..^1]
+      key = if name == "/":
+        "index"
+      else:
+        relPath.string[1..^1]
 
     if key in routesByPath:
       var r = routesByPath[key]
       if r.src.string.endsWith(".md"):
         echoMs(&"genRoute({r.src.string}): ", silent):
           genRoute(r, silent)
-    elif name == "/":
-      genIndex(routes, outDir)
+    elif key == "index":
+      when false:
+        genIndex(routes, outDir)
+      else:
+        discard
+    elif key == "blog":
+      genBlog(routes, outDir)
 
     if not fp.fileExists:
       request.respond(404)
@@ -341,7 +369,9 @@ proc genSite(
     else:
       return -cmp(a.dt, b.dt)
   )
-  genIndex(routes, outDir)
+  genBlog(routes, outDir)
+  when false:
+    genIndex(routes, outDir)
 
   if serve:
     runServer(routes, port, outDir, staticDir, silent)
