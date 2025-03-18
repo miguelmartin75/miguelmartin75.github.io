@@ -99,16 +99,6 @@
       "checksums": {
         "sha1": "ad00619bd30b7855bdf21400dc4a06365534fb29"
       }
-    },
-    "unittest2": {
-      "version": "0.2.3",
-      "vcsRevision": "845b6af28b9f68f02d320e03ad18eccccea7ddb9",
-      "url": "https://github.com/status-im/nim-unittest2",
-      "downloadMethod": "git",
-      "dependencies": [],
-      "checksums": {
-        "sha1": "6936b4e4676c9b37537d93f31cb8fc46f4ebaacb"
-      }
     }
   },
   "tasks": {}

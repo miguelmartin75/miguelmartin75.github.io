@@ -11,5 +11,3 @@ requires "karax"
 requires "mummy"
 requires "webby"
 requires "crunchy"
-
-requires "unittest2"
