@@ -7,8 +7,11 @@
 task gen, "generate website":
   exec "nim c -r src/gen.nim"
 
+task devpriv, "generate & serve website":
+  exec "nim c -r src/gen.nim --serve --port 3000 --privateNotes --dev"
+
 task dev, "generate & serve website":
-  exec "nim c -r src/gen.nim --serve --port 3000 --privateNotes"
+  exec "nim c -r src/gen.nim --serve --port 3000 --dev"
 
 task publish, "generate & serve website":
   exec "rm -rf dist"

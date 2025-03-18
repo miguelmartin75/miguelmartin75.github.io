@@ -118,10 +118,9 @@ proc splitMdAndYaml(mdFile: string): tuple[md: string, yaml: SimpleYaml] =
     else:
       ""
 
-    mdData = if endIdx != -1:
+    mdData = if endIdx != -1 and startIdx == 0:
       mdFile[(endIdx + 4) .. ^ 1]
     else:
-      doAssert startIdx == -1
       mdFile
 
   result.md = mdData
