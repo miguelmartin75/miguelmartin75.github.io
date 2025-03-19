@@ -15,13 +15,16 @@ task devpriv, "generate & serve website":
 task dev, "generate & serve website":
   exec "nim c -r src/gen.nim --serve --port 3000 --dev"
 
+task init, "initialize to publish":
+  exec &"git worktree add dist gh-pages"
+
+
 task publish, "generate & serve website":
   const dt = CompileDate & "T" & CompileTime
-  exec "rm -rf dist"
+  exec "cd dist && git clean -fd && cd .."
   exec "nim c -r src/gen.nim"
   exec &"git add -A && git commit -m '{dt}'"
-  exec "git subtree push --prefix dist origin gh-pages"
-  exec "git push origin master"
+  exec "cd dist && git push origin gh-pages && cd .."
 
 # begin Nimble config (version 2)
 --noNimblePath
