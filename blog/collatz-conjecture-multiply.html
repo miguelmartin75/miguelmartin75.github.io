@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <title>How to Multiply with the 3n + 1 series (Collatz Conjecture)</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css" integrity="sha384-zh0CIslj+VczCZtlzBcjt5ppRcsAmDnRem7ESsYwWwg3m/OaJ2l4x7YBZl9Kxxib" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js" integrity="sha384-Rma6DA2IPUwhNxmrB/7S3Tno0YY7sFu9WSYMCuulLhIqYSGZ2gKCJWIqhBWqMQfh" crossorigin="anonymous"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const macros = {};
+
+  let mathElements = document.getElementsByTagName("x-equation");
+  for (let element of mathElements) {
+      katex.render(element.textContent, element, {
+          throwOnError: false,
+          macros
+      });
+  }
+  })
+</script>
+
+    <html>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="icon" type="image/x-icon" href="/images/icon.svg" />
+      <link rel="stylesheet" href="/style.css" />
+    </html>
+  </head>
+  <body>
+    <html><nav>
+        <ul>
+          <li><a href="/">home</a></li>
+          <li><a href="/blog">blog</a></li>
+        </ul>
+        <ul><li><a href="/">miguel</a></li></ul>
+      </nav></html>
+    <main>
+      <div class="info">
+        <h1>How to Multiply with the 3n + 1 series (Collatz Conjecture)</h1>
+        <div class="times">
+          <pre>August 6, 2022</pre>
+          <pre>Time to read: 1 min</pre>
+        </div>
+      </div>
+      <div class="content"><h1>Introduction</h1>
+<p>I stumbled across an <a href="https://link.springer.com/article/10.1007/s00224-020-09986-5">interesting paper</a>, which shows that you can multiply two numbers by using the Collatz conjecture (and assuming it to be true for the numbers you are dealing with).</p>
+<p>This post contains my summary and understanding of how this method works.</p>
+<h1>Background</h1>
+<h2>Collatz conjecture</h2>
+<h3>Definition</h3>
+<p>The <a href="https://en.wikipedia.org/wiki/Collatz_conjecture">Collatz conjecture</a>, also known as the <x-equation>3n + 1</x-equation> problem, is a simple to describe, yet unsolved, problem in discrete mathematics. The conjecture states that if you start with a positive integer <x-equation>n</x-equation> and apply the following rule to it:</p>
+<ul>
+<li>If the number (<x-equation>n</x-equation>) is even, divide it by two: <x-equation>\frac{n}{2}</x-equation></li>
+<li>If the number (<x-equation>n</x-equation>) is odd, multiply it by 3 and add one: <x-equation>3n + 1</x-equation></li>
+</ul>
+<p>The number will eventually land in the cycle <x-equation>4 \rightarrow 2 \rightarrow 1 \rightarrow 4</x-equation>. The conjecture states: this the only cycle. There is no proof to confirm this, however, we have tested up to a very large number and the conjecture seems to hold. Thus, for all practical purposes: the conjecture is true.</p>
+<p>The rule can be mathematically written as:</p>
+<p><x-equation type="display"> f(n) = \begin{cases} \frac{n}{2} &amp;\text{if } n \equiv 0 \text{ (mod 2)} \\ 3n + 1 &amp;\text{otherwise} \end{cases} </x-equation></p>
+<h3>Examples</h3>
+<p><x-equation>10</x-equation></p>
+<ul>
+<li><x-equation>5</x-equation></li>
+<li><x-equation>16</x-equation></li>
+<li><x-equation>8</x-equation></li>
+<li><x-equation>4</x-equation></li>
+<li><x-equation>2</x-equation></li>
+<li><x-equation>1</x-equation> (cycle starts)</li>
+</ul>
+<p><x-equation>18</x-equation></p>
+<ul>
+<li><x-equation>9</x-equation></li>
+<li><x-equation>28</x-equation></li>
+<li><x-equation>14</x-equation></li>
+<li><x-equation>7</x-equation></li>
+<li><x-equation>22</x-equation></li>
+<li><x-equation>11</x-equation></li>
+<li><x-equation>34</x-equation></li>
+<li><x-equation>17</x-equation></li>
+<li><x-equation>52</x-equation></li>
+<li><x-equation>26</x-equation></li>
+<li><x-equation>13</x-equation></li>
+<li><x-equation>40</x-equation></li>
+<li><x-equation>20</x-equation></li>
+<li><x-equation>10</x-equation> (use above)</li>
+</ul>
+<h1>Method</h1>
+<h2>Definitions</h2>
+<h3>Collatz Function</h3>
+<p>Define the Collatz function, <x-equation>F</x-equation>, as the Collatz conjecture with path of dividing by 2 compressed into one step, that is:</p>
+<p>Given <x-equation type="display">x</x-equation>, a positive odd integer:</p>
+<p><x-equation type="display"> F(x) = \frac{3x + 1}{2^{\text{ctz}(3x + 1)}} </x-equation></p>
+<ul>
+<li><x-equation type="display">\text{ctz}(x)</x-equation> gives the number of factors of 2 in a number, i.e. count the
+trailing zeros of a number in binary</li>
+</ul>
+<h3>Collatz sequence and <x-equation>k</x-equation></h3>
+<ul>
+<li>The Collatz sequence, is the sequence of numbers produced by the Collatz
+function until it reaches the number <x-equation>1</x-equation> for the first time</li>
+<li>Define <x-equation>k</x-equation> as the number of steps until the Collatz series lands on <x-equation>1</x-equation></li>
+</ul>
+<p>In other words, the Collatz sequence can be shown mathematically like so:
+<x-equation type="display"> x, F_1(x), F_2(x), ..., F_{k-1}(x), 1 </x-equation></p>
+<h2>How to Divide: <x-equation type="display">\frac{m}{a}</x-equation></h2>
+<p>Let's multiply the Collatz function series by <x-equation type="display">a</x-equation>, we get:</p>
+<p><x-equation type="display"> ax, aF_1(x), aF_2(x), ..., aF_{k-1}(x), a </x-equation></p>
+<p>Let <x-equation type="display">m = ax</x-equation>, we get</p>
+<p><x-equation type="display"> \begin{aligned} a F(x) &amp; = a \frac{3x + 1}{2^{\text{ctz}{(a(3x + 1))}}} \\ &amp; = \frac{3ax + a}{2^{\text{ctz}{(3ax + a)}}} \\ &amp; = \frac{3m + a}{2^{\text{ctz}{(3m + a)}}} \\ &amp; = G(m) \end{aligned} </x-equation></p>
+<p>NOTES: <x-equation type="display">ctz(3m+a) = ctz(3m+1)</x-equation> when <x-equation type="display">a</x-equation> is odd</p>
+<p>Assuming <x-equation>a \mid m</x-equation> (<x-equation>a</x-equation> divides <x-equation>m</x-equation>), we can:</p>
+<ol>
+<li>Start with <x-equation>m</x-equation></li>
+<li>Use <x-equation>G(m)</x-equation> until we get to <x-equation>a</x-equation><ul>
+<li>Record what we've done to get there</li>
+<li>i.e. save the result of <x-equation>\text{ctz}(3x + 1)</x-equation> along the way and <x-equation>k</x-equation>
+(the number of steps)</li>
+</ul>
+</li>
+<li>Backtrack using the same form of operations (in reverse) with <x-equation>F(x)</x-equation> whilst
+starting at <x-equation>1</x-equation></li>
+</ol>
+<p>i.e. we have a division algorithm using the Collatz conjecture</p>
+<h2>How to Multiply: <x-equation>ax</x-equation></h2>
+<p>Now, how do we multiply? Simple:</p>
+<ul>
+<li>Start with <x-equation>x</x-equation> and use <x-equation>F(x)</x-equation> until we get to <x-equation type="display">1</x-equation><ul>
+<li>Record what we've done (save the <x-equation>k</x-equation> steps)</li>
+</ul>
+</li>
+<li>Now, start with <x-equation type="display">a</x-equation> and backtrack with <x-equation>G(x)</x-equation> (with the saved <x-equation>k</x-equation> steps),
+which will get us to <x-equation>ax</x-equation></li>
+</ul>
+</div>
+      <html><script 
+  src="https://utteranc.es/client.js"
+  repo="miguelmartin75/miguelmartin75.github.io"
+  issue-term="title"
+  label="💬"
+  theme="github-light"
+  crossorigin="anonymous"
+  async>
+</script>
+</html>
+    </main>
+  </body>
+</html>
