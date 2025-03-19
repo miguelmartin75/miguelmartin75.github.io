@@ -7,7 +7,7 @@
 
 .hspace {
   display: inline;
-  margin-left: 1em;
+  margin-left: 0.25em;
 }
 
 /* Set a base font and color scheme */
@@ -140,8 +140,8 @@ nav a:hover {
     margin: 0.125em;
   }
   nav {
-    margin-left: 1.25em;
-    margin-right: 1.25em;
+    margin-left: 1em;
+    margin-right: 1em;
   }
   main {
     margin-left: 2em;
