@@ -136,7 +136,7 @@ nav a:hover {
 /* small screen */
 @media only screen and (max-width: 760pt) {
   body {
-    font-size: 22pt;
+    font-size: 24pt;
   }
   nav {
     margin-left: 1.25em;
