@@ -132,6 +132,7 @@ proc splitMdAndYaml(mdFile: string): tuple[md: string, yaml: SimpleYaml] =
 
 proc css(ctx: Ctx): VNode =
   result = buildHtml(html):
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
     link(rel="icon", type="image/x-icon", href="/images/icon.svg")
     link(rel="stylesheet", href="/style.css")
 
