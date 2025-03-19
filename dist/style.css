@@ -7,15 +7,16 @@
 
 .hspace {
   display: inline;
-  margin-left: 5px;
+  margin-left: 1em;
 }
 
 /* Set a base font and color scheme */
 body {
-  font-size: 1em;
+  font-size: 12pt;
   font-family: system-ui;
   line-height: 1.6;
   color: rgb(46, 54, 59);
+  padding: 20pt;
 }
 /*color: rgb(36, 44, 49);*/
 
@@ -31,17 +32,17 @@ a:hover {
 
 /* Use the semantic <main> element for primary content */
 main {
-  max-width: 800px;
+  max-width: 900px;
   margin: 0 auto;
 }
 
 /* Basic spacing for headings and paragraphs */
 main h1, h2, h3, h4, h5, h6 {
-  margin-bottom: 15px;
+  margin-bottom: 0.5em;
 }
 
 main p {
-  margin-bottom: 15px;
+  margin-bottom: 0.5em;
 }
 
 main ul {
@@ -50,18 +51,21 @@ main ul {
 }
 
 main ul:not(ul ul) {
-  margin-bottom: 15px;
+  margin-bottom: 0.25em;
 }
 
 /* Reset default browser styles */
 nav {
   display: flex;
-  font-size: 2em;
+  font-size: 1.5em;
   letter-spacing: 0.1rem;
   align-items: center;
   justify-content: space-between;
   text-align: center;
-  padding: 20pt 40pt;
+  margin-top: 0.5em;
+  margin-bottom: 2em;
+  margin-left: 1.25em;
+  margin-right: 1.25em;
 }
 
 nav a:hover {
@@ -104,7 +108,7 @@ nav a:hover {
 
 .info {
   text-align: center;
-  padding-bottom: 20px;
+  padding-bottom: 0.5em;
 }
 
 .info .times {
@@ -114,24 +118,41 @@ nav a:hover {
   font-size: 0.9em;
 }
 
-
-/* small screen */
-@media only screen and (max-device-width: 480px) {
-  body {
-    font-size: 24pt;
-    padding: 30pt;
-  }
-  nav {
-    font-size: 1.5em;
-  }
+.profile-card {
+  display: flex;
 }
 
-/* large screen */
-@media only screen and (min-device-width: 768px) {
+.bio {
+  word-break: keep-all;
+}
+
+.profile-pic {
+  height: 26em;
+  display: inline;
+  clip-path: circle();
+  margin-right: 2.25em;
+}
+
+/* small screen */
+@media only screen and (max-width: 760pt) {
   body {
-    font-size: 13pt;
+    font-size: 22pt;
   }
   nav {
-    font-size: 1.5em;
+    margin-left: 1.25em;
+    margin-right: 1.25em;
+  }
+  main {
+    margin-left: 2em;
+    margin-right: 2em;
+  }
+  .profile-card {
+    display: block;
+  }
+  .profile-pic {
+    display: block;
+    margin: auto;
+    margin-bottom: 1.1em;
+    height: 12em;
   }
 }
