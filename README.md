@@ -2,14 +2,21 @@
 
 My personal website http://miguelmartin75.github.io/
 
-## commands
+## usage
+
+See [config.nims](./config.nims) for commands.
+
+Initialize repo:
+```
+nim init
+```
 
 Run development server for local testing
 ```
 nim dev
 ```
 
-Publish site (TODO):
+Publish site:
 ```
 nim publish
 ```
@@ -19,7 +26,7 @@ Run production server (TODO)
 nim prod
 ```
 
-Generate site:
+Generate site yourself:
 ```bash
 nim gen
 ```

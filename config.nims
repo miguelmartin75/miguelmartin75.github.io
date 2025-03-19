@@ -16,8 +16,9 @@ task dev, "generate & serve website":
   exec "nim c -r src/gen.nim --serve --port 3000 --dev"
 
 task init, "initialize to publish":
-  exec &"git worktree add dist gh-pages"
-
+  if not dirExists("dist"):
+    exec &"git worktree add -f dist gh-pages"
+  exec &"git submodule update --init"
 
 task publish, "generate & serve website":
   const dt = CompileDate & "T" & CompileTime
