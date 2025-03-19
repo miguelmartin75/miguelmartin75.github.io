@@ -143,7 +143,8 @@ proc navBar(ctx: Ctx): VNode =
         if ctx.privateNotes:
           li: a(href="/notes"): text "notes"
       tdiv:
-        a(href="/"): strong: text "miguel"
+        ul:
+          li: a(href="/"): text "miguel"
 
 proc commentsSection(): VNode =
   result = buildHtml(html):
