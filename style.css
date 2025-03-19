@@ -136,16 +136,17 @@ nav a:hover {
 /* small screen */
 @media only screen and (max-width: 760pt) {
   body {
-    font-size: 24pt;
+    font-size: 14pt;
     margin: 0.125em;
   }
   nav {
+    font-size: 1.25em;
     margin-left: 1em;
     margin-right: 1em;
   }
   main {
-    margin-left: 2em;
-    margin-right: 2em;
+    margin-left: 1em;
+    margin-right: 1em;
   }
   .profile-card {
     display: block;
