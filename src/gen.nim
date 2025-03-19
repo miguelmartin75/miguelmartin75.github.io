@@ -71,6 +71,7 @@ type
     dst: Path
     uri: Path
     info: FileInfo
+    yaml: SimpleYaml
 
 proc parseYamlSimple(inp: string): SimpleYaml = 
   for line in inp.splitLines:
@@ -173,6 +174,7 @@ proc genRoute(ctx: Ctx, r: var Route) =
   
   r.title = title
   r.dt = parse(dt, "yyyy-MM-dd", local())
+  r.yaml = yaml
 
   let
     info = getFileInfo(r.src.string)
@@ -255,7 +257,7 @@ proc genBlog(ctx: Ctx, routes: seq[Route]) =
       main:
         ul:
           for r in routes:
-            if r.kind == rkBlogPost:
+            if r.kind == rkBlogPost and r.yaml.getOrDefault("state", "draft") != "draft":
               li: 
                 pre(style={display: "inline"}): text format(r.dt, "yyyy-MM-dd")
                 tdiv(class="hspace")

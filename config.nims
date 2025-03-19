@@ -23,7 +23,7 @@ task publish, "generate & serve website":
   const dt = CompileDate & "T" & CompileTime
   exec "cd dist && git clean -fd && cd .."
   exec "nim c -r src/gen.nim"
-  exec &"git add -A && git commit -m '{dt}'"
+  exec &"cd dist && git add -A && git commit -m '{dt}'"
   exec "cd dist && git push origin gh-pages && cd .."
 
 # begin Nimble config (version 2)
