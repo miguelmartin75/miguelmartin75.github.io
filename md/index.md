@@ -12,7 +12,9 @@ title: "Miguel Martin"
         </p>
         <p>
         I've worked at Meta and Microsoft on projects such as <a
-        href="">Ego-Exo4D</a>, <a href="">Ego4D</a>, and <a href="">Captum</a>.
+        href="https://ego-exo4d-data.org/">Ego-Exo4D</a>, <a
+        href="https://ego4d-data.org/">Ego4D</a>, and <a
+        href="https://github.com/pytorch/captum">Captum</a>.
         <!-- TODO Checkout my <a href="/projects">personal projects</a>.-->
         </p>
         <p>
