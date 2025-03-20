@@ -24,7 +24,6 @@ const
   MD_DIALECT_COMMONMARK*               : cuint = 0
   MD_DIALECT_GITHUB*                   : cuint = (MD_FLAG_PERMISSIVEAUTOLINKS or MD_FLAG_TABLES or MD_FLAG_STRIKETHROUGH or MD_FLAG_TASKLISTS)
 
-# TODO: moveme
 type 
   Str8* = object
     data: cstring
