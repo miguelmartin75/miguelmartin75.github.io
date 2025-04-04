@@ -6,7 +6,7 @@ import
     monotimes,
     strformat,
     strutils,
-    dirs, 
+    dirs,
     files,
     sugar,
     paths,
@@ -28,10 +28,10 @@ proc nowMs*(): float64 = getMonoTime().ticks.float64 / 1e6
 template echoMs*(prefix: string, silent: bool, body: untyped) =
   let t1 = nowMs()
   body
-  let 
+  let
     t2 = nowMs()
     delta = t2 - t1
-  
+
   if not silent:
     var deltaStr = ""
     deltaStr.formatValue(delta, ".3f")
@@ -39,7 +39,7 @@ template echoMs*(prefix: string, silent: bool, body: untyped) =
 
 type
   SimpleYaml = Table[string, string]
-  RouteKind = enum  
+  RouteKind = enum
     rkPage
     rkBlogPost
     rkPrivateNote
@@ -73,7 +73,7 @@ type
     info: FileInfo
     yaml: SimpleYaml
 
-proc parseYamlSimple(inp: string): SimpleYaml = 
+proc parseYamlSimple(inp: string): SimpleYaml =
   for line in inp.splitLines:
     if line.len == 0:
       continue
@@ -81,10 +81,10 @@ proc parseYamlSimple(inp: string): SimpleYaml =
     let sp = line.split(": ")
     doAssert sp.len >= 1, $sp
 
-    var 
+    var
       k = sp[0]
       v = if sp.len >= 2:
-        sp[1..^1].join(": ") 
+        sp[1..^1].join(": ")
       else:
         ""
 
@@ -105,8 +105,8 @@ proc toFriendlyName*(x: string): string =
     else:
       result[i] = x[i]
 
-proc splitMdAndYaml(mdFile: string): tuple[md: string, yaml: SimpleYaml] = 
-  let 
+proc splitMdAndYaml(mdFile: string): tuple[md: string, yaml: SimpleYaml] =
+  let
     startIdx = mdFile.find("---")
     endIdx = if startIdx != -1:
       mdFile.find("---", startIdx + 3) - 1
@@ -115,7 +115,7 @@ proc splitMdAndYaml(mdFile: string): tuple[md: string, yaml: SimpleYaml] =
 
     yamlData = if endIdx != -1 and startIdx == 0:
       doAssert startIdx != -1
-      mdFile[(startIdx + 3).. endIdx] 
+      mdFile[(startIdx + 3).. endIdx]
     else:
       ""
 
@@ -150,7 +150,7 @@ proc navBar(ctx: Ctx): VNode =
 proc commentsSection(): VNode =
   result = buildHtml(html):
     verbatim("""
-<script 
+<script
   src="https://utteranc.es/client.js"
   repo="miguelmartin75/miguelmartin75.github.io"
   issue-term="title"
@@ -166,12 +166,12 @@ proc genRoute(ctx: Ctx, r: var Route) =
   if not ctx.silent:
     echo r.src.string, " -> ", r.dst.string
 
-  let 
+  let
     (md, yaml) = splitMdAndYaml(src)
     content = mdToHtml(md)
     title = yaml.getOrDefault("title", r.friendlyName)
     dt = yaml.getOrDefault("date", now().format("yyyy-MM-dd"))
-  
+
   r.title = title
   r.dt = parse(dt, "yyyy-MM-dd", local())
   r.yaml = yaml
@@ -237,7 +237,7 @@ proc genNotes(ctx: Ctx, routes: seq[Route]) =
         ul:
           for r in routes:
             if r.kind == rkPrivateNote:
-              li: 
+              li:
                 pre(style={display: "inline"}): text format(r.dt, "yyyy-MM-dd")
                 tdiv(class="hspace")
                 a(href=r.uri.string): text r.title
@@ -258,7 +258,7 @@ proc genBlog(ctx: Ctx, routes: seq[Route]) =
         ul:
           for r in routes:
             if r.kind == rkBlogPost and r.yaml.getOrDefault("state", "draft") != "draft":
-              li: 
+              li:
                 pre(style={display: "inline"}): text format(r.dt, "yyyy-MM-dd")
                 tdiv(class="hspace")
                 a(href=r.uri.string): text r.title
@@ -270,13 +270,13 @@ proc genBlog(ctx: Ctx, routes: seq[Route]) =
 
 proc runServer(ctx: Ctx, routes: seq[Route]) =
   let silent = ctx.silent
-  var 
+  var
     routesByPath = collect:
       for r in routes:
         {r.uri.string: r}
     router: Router
 
-  template handleCode(code: int) = 
+  template handleCode(code: int) =
     let key = $code
     if key in routesByPath:
       var r {.inject.} = routesByPath[key]  # inject for strformat (&)
@@ -285,9 +285,9 @@ proc runServer(ctx: Ctx, routes: seq[Route]) =
       resp(404, "text/html", readFile(r.dst.string))
     else:
       request.respond(code)
-    
+
   proc assetHandler(request: Request) =
-    let 
+    let
       name = request.path
       relPath = if name == "/":
         Path("/index.html")
@@ -369,7 +369,7 @@ proc genSite(
   port = 3000,
   privateNotes = false,
 ) =
-  let 
+  let
     inpDir = Path(inpDir)
     outDir = Path(outDir)
     staticDir = Path(staticDir)
@@ -398,7 +398,7 @@ proc genSite(
 
   var routes = collect:
     for (x, src) in mdFiles:
-      let 
+      let
         relPath = src.relativePath(inpDir)
         uri = relPath.changeFileExt("")
         dst = outDir / uri.changeFileExt(".html")

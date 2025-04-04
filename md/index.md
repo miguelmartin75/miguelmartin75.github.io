@@ -3,7 +3,7 @@ title: "Miguel Martin"
 ---
 
 <div class="profile-card">
-    <img class="profile-pic" src="/images/me.jpg">
+    <img class="profile-pic" src="/images/me.jpg" alt="a portrait of a man smiling, with black hair and a beard">
     <div class="bio">
         <p>
         Hi, I'm Miguel, a Software Engineer based in San Francisco with
