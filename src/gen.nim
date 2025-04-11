@@ -45,23 +45,20 @@ type
     rkPrivateNote
 
   Ctx = object
-    silent: bool
+    silent: bool = false
 
-    privateNotes: bool
-    inpDir: Path
-    outDir: Path
-    staticDir: Path
+    privateNotes: bool = false
+    inpDir: string = "./md"
+    outDir: string = "./dist"
+    staticDir: string = "./static"
 
-    serve: bool
-    dev: bool
-    port: int
+    serve: bool = false
+    dev: bool = false
+    port: int = 3000
 
   Route = object
-    case kind: RouteKind
-    of rkPage, rkPrivateNote:
-      discard
-    of rkBlogPost:
-      readingTimeMins: float
+    kind: RouteKind
+    readingTimeMins: float
 
     dt: DateTime
     title: string
@@ -72,6 +69,17 @@ type
     uri: Path
     info: FileInfo
     yaml: SimpleYaml
+
+const defaultCtx = Ctx(
+  silent: false,
+  privateNotes: false,
+  inpDir: "./md",
+  outDir: "./dist",
+  staticDir: "./static",
+  serve: false,
+  dev: false,
+  port: 3000,
+)
 
 proc parseYamlSimple(inp: string): SimpleYaml =
   for line in inp.splitLines:
@@ -243,7 +251,7 @@ proc genNotes(ctx: Ctx, routes: seq[Route]) =
                 a(href=r.uri.string): text r.title
 
   writeFile(
-    (ctx.outDir / Path("notes.html")).string,
+    (Path(ctx.outDir) / Path("notes.html")).string,
     "<!DOCTYPE html>\n\n" & $outputHtml,
   )
 
@@ -264,7 +272,7 @@ proc genBlog(ctx: Ctx, routes: seq[Route]) =
                 a(href=r.uri.string): text r.title
 
   writeFile(
-    (ctx.outDir / Path("blog.html")).string,
+    (Path(ctx.outDir) / Path("blog.html")).string,
     "<!DOCTYPE html>\n\n" & $outputHtml,
   )
 
@@ -302,7 +310,7 @@ proc runServer(ctx: Ctx, routes: seq[Route]) =
         realExt
 
       mime = getMimetype(mimeDb, ext, "")
-      fp = ctx.outDir / relPathSplit.dir / Path(relPathSplit.name.string & ext)
+      fp = Path(ctx.outDir) / relPathSplit.dir / Path(relPathSplit.name.string & ext)
       key = if name == "/":
         "index"
       else:
@@ -359,32 +367,13 @@ proc runServer(ctx: Ctx, routes: seq[Route]) =
   echo &"http://localhost:{ctx.port}"
   server.serve(Port(ctx.port))
 
-proc genSite(
-  inpDir = "./md",
-  outDir = "./dist",
-  staticDir = "./static",
-  silent = false,
-  dev = false,
-  serve = false,
-  port = 3000,
-  privateNotes = false,
-) =
+proc genSite(ctx: Ctx) =
   let
-    inpDir = Path(inpDir)
-    outDir = Path(outDir)
-    staticDir = Path(staticDir)
-    ctx = Ctx(
-      silent: silent,
-      privateNotes: privateNotes,
-      inpDir: inpDir,
-      outDir: outDir,
-      staticDir: staticDir,
-      serve: serve,
-      port: port,
-      dev: dev,
-    )
+    inpDir = Path(ctx.inpDir)
+    outDir = Path(ctx.outDir)
+    staticDir = Path(ctx.staticDir)
 
-    followFilter = if privateNotes:
+    followFilter = if ctx.privateNotes:
       {pcDir, pcLinkToDir}
     else:
       {pcDir}
@@ -434,14 +423,10 @@ proc genSite(
   ctx.genBlog(routes)
   ctx.genNotes(routes)
 
-  if serve:
+  if ctx.serve:
     runServer(ctx, routes)
 
 when isMainModule:
   import cligen
-  dispatch(genSite, help={
-    "inpDir": "input directory",
-    "outDir": "output directory",
-    "serve": "server locally?",
-    "port": "port to serve on",
-  })
+  var ctx = initFromCL(defaultCtx)
+  ctx.genSite()

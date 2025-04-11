@@ -34,13 +34,13 @@
       }
     },
     "dotenv": {
-      "version": "2.0.1",
-      "vcsRevision": "4b8613cb4c46331729e88f594c5ae2b727381a57",
+      "version": "2.0.2",
+      "vcsRevision": "a3c6726147276ea1447dee292fd27bb036242b78",
       "url": "https://github.com/euantorano/dotenv.nim",
       "downloadMethod": "git",
       "dependencies": [],
       "checksums": {
-        "sha1": "9a9e39544f129e6666935796610da79fbe724510"
+        "sha1": "1e70fc63c286ca3da7592d61dbe501fcea35bc72"
       }
     },
     "ws": {
@@ -54,8 +54,8 @@
       }
     },
     "karax": {
-      "version": "1.3.3",
-      "vcsRevision": "d86349c63d8ece330d749eb037a9fa5ffca87c79",
+      "version": "1.5.0",
+      "vcsRevision": "a1eaaa87af756c21db4524c38cad4a004218f740",
       "url": "https://github.com/karaxnim/karax/",
       "downloadMethod": "git",
       "dependencies": [
@@ -63,17 +63,17 @@
         "dotenv"
       ],
       "checksums": {
-        "sha1": "6683189b4456437c2809be72e3404adde77f5c34"
+        "sha1": "58dfc7a459d631d0416b3dd43609ce6bc4b96c92"
       }
     },
     "zippy": {
-      "version": "0.10.11",
-      "vcsRevision": "9560f3d20479fb390c97f731ef8d100f1ed54e6c",
+      "version": "0.10.16",
+      "vcsRevision": "a99f6a7d8a8e3e0213b3cad0daf0ea974bf58e3f",
       "url": "https://github.com/guzba/zippy",
       "downloadMethod": "git",
       "dependencies": [],
       "checksums": {
-        "sha1": "12e761e18ccc0a1b0e931c74dd02bb4b74544d56"
+        "sha1": "da3bb5ea388f980babcc29760348e2899d29a639"
       }
     },
     "webby": {
@@ -87,9 +87,9 @@
       }
     },
     "mummy": {
-      "version": "0.4.5",
-      "vcsRevision": "7523e2be68e6249706b07fc9f09d4c4deeac2f1d",
-      "url": "",
+      "version": "0.4.6",
+      "vcsRevision": "85126d2ed544e4d71f6010a957a75a0f662e88f0",
+      "url": "https://github.com/guzba/mummy",
       "downloadMethod": "git",
       "dependencies": [
         "zippy",
@@ -97,7 +97,7 @@
         "crunchy"
       ],
       "checksums": {
-        "sha1": "ad00619bd30b7855bdf21400dc4a06365534fb29"
+        "sha1": "24114de9497a0e4b578973ba27db45a37d7482d9"
       }
     }
   },

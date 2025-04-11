@@ -6,7 +6,7 @@ description   = "nim static site generator"
 license       = "MIT"
 
 requires "nim >= 2.0.6"
-requires "cligen"
+requires "cligen == 1.7.0"
 requires "karax"
 requires "mummy"
 requires "webby"
