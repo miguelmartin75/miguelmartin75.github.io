@@ -14,7 +14,7 @@ Here is advice I've collected from others and myself over the years, which serve
 - Ask yourself: why do you want to do it? What value will it bring yourself or others? For example:
 	- Are you doing this to solve a problem you have?
 	- To educate yourself? If so, what skillset does it help you develop?
-- Write down this reason (motivation) to enable you to come back to this written reason when the time is right to start it
+- Write down this reason (motivation) to enable you to come back to this written reason when the time is right to start or continue it
 - For new ideas:
 	- Aim to test it quickly to "eliminate it quickly" - don't treat your idea as precious until you have tested and evaluated its value (see [Jon Carmack's talk](https://www.youtube.com/watch?v=dSCBCk4xVa0))
 	- [Share the idea with others - don't be fearful of sharing it](https://mitsloan.mit.edu/ideas-made-to-matter/dont-hide-your-ideas-test-them-anyone-who-will-listen#:~:text=I%20am%20of%20the%20strong,years%20ahead%20of%20everyone%20else)
