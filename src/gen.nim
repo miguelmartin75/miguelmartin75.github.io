@@ -186,10 +186,13 @@ proc genRoute(ctx: Ctx, r: var Route) =
 
   let
     info = getFileInfo(r.src.string)
+  echo "info=", info
+
+  let
     # ~4.7 chars per word
-    # assume markdown is ~2x # bytes
+    # assume markdown is ~1.25x # bytes
     # 238 average wpm reading
-    ttr = max(1, parseInt(yaml.getOrDefault("time-to-read", &"{info.size div (5 * 2 * 230)}")))
+    readingTimeMins = max(1, parseInt(yaml.getOrDefault("time-to-read", &"{int(info.size.float64 / (5 * 1.25 * 200))}")))
     outputHtml = buildHtml(html(lang = "en")):
       head:
         title: text title
@@ -220,10 +223,10 @@ document.addEventListener('DOMContentLoaded', function() {
               h1: text r.title
               tdiv(class="times"):
                 pre: text format(r.dt, "MMMM d, yyyy")
-                if ttr == 1:
-                  pre: text &"Time to read: {ttr} min"
+                if readingTimeMins == 1:
+                  pre: text &"Time to read: {readingTimeMins} min"
                 else:
-                  pre: text &"Time to read: {ttr} mins"
+                  pre: text &"Time to read: {readingTimeMins} mins"
 
           tdiv(class="content"):
             verbatim(content)
