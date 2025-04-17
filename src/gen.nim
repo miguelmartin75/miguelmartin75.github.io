@@ -186,13 +186,10 @@ proc genRoute(ctx: Ctx, r: var Route) =
 
   let
     info = getFileInfo(r.src.string)
-  echo "info=", info
-
-  let
     # ~4.7 chars per word
     # assume markdown is ~1.25x # bytes
     # 238 average wpm reading
-    readingTimeMins = max(1, parseInt(yaml.getOrDefault("time-to-read", &"{int(info.size.float64 / (5 * 1.25 * 200))}")))
+    readingTimeMins = max(1, parseInt(yaml.getOrDefault("time-to-read", &"{info.size div (5 * 2 * 230)}")))
     outputHtml = buildHtml(html(lang = "en")):
       head:
         title: text title

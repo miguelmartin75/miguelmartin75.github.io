@@ -126,6 +126,23 @@ nav a:hover {
   margin-right: 2.25em;
 }
 
+.icon-footer {
+  width: 100%;
+  display: flex;
+  justify-content: right;
+  padding-right: 1em;
+}
+
+.icon-footer a {
+  padding: 0.2em;
+  text-decoration: none;
+}
+
+.icon-footer svg {
+  width: 2em;
+  height: auto;
+}
+
 /* small screen */
 @media only screen and (max-width: 760pt) {
   body {
@@ -147,7 +164,6 @@ nav a:hover {
   .profile-pic {
     display: block;
     margin: auto;
-    margin-bottom: 2em;
     height: 12em;
   }
 }
