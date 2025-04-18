@@ -26,10 +26,11 @@ title: "Miguel Martin"
         </p>
         <p>
         I've worked at Meta and Microsoft on projects such as <a
-        href="https://ego-exo4d-data.org/">Ego-Exo4D</a>, <a
+        href="https://ai.meta.com/research/publications/perceptionlm-open-access-data-and-models-for-detailed-visual-understanding/">PerceptionLM</a>,
+        <a href="https://ego-exo4d-data.org/">Ego-Exo4D</a>, <a
         href="https://ego4d-data.org/">Ego4D</a>, and <a
-        href="https://github.com/pytorch/captum">Captum</a>.
-        <!-- TODO Checkout my <a href="/projects">personal projects</a>.-->
+        href="https://github.com/pytorch/captum">Captum</a>. <!-- TODO Checkout
+        my <a href="/projects">personal projects</a>.-->
         </p>
         <p>
         I earned a Bachelor of Computer Science (Advanced) with Honours from The University of Adelaide. I was born in Australia and grew up in <a
