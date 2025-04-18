@@ -1,6 +1,7 @@
 ---
 title: "My Philosophy On Doing: Advice to Myself"
 state: publish
+date: "2025-04-11"
 ---
 # Introduction
 Here is advice I've collected from others and myself over the years, which serves as a set of guidelines when attempting to do "The Thing". The Thing is anything, however this article is biased toward software development, but it does apply to other "Things" in life.
