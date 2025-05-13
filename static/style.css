@@ -42,10 +42,18 @@ main p {
 
 main ul {
   list-style-type: square;
-  padding-left: 25px;
+  padding-left: 2em;
+}
+
+main ol {
+  padding-left: 2em;
 }
 
 main ul:not(ul ul) {
+  margin-bottom: 0.25em;
+}
+
+main ol:not(ol ol) {
   margin-bottom: 0.25em;
 }
 
