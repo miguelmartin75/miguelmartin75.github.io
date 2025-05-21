@@ -18,7 +18,7 @@ import
     strtabs,
     unicode,
   ],
-  karax/[karaxdsl, vdom, vstyles],
+  karax/[karaxdsl, vdom, vstyles, xdom],
   md4c,
   htmlparser,
   mummy, mummy/routers
@@ -183,6 +183,27 @@ proc commentsSection(): VNode =
 proc toString(node: XmlNode): string =
   result.add(node, indent=0, indWidth=0, addNewLines=true)
 
+proc innerHtml(node: XmlNode): string =
+  for n in node:
+    result &= $n
+
+proc innerTextOnly(node: XmlNode): string =
+  proc traverse(res: var string, n: XmlNode) =
+    case n.kind:
+    of xnText:
+      res.add(n.innerText)
+    of xnElement:
+      case n.tag:
+      of "x-equation":
+        return
+      else:
+        for sub in n:
+          traverse(res, sub)
+    else:
+      return
+
+  traverse(result, node)
+
 proc postProcessHtml(html: string): string =
   result = ""
   
@@ -196,8 +217,9 @@ proc postProcessHtml(html: string): string =
       if node.attrs.isNil:
         node.attrs = newStringTable()
 
-      var id = node
-        .innerText
+      let innerText = node.innerTextOnly
+
+      var id = innerText
         .toLower
         .filter(proc(x: char): bool =
           x in Digits or x in LowercaseLetters or x in {'-', ' '}
@@ -210,20 +232,27 @@ proc postProcessHtml(html: string): string =
         stderr.writeLine &"[WARN]: {id} header is already assigned"
 
       block:
-        var i = 1
-        while id in assignedIds:
-          id = id & &"{i}"
+        var 
+          i = 1
+          newId = id
+        while newId in assignedIds or newId == "":
+          newId = id & &"{i}"
           i += 1
+        id = newId
         
       doAssert id notin assignedIds, &"{id} is not unique - choose another header"
       assignedIds.incl(id)
 
       let
         link = "#" & id
-        aTag = newXmlTree("a", [newText(node.innerText)], {"href": link}.toXmlAttributes)
+        innerContent = node.innerHtml
+        # aTag = newXmlTree("a", [newText(node.innerText)], {"href": link}.toXmlAttributes)
+        aTag = buildHtml(html):
+          a(href=link):
+            verbatim(innerContent)
+
       node.attrs["id"] = id
-      
-      node.replace(0, [aTag])
+      node.replace(0..<node.len, [aTag.toXmlNode])
     else:
       discard
     
