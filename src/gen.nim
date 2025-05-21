@@ -192,9 +192,6 @@ proc postProcessHtml(html: string): string =
       return
 
     case node.tag:
-    of "pre":
-      echo "pre:", node
-      echo "innerText:", node.innerText
     of "h1", "h2", "h3", "h4", "h5", "h6":
       if node.attrs.isNil:
         node.attrs = newStringTable()
