@@ -1,6 +1,7 @@
 --outdir:"build"
 --nimcache:"build/cache"
 --define:release
+--debugger:native
 --debuginfo
 --linedir:on
 

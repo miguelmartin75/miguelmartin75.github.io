@@ -3,18 +3,24 @@ import
     algorithm,
     times,
     os,
+    sets,
     monotimes,
     strformat,
     strutils,
+    sequtils,
     dirs,
     files,
     sugar,
     paths,
     tables,
-    mimetypes
+    mimetypes,
+    xmltree,
+    strtabs,
+    unicode,
   ],
   karax/[karaxdsl, vdom, vstyles],
   md4c,
+  htmlparser,
   mummy, mummy/routers
 
 const mimeDb = newMimeTypes()
@@ -36,6 +42,11 @@ template echoMs*(prefix: string, silent: bool, body: untyped) =
     var deltaStr = ""
     deltaStr.formatValue(delta, ".3f")
     echo prefix, deltaStr, "ms"
+
+proc toString(str: seq[char]): string =
+  result = newStringOfCap(len(str))
+  for ch in str:
+    add(result, ch)
 
 type
   SimpleYaml = Table[string, string]
@@ -169,6 +180,59 @@ proc commentsSection(): VNode =
 </script>
 """)
 
+proc postProcessHtml(html: string): string =
+  result = ""
+  
+  var assignedIds: HashSet[string]
+  proc dfs(node: XmlNode) =
+    if node.kind != xnElement:
+      return
+
+    case node.tag:
+    of "h1", "h2", "h3", "h4", "h5", "h6":
+      if node.attrs.isNil:
+        node.attrs = newStringTable()
+
+      var id = node
+        .innerText
+        .toLower
+        .filter(proc(x: char): bool =
+          x in Digits or x in LowercaseLetters or x in {'-', ' '}
+        ).toString
+        .strip(leading=true, trailing=false, Digits)
+        .strip(leading=true, trailing=true, {' '})
+        .replace(" ", "-")
+
+      if id in assignedIds:
+        stderr.writeLine &"[WARN]: {id} header is already assigned"
+
+      block:
+        var i = 1
+        while id in assignedIds:
+          id = id & &"{i}"
+          i += 1
+        
+      doAssert id notin assignedIds, &"{id} is not unique - choose another header"
+      assignedIds.incl(id)
+
+      let
+        link = "#" & id
+        aTag = newXmlTree("a", [newText(node.innerText)], {"href": link}.toXmlAttributes)
+      node.attrs["id"] = id
+      
+      node.replace(0, [aTag])
+    else:
+      discard
+    
+    for child in node:
+      dfs(child)
+  
+  var dom = parseHtml(html)
+  dfs(dom)
+
+  for x in dom.items:
+    result &= $x
+
 proc genRoute(ctx: Ctx, r: var Route) =
   let src = readFile(r.src.string)
   if not ctx.silent:
@@ -176,7 +240,8 @@ proc genRoute(ctx: Ctx, r: var Route) =
 
   let
     (md, yaml) = splitMdAndYaml(src)
-    content = mdToHtml(md)
+    mdHtml = mdToHtml(md)
+    content = postProcessHtml(mdHtml)
     title = yaml.getOrDefault("title", r.friendlyName)
     dt = yaml.getOrDefault("date", now().format("yyyy-MM-dd"))
 
@@ -189,7 +254,7 @@ proc genRoute(ctx: Ctx, r: var Route) =
     # ~4.7 chars per word
     # assume markdown is ~1.25x # bytes
     # 238 average wpm reading
-    readingTimeMins = max(1, parseInt(yaml.getOrDefault("time-to-read", &"{info.size div (5 * 2 * 230)}")))
+    readingTimeMins = max(1, parseInt(yaml.getOrDefault("time-to-read", &"{info.size div (5 * 1.2 * 230).int}")))
     outputHtml = buildHtml(html(lang = "en")):
       head:
         title: text title
@@ -217,7 +282,7 @@ document.addEventListener('DOMContentLoaded', function() {
         main:
           if r.kind == rkBlogPost:
             tdiv(class="info"):
-              h1: text r.title
+              h1(id="title"): a(href="#title"): text r.title
               tdiv(class="times"):
                 pre: text format(r.dt, "MMMM d, yyyy")
                 if readingTimeMins == 1:
@@ -343,7 +408,7 @@ proc runServer(ctx: Ctx, routes: seq[Route]) =
     request.respond(200, headers, content)
 
     if ctx.dev:
-      copyDir(ctx.staticDir.string, ctx.outDir.string)
+      copyDir(ctx.staticDir, ctx.outDir)
 
   # TODO: reload
   proc websocketHandler(

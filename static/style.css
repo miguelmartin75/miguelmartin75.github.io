@@ -103,9 +103,124 @@ nav a:hover {
   background-color: #f0f0f0;
 }
 
-.katex-display > .katex { white-space: normal }
-.katex-display > .base { margin: 0.25em 0 }
-.katex-display { margin: 0.5em 0; }
+h1 a,
+h2 a,
+h3 a,
+h4 a,
+h5 a,
+h6 a {
+  color: rgb(46, 54, 59);
+  text-decoration: none;
+}
+
+h1 a::after,
+h2 a::after,
+h3 a::after,
+h4 a::after,
+h5 a::after,
+h6 a::after {
+  content: "#";
+  margin-left: 0.3em;
+  font-size: 0.9em;
+  text-decoration: none;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+h1 a:hover,
+h2 a:hover,
+h3 a:hover,
+h4 a:hover,
+h5 a:hover,
+h6 a:hover{
+  text-decoration: underline;
+  transition: opacity 0.3s ease-in-out;
+}
+
+h1 a:hover::after,
+h2 a:hover::after,
+h3 a:hover::after,
+h4 a:hover::after,
+h5 a:hover::after,
+h6 a:hover::after {
+  opacity: 1;
+  transition: opacity 0.1s ease-in-out;
+}
+
+
+table {
+  table-layout: fixed;
+  width: 100%;
+  border-collapse: seperate;
+  border-spacing: 0;
+  /* border: .1em solid; */
+  border: 1px solid #f0f0f0;
+  border-radius: 6px;
+  box-sizing: border-box;
+  overflow: hidden;
+  line-height: 1.5;
+  font-size: 12pt;
+  margin-bottom: 16px;
+}
+thead {
+  background-color: #f6f8fa;
+  border-bottom: 1px solid #f0f0f0;
+  font-size: 1.1em;
+}
+
+thead th {
+  font-weight: 600;
+  padding: 6px 13px;
+}
+
+thead th:nth-child(1) {
+  width: 25%;
+}
+
+tr, td {
+  padding: 6px 13px;
+  border-right: 1px solid #f0f0f0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+tbody tr {
+    background-color: #ffffff;
+    border-top: 1px solid #e1e4e8;
+    border-right: 1px solid #e1e4e8;
+}
+
+tbody tr:hover {
+  background-color: #f0f3f6;
+}
+
+sup {
+  line-height: normal;
+}
+
+hr {
+  margin-top: 2em;
+  margin-bottom: 3em;
+  color: rgb(46, 54, 59, 0.25);
+}
+
+/* code */
+pre {
+  font-size: 11pt;
+}
+
+/* equations */
+.katex-html > .katex { white-space: normal }
+.katex-html > .base { margin: 0.25em 0 }
+.katex-html { 
+  margin: 0.5em 0; 
+  /*
+  display: flex;
+  justify-content: center;
+  */
+}
+.katex-display {
+    font-size: 20pt;
+}
 
 .info {
   text-align: center;
@@ -165,6 +280,9 @@ nav a:hover {
   main {
     margin-left: 1em;
     margin-right: 1em;
+  }
+  table {
+    overflow-x: auto;
   }
   .profile-card {
     display: block;

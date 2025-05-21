@@ -61,6 +61,7 @@ proc mdToHtml*(
     let s = Str8(data: ch, len: len.int64)
     cast[ptr string](userdata)[] &= $s
 
+  {.push passC:"-Wno-incompatible-function-pointer-types".}
   doAssert md_html(
     data[0].addr, data.len.cuint, 
     convertHtml,
@@ -68,6 +69,7 @@ proc mdToHtml*(
     parser_flags,
     renderer_flags,
   ) == 0
+  {.pop.}
 
 when isMainModule:
   let data = """
