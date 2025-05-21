@@ -35,24 +35,30 @@ document.addEventListener('DOMContentLoaded', function() {
       </nav></html>
     <main>
       <div class="info">
-        <h1>Test post</h1>
+        <h1 id="title"><a href="#title">Test post</a></h1>
         <div class="times">
           <pre>May 21, 2022</pre>
           <pre>Time to read: 1 min</pre>
         </div>
       </div>
-      <div class="content"><pre><code class="language-toc">
-</code></pre>
-<h1>this is a h1</h1>
+      <div class="content"><pre>
+  <code class="language-toc">
+</code>
+</pre>
+<h1 id="this-is-a-h1">
+  <a href="#this-is-a-h1">this is a h1</a>
+</h1>
 <p>Interactive codeblock:</p>
-<pre><code class="language-python-interactive">print(&quot;HI&quot;)
+<pre>
+  <code class="language-python-interactive">print(&quot;HI&quot;)
 
 print(&quot;hello world&quot;)
 x: int = 3
 y: float = 5
 
-</code></pre>
-<p>Oh, and here's a great quote from this Wikipedia on
+</code>
+</pre>
+<p>Oh, and here&apos;s a great quote from this Wikipedia on
 <a href="https://en.wikipedia.org/wiki/Salted_duck_egg">salted duck eggs</a>.</p>
 <blockquote>
 <p>A salted duck egg is a Chinese preserved food product made by soaking duck
@@ -66,24 +72,42 @@ firm-textured, round yolk that is bright orange-red in color.</p>
 <p>You can also write code blocks here!</p>
 <p>This is a paragraph.</p>
 <p>This is a paragraph.</p>
-<pre><code class="language-python">print(&quot;HI from python&quot;)
+<pre>
+  <code class="language-python">print(&quot;HI from python&quot;)
 x + 2
 y = 4324 * 43
 z = input(&quot;Hello&quot;)
 
 print(x + y + z)
-</code></pre>
-<h1>Header 1</h1>
-<pre><code class="language-js">console.log(&quot;HI&quot;)
-</code></pre>
-<h2>Header 2</h2>
+</code>
+</pre>
+<h1 id="header-1">
+  <a href="#header-1">Header 1</a>
+</h1>
+<pre>
+  <code class="language-js">console.log(&quot;HI&quot;)
+</code>
+</pre>
+<h2 id="header-2">
+  <a href="#header-2">Header 2</a>
+</h2>
 <p>Here is some math <x-equation>x + 1</x-equation> that is inline.</p>
 <p>Here is some math that is not inlined:</p>
-<p><x-equation type="display"> \sin \theta + 1 </x-equation></p>
-<h3>Header 3</h3>
-<h4>Header 4</h4>
-<h5>Header 5</h5>
-<h6>Header 6</h6>
+<p>
+  <x-equation type="display"> \sin \theta + 1 </x-equation>
+</p>
+<h3 id="header-3">
+  <a href="#header-3">Header 3</a>
+</h3>
+<h4 id="header-4">
+  <a href="#header-4">Header 4</a>
+</h4>
+<h5 id="header-5">
+  <a href="#header-5">Header 5</a>
+</h5>
+<h6 id="header-6">
+  <a href="#header-6">Header 6</a>
+</h6>
 <table>
 <thead>
 <tr>

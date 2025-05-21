@@ -35,21 +35,25 @@ document.addEventListener('DOMContentLoaded', function() {
       </nav></html>
     <main>
       <div class="info">
-        <h1>Recommended Machine Learning Papers and Learning Resources</h1>
+        <h1 id="title"><a href="#title">Recommended Machine Learning Papers and Learning Resources</a></h1>
         <div class="times">
           <pre>March 28, 2024</pre>
-          <pre>Time to read: 2 mins</pre>
+          <pre>Time to read: 4 mins</pre>
         </div>
       </div>
-      <div class="content"><h1>Introduction</h1>
+      <div class="content"><h1 id="introduction">
+  <a href="#introduction">Introduction</a>
+</h1>
 <p>This is a filtered curation <a href="#papers">of papers</a> that I found over the years that either inspire me, blow me away (revolutionize the way I think) or are an essential read for someone within the field. Some of these papers I have not personally read in detail.</p>
 <p>I have also included a section on <a href="#learning-resources">learning resources</a> at the bottom of the post covering a wide variety of techniques, theory and underlying math.</p>
 <p>There is an emphasis on vision and language based papers with bias on vision. There is additional bias on modern techniques and deep learning. This list does not cover fundamental algorithms, theory and techniques essential to the field of Machine Learning such as generalization theory, probability, optimization, convex optimization, etc.</p>
-<h1>Papers</h1>
+<h1 id="papers">
+  <a href="#papers">Papers</a>
+</h1>
 <ul>
 <li>Meta-Learning and Meta-analysis of techniques in the field<ul>
-<li><a href="https://arxiv.org/pdf/2211.04325.pdf">Will we run out of data?</a></li>
-<li><a href="https://arxiv.org/abs/2206.14486">Beyond neural scaling laws: beating power law scaling via data pruning</a></li>
+<li>  <a href="https://arxiv.org/pdf/2211.04325.pdf">Will we run out of data?</a></li>
+<li>  <a href="https://arxiv.org/abs/2206.14486">Beyond neural scaling laws: beating power law scaling via data pruning</a></li>
 </ul>
 </li>
 <li>Architecture<ul>
@@ -61,21 +65,21 @@ document.addEventListener('DOMContentLoaded', function() {
 <li><a href="https://arxiv.org/abs/1512.03385">ResNet</a>: scalable architecture via skip connections (just keep adding more layers)</li>
 <li><a href="https://arxiv.org/abs/2010.11929">ViT</a>: applying transformers to vision</li>
 <li><a href="https://paperswithcode.com/method/resnext-block">ResNexT</a>: &quot;the response to ViT&quot;</li>
-<li><a href="https://arxiv.org/abs/2104.11227">MViT</a></li>
-<li><a href="https://arxiv.org/abs/2102.05095">TimeSFormer</a></li>
-<li><a href="https://arxiv.org/abs/2105.08050">Pay Attention to MLPs</a></li>
+<li>  <a href="https://arxiv.org/abs/2104.11227">MViT</a></li>
+<li>  <a href="https://arxiv.org/abs/2102.05095">TimeSFormer</a></li>
+<li>  <a href="https://arxiv.org/abs/2105.08050">Pay Attention to MLPs</a></li>
 </ul>
 </li>
 <li>SSL/WSL &amp; Feature-Representation Learning<ul>
 <li>MAE &amp; modality extensions<ul>
-<li><a href="https://arxiv.org/abs/2111.06377">original paper (images)</a></li>
-<li><a href="https://arxiv.org/abs/2203.12602">VideoMAE</a></li>
-<li><a href="https://github.com/facebookresearch/AudioMAE">AudioMAE</a></li>
+<li>  <a href="https://arxiv.org/abs/2111.06377">original paper (images)</a></li>
+<li>  <a href="https://arxiv.org/abs/2203.12602">VideoMAE</a></li>
+<li>  <a href="https://github.com/facebookresearch/AudioMAE">AudioMAE</a></li>
 </ul>
 </li>
-<li><a href="https://weichen582.github.io/diffmae.html">DiffMAE</a></li>
-<li><a href="https://github.com/facebookresearch/omnivore">Omnivore and OmniMAE</a></li>
-<li><a href="https://imagebind.metademolab.com/">ImageBind</a></li>
+<li>  <a href="https://weichen582.github.io/diffmae.html">DiffMAE</a></li>
+<li>  <a href="https://github.com/facebookresearch/omnivore">Omnivore and OmniMAE</a></li>
+<li>  <a href="https://imagebind.metademolab.com/">ImageBind</a></li>
 <li><a href="https://github.com/facebookresearch/maws">MAWS</a>: <strong>billion parameter ViTs pre-trained on billions of images</strong><ul>
 <li>MAWS = MAE + WSP (weak-supervised pre-training)</li>
 <li>Authors produce a CLIP-variant: &quot;MAWS CLIP&quot;</li>
@@ -83,17 +87,17 @@ document.addEventListener('DOMContentLoaded', function() {
 <li>IMO: under-rated (only 58 stars, really?)</li>
 </ul>
 </li>
-<li><a href="https://paperswithcode.com/method/dino">DINO</a></li>
+<li>  <a href="https://paperswithcode.com/method/dino">DINO</a></li>
 <li><a href="https://arxiv.org/abs/2301.11320">CutLER</a>, <a href="https://arxiv.org/abs/2308.14710">VideoCutLER</a></li>
-<li><a href="https://ai.meta.com/research/publications/revisiting-feature-prediction-for-learning-visual-representations-from-video/">V-JEPA</a></li>
-<li><a href="https://arxiv.org/pdf/2403.15377.pdf">InternVideo2</a></li>
-<li><a href="https://arxiv.org/abs/2304.12210">Cookbook of Self-Supervised Learning</a></li>
+<li>  <a href="https://ai.meta.com/research/publications/revisiting-feature-prediction-for-learning-visual-representations-from-video/">V-JEPA</a></li>
+<li>  <a href="https://arxiv.org/pdf/2403.15377.pdf">InternVideo2</a></li>
+<li>  <a href="https://arxiv.org/abs/2304.12210">Cookbook of Self-Supervised Learning</a></li>
 <li>See also: &quot;Vision and Language&quot;</li>
 </ul>
 </li>
 <li>Generative Models<ul>
-<li><a href="https://arxiv.org/abs/1809.11096">BigGAN</a></li>
-<li><a href="https://mingukkang.github.io/GigaGAN/">GigaGAN</a></li>
+<li>  <a href="https://arxiv.org/abs/1809.11096">BigGAN</a></li>
+<li>  <a href="https://mingukkang.github.io/GigaGAN/">GigaGAN</a></li>
 <li><a href="https://arxiv.org/abs/2006.11239">Diffusion</a><ul>
 <li><a href="https://sander.ai/2022/01/31/diffusion.html">Diffusion Models are Auto-encoders</a>: not a paper, but it is a well written blog post</li>
 </ul>
@@ -103,79 +107,81 @@ document.addEventListener('DOMContentLoaded', function() {
 </ul>
 </li>
 <li>(Neural) Compression<ul>
-<li><a href="https://research.nvidia.com/labs/rtr/neural_texture_compression/">Neural Texture Compression</a></li>
-<li><a href="https://research.nvidia.com/labs/toronto-ai/compact-ngp/">Compact-NGP</a></li>
+<li>  <a href="https://research.nvidia.com/labs/rtr/neural_texture_compression/">Neural Texture Compression</a></li>
+<li>  <a href="https://research.nvidia.com/labs/toronto-ai/compact-ngp/">Compact-NGP</a></li>
 </ul>
 </li>
 <li>3D<ul>
 <li>Pre-read: <a href="https://cmsc426.github.io/sfm/">SfM</a></li>
 <li>NeRF<ul>
 <li><a href="https://arxiv.org/abs/2003.08934">original paper</a>, extension: <a href="https://github.com/google/mipnerf">mipnerf</a></li>
-<li><a href="https://github.com/NVlabs/instant-ngp">Instant Neural Graphic Primitives (instant-ngp)</a></li>
-<li><a href="https://bmild.github.io/rawnerf/">RawNeRF</a></li>
-<li><a href="https://localrf.github.io/">https://localrf.github.io/</a></li>
+<li>  <a href="https://github.com/NVlabs/instant-ngp">Instant Neural Graphic Primitives (instant-ngp)</a></li>
+<li>  <a href="https://bmild.github.io/rawnerf/">RawNeRF</a></li>
+<li>  <a href="https://localrf.github.io/">https://localrf.github.io/</a></li>
 </ul>
 </li>
 <li>Gaussian Splatting (a &quot;real-time NeRF&quot;)<ul>
-<li><a href="https://repo-sam.inria.fr/fungraph/3d-gaussian-splatting/">Original paper</a></li>
-<li><a href="https://guanjunwu.github.io/4dgs/">Dynamic scene rendering</a></li>
+<li>  <a href="https://repo-sam.inria.fr/fungraph/3d-gaussian-splatting/">Original paper</a></li>
+<li>  <a href="https://guanjunwu.github.io/4dgs/">Dynamic scene rendering</a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li>Downstream Image Tasks (classification, object detection, tracking, segmentation, etc.)<ul>
-<li><a href="https://segment-anything.com/">SegmentAnything (SAM)</a></li>
-<li><a href="https://github.com/hkchengrex/XMem">XMem</a></li>
-<li><a href="https://github.com/gaomingqi/Track-Anything">TrackAnything</a></li>
+<li>  <a href="https://segment-anything.com/">SegmentAnything (SAM)</a></li>
+<li>  <a href="https://github.com/hkchengrex/XMem">XMem</a></li>
+<li>  <a href="https://github.com/gaomingqi/Track-Anything">TrackAnything</a></li>
 <li><a href="https://github.com/ViTAE-Transformer/ViTPose">ViTPose</a>: higher resolution model is better</li>
-<li><a href="https://arxiv.org/pdf/1905.05055.pdf">Object Detection in 20 Years: A Survey</a></li>
+<li>  <a href="https://arxiv.org/pdf/1905.05055.pdf">Object Detection in 20 Years: A Survey</a></li>
 </ul>
 </li>
 <li>Vision &amp; Language<ul>
 <li><a href="https://openai.com/research/clip">CLIP</a><ul>
-<li><strong>Mind-blowing zero-shot classification capabilities</strong></li>
+<li>  <strong>Mind-blowing zero-shot classification capabilities</strong></li>
 <li>The model that initially enabled DALLE &amp; Stable Diffusion.</li>
 <li>This pre-training method improves <a href="https://paperswithcode.com/task/adversarial-robustness">robustness</a> of learnt features (w.r.t classification accuracy on downstream task)</li>
 <li>Extensions: <a href="https://arxiv.org/abs/2303.15343">SigLIP</a></li>
 </ul>
 </li>
-<li><a href="https://arxiv.org/abs/2403.09611">MM1</a>: Apple's extension to LLaVa with a good number of experiments/ablations</li>
-<li><a href="https://llava-vl.github.io/">LLaVa</a></li>
+<li><a href="https://arxiv.org/abs/2403.09611">MM1</a>: Apple&apos;s extension to LLaVa with a good number of experiments/ablations</li>
+<li>  <a href="https://llava-vl.github.io/">LLaVa</a></li>
 </ul>
 </li>
 <li>LLMs<ul>
 <li><a href="https://arxiv.org/pdf/2204.02311.pdf">PaLM</a>: showing that LLMs have emergent properties/behaviors that only occur with scale (e.g. reasoning, humor)</li>
-<li><a href="https://openai.com/research/gpt-2-1-5b-release">GPT-2</a></li>
-<li>[[OPT]]: Meta's &quot;first attempt&quot; at LLMs</li>
+<li>  <a href="https://openai.com/research/gpt-2-1-5b-release">GPT-2</a></li>
+<li>[[OPT]]: Meta&apos;s &quot;first attempt&quot; at LLMs</li>
 <li>[[Galactica]]: showing that with good quality data you can out-perform other models trained on more data</li>
 <li><a href="https://arxiv.org/abs/2302.13971">LLaMa</a>, <a href="https://arxiv.org/abs/2307.09288">LLaMa2</a></li>
-<li><a href="https://arxiv.org/abs/2312.11805">Gemini</a></li>
+<li>  <a href="https://arxiv.org/abs/2312.11805">Gemini</a></li>
 </ul>
 </li>
 <li>Audio<ul>
-<li><a href="https://arxiv.org/pdf/1905.05055.pdf">whisper</a></li>
-<li><a href="https://github.com/LAION-AI/CLAP">CLAP</a></li>
+<li>  <a href="https://arxiv.org/pdf/1905.05055.pdf">whisper</a></li>
+<li>  <a href="https://github.com/LAION-AI/CLAP">CLAP</a></li>
 </ul>
 </li>
 <li>Engineering<ul>
 <li><a href="https://github.com/ggerganov/llama.cpp">llama.cpp</a>, <a href="https://github.com/ggerganov/ggml">ggml</a></li>
-<li><a href="https://github.com/karpathy/nanoGPT">nanoGPT</a></li>
-<li><a href="https://github.com/monatis/clip.cpp">clip.cpp</a></li>
-<li><a href="https://github.com/Lightning-AI/litgpt">litgpt</a></li>
-<li><a href="https://github.com/cybertronai/gradient-checkpointing">gradient checkpointing</a></li>
+<li>  <a href="https://github.com/karpathy/nanoGPT">nanoGPT</a></li>
+<li>  <a href="https://github.com/monatis/clip.cpp">clip.cpp</a></li>
+<li>  <a href="https://github.com/Lightning-AI/litgpt">litgpt</a></li>
+<li>  <a href="https://github.com/cybertronai/gradient-checkpointing">gradient checkpointing</a></li>
 </ul>
 </li>
 <li>Public Datasets<ul>
-<li><a href="https://laion.ai/blog/laion-5b/">LAOIN-5B</a></li>
-<li><a href="https://github.com/google-research-datasets/conceptual-12m">conceptual captions</a></li>
-<li><a href="https://github.com/facebookresearch/Ego4d/">Ego4D and Ego-Exo4D</a></li>
+<li>  <a href="https://laion.ai/blog/laion-5b/">LAOIN-5B</a></li>
+<li>  <a href="https://github.com/google-research-datasets/conceptual-12m">conceptual captions</a></li>
+<li>  <a href="https://github.com/facebookresearch/Ego4d/">Ego4D and Ego-Exo4D</a></li>
 </ul>
 </li>
 </ul>
-<h1>Resources for Learning (Theory)</h1>
+<h1 id="resources-for-learning-theory">
+  <a href="#resources-for-learning-theory">Resources for Learning (Theory)</a>
+</h1>
 <ul>
-<li><a href="https://www.deeplearningbook.org/">MIT Deep Learning Book</a></li>
-<li><a href="https://arxiv.org/pdf/2403.18103.pdf">Tutorial on Diffusion Models for Imaging and Vision</a></li>
+<li>  <a href="https://www.deeplearningbook.org/">MIT Deep Learning Book</a></li>
+<li>  <a href="https://arxiv.org/pdf/2403.18103.pdf">Tutorial on Diffusion Models for Imaging and Vision</a></li>
 </ul>
 </div>
       <html><script
