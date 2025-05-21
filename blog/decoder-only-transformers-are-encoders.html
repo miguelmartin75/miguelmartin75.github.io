@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', function() {
           <pre>Time to read: 10 mins</pre>
         </div>
       </div>
-      <div class="content"><document><h1 id="tldr"><a href="#tldr">tl;dr</a></h1>
+      <div class="content"><document><h1 id="tldr"><html><a href="#tldr">tl;dr</a></html></h1>
 <ul>
 <li>Despite their name, decoder-only Transformers (M-LLMs, e.g. Llama, Mistral,
 Qwen, etc.) <strong>can be fine-tuned into an encoder to obtain embeddings</strong> for
@@ -50,7 +50,7 @@ retrieval tasks, e.g. RAG, semantic search, etc., which can achieve state-of-the
 embeddings can be used to generate text without loss in performance. See
 <a href="https://arxiv.org/pdf/2402.09906">GRIT</a> on how this can be done.</li>
 </ul>
-<h1 id="introduction"><a href="#introduction">Introduction</a></h1>
+<h1 id="introduction"><html><a href="#introduction">Introduction</a></html></h1>
 <p>Decoder-only transformer architectures have taken over. Encoder-based
 transformer (encoder-only, encode-decode) architectures (e.g.
 <a href="https://huggingface.co/docs/transformers/model_doc/bert">BERT</a>) are becoming
@@ -95,7 +95,7 @@ objective (next-token prediction).</li>
 training recipes/techniques, e.g. distillation. <a href="https://qwenlm.github.io/blog/qwen3/">Qwen3 0.6B</a> can run on mobile
 devices, and qualitatively it performs well (I can&apos;t find benchmark numbers for this variant of Qwen3).</li>
 </ol>
-<h1 id="background"><a href="#background">Background</a></h1>
+<h1 id="background"><html><a href="#background">Background</a></html></h1>
 <p>Feel free to <a href="#how-can-you-make-a-decoder-an-encoder">skip</a> this section if you&apos;re familiar with embeddings/vector-based search.</p>
 <p>Encoders have the nice property of being able to take some input data (e.g.
 text, images, audio, etc.) and spit out an embedding vector associated to this.
@@ -139,7 +139,7 @@ could fine-tune a decoder LLM to encode text&quot; - oh there&apos;s a series of
 covering this already, &quot;you could use the same LLM for generative and
 embeddings without generative performance regressing&quot; - oh there&apos;s a paper for this
 (GRIT).</sup></p>
-<h1 id="how-can-you-make-a-decoder-an-encoder"><a href="#how-can-you-make-a-decoder-an-encoder">How Can You Make a Decoder an Encoder?</a></h1>
+<h1 id="how-can-you-make-a-decoder-an-encoder"><html><a href="#how-can-you-make-a-decoder-an-encoder">How Can You Make a Decoder an Encoder?</a></html></h1>
 <p>A decoder can be made into an encoder by performing fine-tuning in a specific
 manner, this fine-tuned/adapted model can deliver the same generative
 performance if you train with a next-token objective jointly with an embedding
@@ -214,7 +214,7 @@ performance.</li>
 </ul>
 </li>
 </ol>
-<h1 id="how-well-does-it-work-overview-of-results"><a href="#how-well-does-it-work-overview-of-results">How Well Does it Work? Overview of Results</a></h1>
+<h1 id="how-well-does-it-work-overview-of-results"><html><a href="#how-well-does-it-work-overview-of-results">How Well Does it Work? Overview of Results</a></html></h1>
 <p>The <a href="https://huggingface.co/spaces/mteb/leaderboard">MTEB benchmark</a> serves as
 a standard benchmark for evaluating embedding quality on a wide variety of
 benchmarks and tasks across numerous datasets. You can take a deeper look for yourself on the <a href="https://huggingface.co/spaces/mteb/leaderboard">leaderboard</a>.</p>
@@ -351,7 +351,7 @@ performs better than E5-V by approximately ~20% for T-&gt;I and I-&gt;T (English
 multi-lingual performance for text to image retrieval is significantly higher
 than the CLIP alternative, likely due to the stronger language model or simply
 the LLM&apos;s pre-training dataset.</p>
-<h1 id="conclusion"><a href="#conclusion">Conclusion</a></h1>
+<h1 id="conclusion"><html><a href="#conclusion">Conclusion</a></html></h1>
 <p>To conclude, decoder-only transformers can be trained into strong SoTA
 encoders. You don&apos;t need to depend on proprietary models: you could train an
 encoder using the plethora of open-source M-LLMs released by research labs as a
