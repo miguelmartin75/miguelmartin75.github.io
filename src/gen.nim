@@ -180,6 +180,9 @@ proc commentsSection(): VNode =
 </script>
 """)
 
+proc toString(node: XmlNode): string =
+  result.add(node, indent=0, indWidth=0, addNewLines=true)
+
 proc postProcessHtml(html: string): string =
   result = ""
   
@@ -189,6 +192,9 @@ proc postProcessHtml(html: string): string =
       return
 
     case node.tag:
+    of "pre":
+      echo "pre:", node
+      echo "innerText:", node.innerText
     of "h1", "h2", "h3", "h4", "h5", "h6":
       if node.attrs.isNil:
         node.attrs = newStringTable()
@@ -230,8 +236,7 @@ proc postProcessHtml(html: string): string =
   var dom = parseHtml(html)
   dfs(dom)
 
-  for x in dom.items:
-    result &= $x
+  result = dom.toString
 
 proc genRoute(ctx: Ctx, r: var Route) =
   let src = readFile(r.src.string)
