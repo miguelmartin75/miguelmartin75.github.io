@@ -8,3 +8,5 @@ public
 *.zk
 nimble.develop
 nimble.paths
+deps
+!deps/atlas.config

@@ -33,28 +33,32 @@ main {
 }
 
 main h1, h2, h3, h4, h5, h6 {
-  margin-bottom: 0.5em;
+  /*margin-bottom: 0.5em;*/
 }
 
 main p {
+  margin-top: 0.5em;
   margin-bottom: 0.5em;
 }
 
 main ul {
   list-style-type: square;
   padding-left: 2em;
+  /*margin-bottom: 0.5em;*/
 }
+
+main pre {
+  font-size: 0.9em;
+  /*margin-bottom: 0.5em;*/
+}
+
+main code {
+  font-size: 0.9em;
+}
+
 
 main ol {
   padding-left: 2em;
-}
-
-main ul:not(ul ul) {
-  margin-bottom: 0.25em;
-}
-
-main ol:not(ol ol) {
-  margin-bottom: 0.25em;
 }
 
 nav {
@@ -160,7 +164,7 @@ table {
   overflow: hidden;
   line-height: 1.5;
   font-size: 12pt;
-  margin-bottom: 16px;
+  /*margin-bottom: 16px;*/
 }
 thead {
   background-color: #f6f8fa;
@@ -204,15 +208,30 @@ hr {
 }
 
 /* code */
-pre {
-  font-size: 11pt;
+
+/* Base block styling – applies ONLY to <code class="language-nim"> */
+code[class^="language-"],
+code[class*=" language-"] {
+  display: block;
+  /* background: rgba(79, 94, 104, 0.05);*/
+  background: #f6f8fa;
+  border: 1px solid #f0f0f0;
+  border-radius: 1px;
+  padding: 0.5em 1em;
+  line-height: 1.3;
+  white-space: pre-wrap;   /* preserve newlines & indentation, but allow wrapping */
+  overflow-wrap: anywhere; /* break really long identifiers/URLs if needed */
+  word-break: break-word;  /* fallback for older engines */
+  tab-size: 2;             /* optional: keep indentation sane */
 }
+
+
 
 /* equations */
 .katex-html > .katex { white-space: normal }
 .katex-html > .base { margin: 0.25em 0 }
-.katex-html { 
-  margin: 0.5em 0; 
+.katex-html {
+  margin: 0.5em 0;
   /*
   display: flex;
   justify-content: center;
@@ -229,7 +248,7 @@ pre {
 
 .info .times {
   display: flex;
-  align-items: center; 
+  align-items: center;
   justify-content: space-between;
   font-size: 0.9em;
 }

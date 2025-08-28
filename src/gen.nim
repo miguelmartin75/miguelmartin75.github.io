@@ -53,7 +53,7 @@ type
   RouteKind = enum
     rkPage
     rkBlogPost
-    rkPrivateNote
+    rkNote
 
   Ctx = object
     silent: bool = false
@@ -69,6 +69,7 @@ type
 
   Route = object
     kind: RouteKind
+    isPrivate: bool
     readingTimeMins: float
 
     dt: DateTime
@@ -159,7 +160,6 @@ proc navBar(ctx: Ctx): VNode =
   result = buildHtml(html):
     nav:
       ul:
-        li: a(href="/"): text "home"
         li: a(href="/blog"): text "blog"
         if ctx.privateNotes:
           li: a(href="/notes"): text "notes"
@@ -340,7 +340,7 @@ proc genNotes(ctx: Ctx, routes: seq[Route]) =
       main:
         ul:
           for r in routes:
-            if r.kind == rkPrivateNote:
+            if r.kind == rkNote:
               li:
                 pre(style={display: "inline"}): text format(r.dt, "yyyy-MM-dd")
                 tdiv(class="hspace")
@@ -490,13 +490,14 @@ proc genSite(ctx: Ctx) =
         friendlyName = x.name.string.toFriendlyName
 
       Route(
-        kind: if "blog" in relPath.string:
+        kind: if "blog" in relPath.string or "post" in relPath.string:
           rkBlogPost
-        elif "private" in relPath.string:
-          rkPrivateNote
+        elif "note" in relPath.string:
+          rkNote
         else:
           rkPage
         ,
+        isPrivate: "private" in relPath.string,
         name: x.name.string,
         friendlyName: friendlyName,
         src: src,
