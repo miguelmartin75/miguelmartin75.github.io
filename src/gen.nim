@@ -66,6 +66,8 @@ type
     serve: bool = false
     dev: bool = false
     port: int = 3000
+    baseUrl: string = "https://miguelmartin75.github.io"
+    siteTitle: string = "Miguel's Blog"
 
   Route = object
     kind: RouteKind
@@ -91,6 +93,8 @@ const defaultCtx = Ctx(
   serve: false,
   dev: false,
   port: 3000,
+  baseUrl: "https://miguelmartin75.github.io",
+  siteTitle: "Miguel's Blog",
 )
 
 proc parseYamlSimple(inp: string): SimpleYaml =
@@ -155,6 +159,7 @@ proc css(ctx: Ctx): VNode =
     meta(name="viewport", content="width=device-width, initial-scale=1.0")
     link(rel="icon", type="image/x-icon", href="/images/icon.svg")
     link(rel="stylesheet", href="/style.css")
+    link(rel="alternate", type="application/rss+xml", title="RSS", href="/rss.xml")
 
 proc navBar(ctx: Ctx): VNode =
   result = buildHtml(html):
@@ -165,6 +170,20 @@ proc navBar(ctx: Ctx): VNode =
           li: a(href="/notes"): text "notes"
       ul:
         li: a(href="/"): text "miguel"
+
+proc rssButton(): VNode =
+  result = buildHtml(html):
+    tdiv(class="rss-button-container"):
+      a(
+        href="/rss",
+        title="Subscribe via RSS",
+        class="rss-button",
+      ):
+        verbatim("""
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M3.00024 13.0225C8.18522 12.2429 11.7559 15.8146 10.9774 20.9996M3.00024 8.03784C10.938 7.25824 16.7417 13.0619 15.9621 20.9997M3.00024 3.05212C13.6919 2.27364 21.7264 10.3082 20.948 20.9998M5 21C3.89566 21 3 20.1043 3 19C3 17.8957 3.89566 17 5 17C6.10434 17 7 17.8957 7 19C7 20.1043 6.10434 21 5 21Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+        """)
 
 proc commentsSection(): VNode =
   result = buildHtml(html):
@@ -312,6 +331,7 @@ document.addEventListener('DOMContentLoaded', function() {
         navBar(ctx)
         main:
           if r.kind == rkBlogPost:
+            rssButton()
             tdiv(class="info"):
               h1(id="title"): a(href="#title"): text r.title
               tdiv(class="times"):
@@ -359,6 +379,7 @@ proc genBlog(ctx: Ctx, routes: seq[Route]) =
     body:
       navBar(ctx)
       main:
+        rssButton()
         ul:
           for r in routes:
             if r.kind == rkBlogPost and r.yaml.getOrDefault("state", "draft") != "draft":
@@ -371,6 +392,74 @@ proc genBlog(ctx: Ctx, routes: seq[Route]) =
     (Path(ctx.outDir) / Path("blog.html")).string,
     "<!DOCTYPE html>\n\n" & $outputHtml,
   )
+
+proc extractSummary(md: string; maxLen = 300): string =
+  ## Converts markdown to HTML then extracts inner text and truncates.
+  let html = mdToHtml(md)
+  let dom = parseHtml(html)
+  var buf = ""
+  for n in dom:
+    buf.add(n.innerText)
+  result = buf.strip
+  if result.len > maxLen:
+    result = result[0 ..< maxLen].strip & "…"
+
+proc rssDate(dt: DateTime): string =
+  result = dt.format("ddd, dd MMM yyyy HH:mm:ss zzz")
+
+proc genRss(ctx: Ctx, routes: seq[Route]) =
+  var posts = collect:
+    for r in routes:
+      if r.kind == rkBlogPost and not r.isPrivate and r.yaml.getOrDefault("state", "draft") != "draft":
+        r
+
+  posts.sort(proc(a, b: Route): int = -cmp(a.dt, b.dt))
+
+  let 
+    channelLink = ctx.baseUrl & "/blog"
+    channelTitle = ctx.siteTitle
+    channelDesc = "Recent posts"
+
+  var xml = ""
+  xml.add("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n")
+  xml.add("<rss version=\"2.0\">\n")
+  xml.add("  <channel>\n")
+  xml.add(&"    <title>{channelTitle}</title>\n")
+  xml.add(&"    <link>{channelLink}</link>\n")
+  xml.add(&"    <description>{channelDesc}</description>\n")
+
+  for r in posts:
+    let 
+      src = readFile(r.src.string)
+      parts = splitMdAndYaml(src)
+      title = r.title
+      link = ctx.baseUrl & "/" & r.uri.string
+      guid = link
+      pubDate = rssDate(r.dt)
+      summary = extractSummary(parts.md)
+
+    # Basic escaping for XML text nodes
+    proc xesc(s: string): string =
+      result = s
+      result = result.replace("&", "&amp;")
+      result = result.replace("<", "&lt;")
+      result = result.replace(">", "&gt;")
+      result = result.replace("\"", "&quot;")
+      result = result.replace("'", "&apos;")
+
+    xml.add("    <item>\n")
+    xml.add(&"      <title>{xesc(title)}</title>\n")
+    xml.add(&"      <link>{xesc(link)}</link>\n")
+    xml.add(&"      <guid>{xesc(guid)}</guid>\n")
+    xml.add(&"      <pubDate>{xesc(pubDate)}</pubDate>\n")
+    if summary.len > 0:
+      xml.add(&"      <description>{xesc(summary)}</description>\n")
+    xml.add("    </item>\n")
+
+  xml.add("  </channel>\n")
+  xml.add("</rss>\n")
+
+  writeFile((Path(ctx.outDir) / Path("rss.xml")).string, xml)
 
 proc runServer(ctx: Ctx, routes: seq[Route]) =
   let silent = ctx.silent
@@ -519,6 +608,7 @@ proc genSite(ctx: Ctx) =
   )
   ctx.genBlog(routes)
   ctx.genNotes(routes)
+  ctx.genRss(routes)
 
   if ctx.serve:
     runServer(ctx, routes)
