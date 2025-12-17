@@ -331,7 +331,6 @@ document.addEventListener('DOMContentLoaded', function() {
         navBar(ctx)
         main:
           if r.kind == rkBlogPost:
-            rssButton()
             tdiv(class="info"):
               h1(id="title"): a(href="#title"): text r.title
               tdiv(class="times"):
