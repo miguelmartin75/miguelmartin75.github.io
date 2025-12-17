@@ -107,6 +107,32 @@ nav a:hover {
   background-color: #f0f0f0;
 }
 
+.rss-button-container {
+  display: flex;
+  justify-content: flex-end;
+  margin: 0.5rem 0;
+}
+
+.rss-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5em 1em;
+  text-decoration: none;
+  color: #333;
+  border-radius: 2pt;
+  transition: background-color 0.2s ease;
+}
+
+.rss-button:hover,
+.rss-button:active {
+  background-color: #f0f0f0;
+}
+
+.rss-button svg {
+  display: block;
+}
+
 h1 a,
 h2 a,
 h3 a,
