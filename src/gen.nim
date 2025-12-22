@@ -66,7 +66,7 @@ type
     serve: bool = false
     dev: bool = false
     port: int = 3000
-    baseUrl: string = "https://miguelmartin75.github.io"
+    baseUrl: string = "https://miguelmartin.com"
     siteTitle: string = "Miguel's Blog"
 
   Route = object
