@@ -26,7 +26,7 @@ task publish, "generate & serve website":
   exec "cd dist && git clean -fd && cd .."
   exec "nim c -r src/gen.nim"
   exec &"cd dist && git add -A && git commit -m '{dt}'"
-  exec "git push origin gh-pages && cd .."
+  exec "git push origin gh-pages -f && cd .."
 
 # begin Nimble config (version 2)
 when withDir(thisDir(), system.fileExists("nimble.paths")):

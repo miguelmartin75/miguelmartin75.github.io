@@ -84,19 +84,6 @@ type
     info: FileInfo
     yaml: SimpleYaml
 
-const defaultCtx = Ctx(
-  silent: false,
-  privateNotes: false,
-  inpDir: "./md",
-  outDir: "./dist",
-  staticDir: "./static",
-  serve: false,
-  dev: false,
-  port: 3000,
-  baseUrl: "https://miguelmartin75.github.io",
-  siteTitle: "Miguel's Blog",
-)
-
 proc parseYamlSimple(inp: string): SimpleYaml =
   for line in inp.splitLines:
     if line.len == 0:
@@ -614,5 +601,5 @@ proc genSite(ctx: Ctx) =
 
 when isMainModule:
   import cligen
-  var ctx = initFromCL(defaultCtx)
+  var ctx = initFromCL(Ctx.default)
   ctx.genSite()
