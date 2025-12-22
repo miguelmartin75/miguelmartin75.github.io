@@ -2,20 +2,20 @@
 <rss version="2.0">
   <channel>
     <title>Miguel's Blog</title>
-    <link>https://miguelmartin75.github.io/blog</link>
+    <link>https://miguelmartin.com/blog</link>
     <description>Recent posts</description>
     <item>
       <title>A Review of Nim 2: The Good &amp; Bad with Example Code</title>
-      <link>https://miguelmartin75.github.io/blog/nim2-review</link>
-      <guid>https://miguelmartin75.github.io/blog/nim2-review</guid>
+      <link>https://miguelmartin.com/blog/nim2-review</link>
+      <guid>https://miguelmartin.com/blog/nim2-review</guid>
       <pubDate>Thu, 28 Aug 2025 00:00:00 -07:00</pubDate>
       <description>I&apos;ve been using Nim for about 1-2 years now, and I believe the language is undervalued. It&apos;s not perfect, of course, but it&apos;s pleasant to write and read. My personal website uses Nim.
 After reading a recent article on Nim (&quot;Why Nim&quot;) and the associated HN comments, it&apos;s clear that comments and some…</description>
     </item>
     <item>
       <title>Decoder-Only Transformers are SoTA Encoders (with some fine-tuning)</title>
-      <link>https://miguelmartin75.github.io/blog/decoder-only-transformers-are-encoders</link>
-      <guid>https://miguelmartin75.github.io/blog/decoder-only-transformers-are-encoders</guid>
+      <link>https://miguelmartin.com/blog/decoder-only-transformers-are-encoders</link>
+      <guid>https://miguelmartin.com/blog/decoder-only-transformers-are-encoders</guid>
       <pubDate>Tue, 20 May 2025 00:00:00 -07:00</pubDate>
       <description>tl;dr
 
@@ -26,8 +26,8 @@ You can have your cake and eat it too: the sam…</description>
     </item>
     <item>
       <title>My Philosophy On Doing: Advice to Myself</title>
-      <link>https://miguelmartin75.github.io/blog/PhilosophyOnDoing</link>
-      <guid>https://miguelmartin75.github.io/blog/PhilosophyOnDoing</guid>
+      <link>https://miguelmartin.com/blog/PhilosophyOnDoing</link>
+      <guid>https://miguelmartin.com/blog/PhilosophyOnDoing</guid>
       <pubDate>Fri, 11 Apr 2025 00:00:00 -07:00</pubDate>
       <description>Introduction
 Here is advice I&apos;ve collected from others and myself over the years, which serves as a set of guidelines when attempting to do &quot;The Thing&quot;. The Thing is anything, however this article is biased toward software development, but it does apply to other &quot;Things&quot; in life.
@@ -35,8 +35,8 @@ Here is advice I&apos;ve collected from others and myself over the years, which 
     </item>
     <item>
       <title>Recommended Machine Learning Papers and Learning Resources</title>
-      <link>https://miguelmartin75.github.io/blog/ml-papers</link>
-      <guid>https://miguelmartin75.github.io/blog/ml-papers</guid>
+      <link>https://miguelmartin.com/blog/ml-papers</link>
+      <guid>https://miguelmartin.com/blog/ml-papers</guid>
       <pubDate>Thu, 28 Mar 2024 00:00:00 -07:00</pubDate>
       <description>Introduction
 This is a filtered curation of papers that I found over the years that either inspire me, blow me away (revolutionize the way I think) or are an essential read for someone within the field. Some of these papers I have not personally read in detail.
@@ -44,8 +44,8 @@ I have also included a section on lear…</description>
     </item>
     <item>
       <title>How to Multiply with the 3n + 1 series (Collatz Conjecture)</title>
-      <link>https://miguelmartin75.github.io/blog/collatz-conjecture-multiply</link>
-      <guid>https://miguelmartin75.github.io/blog/collatz-conjecture-multiply</guid>
+      <link>https://miguelmartin.com/blog/collatz-conjecture-multiply</link>
+      <guid>https://miguelmartin.com/blog/collatz-conjecture-multiply</guid>
       <pubDate>Sat, 06 Aug 2022 00:00:00 -07:00</pubDate>
       <description>Introduction
 I stumbled across an interesting paper, which shows that you can multiply two numbers by using the Collatz conjecture (and assuming it to be true for the numbers you are dealing with).
