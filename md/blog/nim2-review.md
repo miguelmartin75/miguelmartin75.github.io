@@ -10,7 +10,7 @@ After reading a recent article on Nim (["Why Nim"](https://undefined.pyfy.ch/why
 
 In fact, you could use Nim as a production-ready alternative to the upcoming [Carbon](https://github.com/carbon-language/carbon-lang) language. Nim has fantastic interoperability with C++, supporting templates, constructors, destructors, overloaded operators, etc. However, it does *not* compile to readable C or C++ code, which is unlike Carbon.
 
-In this article, I review the good and bad parts of Nim 2. I'll write a tiny key/value file format that can load a user-declared object to demonstrate how some of Nim's features compose in powerful ways. Hopefully, this code example will give a good feel for the language. If you prefer to start with code, feel free to [jump to the example](#implementing-a-vector-database-in-nim) first.
+In this article, I review the good and bad parts of Nim 2. I'll write a tiny key/value file format that can load a user-declared object to demonstrate how some of Nim's features compose in powerful ways. Hopefully, this code example will give a good feel for the language. If you prefer to start with code, feel free to [jump to the example](#implementing-a-simple-keyvalue-file-format) first.
 
 I'm not going to discuss subjective dismissals of the language, such as whitespace or [case insensitivity](https://nim-lang.org/docs/manual.html#lexical-analysis-identifier-equality), which IMO are not reasons to dismiss a language.
 
