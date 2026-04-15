@@ -1,3 +1,8 @@
+#? stdtmpl(subsChar = '$', metaChar = '#')
+#proc renderStyleCss(themeName, codeBg, codeBorder, tokenCss: string): string =
+#  result = ""
+/* Generated from $themeName */
+
 /* Reset some basic styles */
 * {
   margin: 0;
@@ -56,7 +61,6 @@ main code {
   font-size: 0.9em;
 }
 
-
 main ol {
   padding-left: 2em;
 }
@@ -102,6 +106,7 @@ nav a:active {
   transition: background-color 0.15s ease;
   background-color: #f0f0f0;
 }
+
 nav a:hover {
   transition: background-color 0.1s ease;
   background-color: #f0f0f0;
@@ -162,7 +167,7 @@ h2 a:hover,
 h3 a:hover,
 h4 a:hover,
 h5 a:hover,
-h6 a:hover{
+h6 a:hover {
   text-decoration: underline;
   transition: opacity 0.3s ease-in-out;
 }
@@ -176,7 +181,6 @@ h6 a:hover::after {
   opacity: 1;
   transition: opacity 0.1s ease-in-out;
 }
-
 
 table {
   table-layout: fixed;
@@ -192,6 +196,7 @@ table {
   font-size: 12pt;
   /*margin-bottom: 16px;*/
 }
+
 thead {
   background-color: #f6f8fa;
   border-bottom: 1px solid #f0f0f0;
@@ -214,9 +219,9 @@ tr, td {
 }
 
 tbody tr {
-    background-color: #ffffff;
-    border-top: 1px solid #e1e4e8;
-    border-right: 1px solid #e1e4e8;
+  background-color: #ffffff;
+  border-top: 1px solid #e1e4e8;
+  border-right: 1px solid #e1e4e8;
 }
 
 tbody tr:hover {
@@ -234,24 +239,60 @@ hr {
 }
 
 /* code */
-
-/* Base block styling – applies ONLY to <code class="language-nim"> */
+pre.code-block-pre > code,
 code[class^="language-"],
 code[class*=" language-"] {
   display: block;
-  /* background: rgba(79, 94, 104, 0.05);*/
-  background: #f6f8fa;
-  border: 1px solid #f0f0f0;
+  background: $codeBg;
+  border: 1px solid $codeBorder;
   border-radius: 1px;
   padding: 0.5em 1em;
   line-height: 1.3;
-  white-space: pre-wrap;   /* preserve newlines & indentation, but allow wrapping */
-  overflow-wrap: anywhere; /* break really long identifiers/URLs if needed */
-  word-break: break-word;  /* fallback for older engines */
-  tab-size: 2;             /* optional: keep indentation sane */
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  tab-size: 2;
 }
 
+pre.code-block-pre.has-line-numbers > code {
+  counter-reset: line;
+  padding-left: 0;
+  padding-right: 0;
+  white-space: normal;
+  overflow-wrap: normal;
+  word-break: normal;
+}
 
+pre.code-block-pre.has-line-numbers .code-line {
+  display: grid;
+  grid-template-columns: 3ch minmax(0, 1fr);
+  column-gap: 1em;
+  padding: 0 1em;
+}
+
+pre.code-block-pre.has-line-numbers .code-line::before {
+  content: counter(line);
+  counter-increment: line;
+  color: rgba(46, 54, 59, 0.55);
+  text-align: right;
+  user-select: none;
+}
+
+pre.code-block-pre.has-line-numbers .code-line-content {
+  display: block;
+  min-width: 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  tab-size: inherit;
+}
+
+pre.code-block-pre.has-line-numbers .code-line-content:empty::after {
+  content: " ";
+  white-space: pre;
+}
+
+$tokenCss
 
 /* equations */
 .katex-html > .katex { white-space: normal }
@@ -263,8 +304,9 @@ code[class*=" language-"] {
   justify-content: center;
   */
 }
+
 .katex-display {
-    font-size: 20pt;
+  font-size: 20pt;
 }
 
 .info {
@@ -317,21 +359,26 @@ code[class*=" language-"] {
     font-size: 14pt;
     margin: 0.125em;
   }
+
   nav {
     font-size: 1.25em;
     margin-left: 1em;
     margin-right: 1em;
   }
+
   main {
     margin-left: 1em;
     margin-right: 1em;
   }
+
   table {
     overflow-x: auto;
   }
+
   .profile-card {
     display: block;
   }
+
   .profile-pic {
     display: block;
     margin: auto;

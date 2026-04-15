@@ -10,3 +10,4 @@ nimble.develop
 nimble.paths
 deps
 !deps/atlas.config
+3rdparty/tree-sitter-parsers/

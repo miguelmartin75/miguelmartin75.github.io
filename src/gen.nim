@@ -3,50 +3,23 @@ import
     algorithm,
     times,
     os,
-    sets,
     monotimes,
     strformat,
     strutils,
-    sequtils,
     dirs,
     files,
     sugar,
     paths,
     tables,
     mimetypes,
-    xmltree,
-    strtabs,
-    unicode,
   ],
-  karax/[karaxdsl, vdom, vstyles, xdom],
+  karax/[karaxdsl, vdom, vstyles],
+  highlight_config,
   md4c,
-  htmlparser,
+  treesitter/highlight,
   mummy, mummy/routers
 
-const mimeDb = newMimeTypes()
-
-template resp(code: int, contentType: string, r: untyped): untyped =
-  var headers: HttpHeaders
-  headers["Content-Type"] = contentType
-  request.respond(code, headers, r)
-
-proc nowMs*(): float64 = getMonoTime().ticks.float64 / 1e6
-template echoMs*(prefix: string, silent: bool, body: untyped) =
-  let t1 = nowMs()
-  body
-  let
-    t2 = nowMs()
-    delta = t2 - t1
-
-  if not silent:
-    var deltaStr = ""
-    deltaStr.formatValue(delta, ".3f")
-    echo prefix, deltaStr, "ms"
-
-proc toString(str: seq[char]): string =
-  result = newStringOfCap(len(str))
-  for ch in str:
-    add(result, ch)
+include "style.css.nimf"
 
 type
   SimpleYaml = Table[string, string]
@@ -68,11 +41,11 @@ type
     port: int = 3000
     baseUrl: string = "https://miguelmartin.com"
     siteTitle: string = "Miguel's Blog"
+    highlightTheme: string = "zenbones"
 
   Route = object
     kind: RouteKind
     isPrivate: bool
-    readingTimeMins: float
 
     dt: DateTime
     title: string
@@ -81,8 +54,59 @@ type
     src: Path
     dst: Path
     uri: Path
-    info: FileInfo
     yaml: SimpleYaml
+
+const MimeDb = newMimeTypes()
+
+proc css(ctx: Ctx): VNode
+proc navBar(ctx: Ctx): VNode
+proc rssButton(): VNode
+
+proc nowMs*(): float64 =
+  result = getMonoTime().ticks.float64 / 1e6
+
+proc xmlEscaped(s: string): string =
+  result.addHtmlEscaped(s)
+
+template resp(code: int, contentType: string, r: untyped): untyped =
+  var headers: HttpHeaders
+  headers["Content-Type"] = contentType
+  request.respond(code, headers, r)
+
+template echoMs*(prefix: string, silent: bool, body: untyped) =
+  let t1 = nowMs()
+  body
+  let
+    t2 = nowMs()
+    delta = t2 - t1
+
+  if not silent:
+    var deltaStr = ""
+    deltaStr.formatValue(delta, ".3f")
+    echo prefix, deltaStr, "ms"
+
+template writeRouteListPage(
+  ctx: Ctx,
+  pageTitle, outName: string,
+  includeRssButton: bool,
+  items: untyped,
+): untyped =
+  let outputHtml = buildHtml(html(lang = "en")):
+    head:
+      title: text pageTitle
+      css(ctx)
+    body:
+      navBar(ctx)
+      main:
+        if includeRssButton:
+          rssButton()
+        ul:
+          items
+
+  writeFile(
+    (Path(ctx.outDir) / Path(outName)).string,
+    "<!DOCTYPE html>\n\n" & $outputHtml,
+  )
 
 proc parseYamlSimple(inp: string): SimpleYaml =
   for line in inp.splitLines:
@@ -107,9 +131,7 @@ proc parseYamlSimple(inp: string): SimpleYaml =
 proc toFriendlyName*(x: string): string =
   result.setLen(x.len)
   for i in 0..<len(x):
-    if x[i] == '_':
-      result[i] = ' '
-    elif x[i] == '-':
+    if x[i] in {'_', '-'}:
       result[i] = ' '
     elif x[i] in LowercaseLetters and (i == 0 or result[i - 1] == ' '):
       result[i] = x[i].toUpperAscii
@@ -125,13 +147,12 @@ proc splitMdAndYaml(mdFile: string): tuple[md: string, yaml: SimpleYaml] =
       startIdx
 
     yamlData = if endIdx != -1 and startIdx == 0:
-      doAssert startIdx != -1
-      mdFile[(startIdx + 3).. endIdx]
+      mdFile[(startIdx + 3)..endIdx]
     else:
       ""
 
     mdData = if endIdx != -1 and startIdx == 0:
-      mdFile[(endIdx + 4) .. ^ 1]
+      mdFile[(endIdx + 4)..^1]
     else:
       mdFile
 
@@ -186,89 +207,37 @@ proc commentsSection(): VNode =
 </script>
 """)
 
-proc toString(node: XmlNode): string =
-  result.add(node, indent=0, indWidth=0, addNewLines=true)
+proc copyStaticAssets(staticDir, outDir: string) =
+  if not dirExists(staticDir):
+    return
 
-proc innerHtml(node: XmlNode): string =
-  for n in node:
-    result &= $n
+  discard outDir.existsOrCreateDir()
+  for src in walkDirRec(staticDir):
+    let relPath = src.relativePath(staticDir)
+    if relPath == "style.css":
+      continue
 
-proc innerTextOnly(node: XmlNode): string =
-  proc traverse(res: var string, n: XmlNode) =
-    case n.kind:
-    of xnText:
-      res.add(n.innerText)
-    of xnElement:
-      case n.tag:
-      of "x-equation":
-        return
-      else:
-        for sub in n:
-          traverse(res, sub)
-    else:
-      return
+    let
+      dst = outDir / relPath
+      dstDir = dst.parentDir
 
-  traverse(result, node)
+    if dstDir.len > 0:
+      discard dstDir.existsOrCreateDir()
+    copyFile(src, dst)
 
-proc postProcessHtml(html: string): string =
-  result = ""
-  
-  var assignedIds: HashSet[string]
-  proc dfs(node: XmlNode) =
-    if node.kind != xnElement:
-      return
+proc writeStylesheet(ctx: Ctx) =
+  let
+    theme = loadSyntaxTheme(ctx.highlightTheme)
+    tokenCss = renderSyntaxTokenCss(theme)
+    stylesheet = renderStyleCss(theme.name, theme.codeBg, theme.codeBorder, tokenCss)
 
-    case node.tag:
-    of "h1", "h2", "h3", "h4", "h5", "h6":
-      if node.attrs.isNil:
-        node.attrs = newStringTable()
+  writeFile((Path(ctx.outDir) / Path("style.css")).string, stylesheet)
 
-      let innerText = node.innerTextOnly
-
-      var id = innerText
-        .toLower
-        .filter(proc(x: char): bool =
-          x in Digits or x in LowercaseLetters or x in {'-', ' '}
-        ).toString
-        .strip(leading=true, trailing=false, Digits)
-        .strip(leading=true, trailing=true, {' '})
-        .replace(" ", "-")
-
-      if id in assignedIds:
-        stderr.writeLine &"[WARN]: {id} header is already assigned"
-
-      block:
-        var 
-          i = 1
-          newId = id
-        while newId in assignedIds or newId == "":
-          newId = id & &"{i}"
-          i += 1
-        id = newId
-        
-      doAssert id notin assignedIds, &"{id} is not unique - choose another header"
-      assignedIds.incl(id)
-
-      let
-        link = "#" & id
-        innerContent = node.innerHtml
-        # aTag = newXmlTree("a", [newText(node.innerText)], {"href": link}.toXmlAttributes)
-        aTag = buildHtml(html):
-          a(href=link):
-            verbatim(innerContent)
-
-      node.attrs["id"] = id
-      node.replace(0..<node.len, [aTag.toXmlNode])
-    else:
-      discard
-    
-    for child in node:
-      dfs(child)
-  
-  var dom = parseHtml(html)
-  dfs(dom)
-
-  result = dom.toString
+proc datedRouteListItem(r: Route): VNode =
+  result = buildHtml(li):
+    pre(style={display: "inline"}): text format(r.dt, "yyyy-MM-dd")
+    tdiv(class="hspace")
+    a(href=r.uri.string): text r.title
 
 proc genRoute(ctx: Ctx, r: var Route) =
   let src = readFile(r.src.string)
@@ -277,8 +246,7 @@ proc genRoute(ctx: Ctx, r: var Route) =
 
   let
     (md, yaml) = splitMdAndYaml(src)
-    mdHtml = mdToHtml(md)
-    content = postProcessHtml(mdHtml)
+    content = mdToHtml(md, outputOptions = HtmlOutputOptions(codeBlock: highlightedCodeBlockOutput))
     title = yaml.getOrDefault("title", r.friendlyName)
     dt = yaml.getOrDefault("date", now().format("yyyy-MM-dd"))
 
@@ -333,65 +301,26 @@ document.addEventListener('DOMContentLoaded', function() {
             commentsSection()
     outDir = r.dst.splitFile.dir
 
-  discard outDir.existsOrCreateDir()
+  for p in outDir.parentDirs(fromRoot=true):
+    discard p.existsOrCreateDir()
   writeFile(r.dst.string, "<!DOCTYPE html>\n\n" & $outputHtml)
 
 proc genNotes(ctx: Ctx, routes: seq[Route]) =
-  let outputHtml = buildHtml(html(lang = "en")):
-    head:
-      title: text "Miguel's Notes (private)"
-      css(ctx)
-    body:
-      navBar(ctx)
-      main:
-        ul:
-          for r in routes:
-            if r.kind == rkNote:
-              li:
-                pre(style={display: "inline"}): text format(r.dt, "yyyy-MM-dd")
-                tdiv(class="hspace")
-                a(href=r.uri.string): text r.title
-
-  writeFile(
-    (Path(ctx.outDir) / Path("notes.html")).string,
-    "<!DOCTYPE html>\n\n" & $outputHtml,
-  )
+  writeRouteListPage(ctx, "Miguel's Notes (private)", "notes.html", false):
+    for r in routes:
+      if r.kind == rkNote:
+        datedRouteListItem(r)
 
 proc genBlog(ctx: Ctx, routes: seq[Route]) =
-  let outputHtml = buildHtml(html(lang = "en")):
-    head:
-      title: text "Miguel's Blog"
-      css(ctx)
-    body:
-      navBar(ctx)
-      main:
-        rssButton()
-        ul:
-          for r in routes:
-            if r.kind == rkBlogPost and r.yaml.getOrDefault("state", "draft") != "draft":
-              li:
-                pre(style={display: "inline"}): text format(r.dt, "yyyy-MM-dd")
-                tdiv(class="hspace")
-                a(href=r.uri.string): text r.title
-
-  writeFile(
-    (Path(ctx.outDir) / Path("blog.html")).string,
-    "<!DOCTYPE html>\n\n" & $outputHtml,
-  )
+  writeRouteListPage(ctx, "Miguel's Blog", "blog.html", true):
+    for r in routes:
+      if r.kind == rkBlogPost and r.yaml.getOrDefault("state", "draft") != "draft":
+        datedRouteListItem(r)
 
 proc extractSummary(md: string; maxLen = 300): string =
-  ## Converts markdown to HTML then extracts inner text and truncates.
-  let html = mdToHtml(md)
-  let dom = parseHtml(html)
-  var buf = ""
-  for n in dom:
-    buf.add(n.innerText)
-  result = buf.strip
+  result = mdToText(md).strip
   if result.len > maxLen:
-    result = result[0 ..< maxLen].strip & "…"
-
-proc rssDate(dt: DateTime): string =
-  result = dt.format("ddd, dd MMM yyyy HH:mm:ss zzz")
+    result = result[0..<maxLen].strip & "…"
 
 proc genRss(ctx: Ctx, routes: seq[Route]) =
   var posts = collect:
@@ -399,7 +328,9 @@ proc genRss(ctx: Ctx, routes: seq[Route]) =
       if r.kind == rkBlogPost and not r.isPrivate and r.yaml.getOrDefault("state", "draft") != "draft":
         r
 
-  posts.sort(proc(a, b: Route): int = -cmp(a.dt, b.dt))
+  posts.sort(proc(a, b: Route): int =
+    return -cmp(a.dt, b.dt)
+  )
 
   let 
     channelLink = ctx.baseUrl & "/blog"
@@ -421,25 +352,16 @@ proc genRss(ctx: Ctx, routes: seq[Route]) =
       title = r.title
       link = ctx.baseUrl & "/" & r.uri.string
       guid = link
-      pubDate = rssDate(r.dt)
+      pubDate = r.dt.format("ddd, dd MMM yyyy HH:mm:ss zzz")
       summary = extractSummary(parts.md)
 
-    # Basic escaping for XML text nodes
-    proc xesc(s: string): string =
-      result = s
-      result = result.replace("&", "&amp;")
-      result = result.replace("<", "&lt;")
-      result = result.replace(">", "&gt;")
-      result = result.replace("\"", "&quot;")
-      result = result.replace("'", "&apos;")
-
     xml.add("    <item>\n")
-    xml.add(&"      <title>{xesc(title)}</title>\n")
-    xml.add(&"      <link>{xesc(link)}</link>\n")
-    xml.add(&"      <guid>{xesc(guid)}</guid>\n")
-    xml.add(&"      <pubDate>{xesc(pubDate)}</pubDate>\n")
+    xml.add(&"      <title>{xmlEscaped(title)}</title>\n")
+    xml.add(&"      <link>{xmlEscaped(link)}</link>\n")
+    xml.add(&"      <guid>{xmlEscaped(guid)}</guid>\n")
+    xml.add(&"      <pubDate>{xmlEscaped(pubDate)}</pubDate>\n")
     if summary.len > 0:
-      xml.add(&"      <description>{xesc(summary)}</description>\n")
+      xml.add(&"      <description>{xmlEscaped(summary)}</description>\n")
     xml.add("    </item>\n")
 
   xml.add("  </channel>\n")
@@ -465,7 +387,7 @@ proc runServer(ctx: Ctx, routes: seq[Route]) =
     else:
       request.respond(code)
 
-  proc assetHandler(request: Request) =
+  proc assetHandler(request: Request) {.gcsafe.} =
     let
       name = request.path
       relPath = if name == "/":
@@ -480,7 +402,7 @@ proc runServer(ctx: Ctx, routes: seq[Route]) =
       else:
         realExt
 
-      mime = getMimetype(mimeDb, ext, "")
+      mime = getMimetype(MimeDb, ext, "")
       fp = Path(ctx.outDir) / relPathSplit.dir / Path(relPathSplit.name.string & ext)
       key = if name == "/":
         "index"
@@ -499,22 +421,20 @@ proc runServer(ctx: Ctx, routes: seq[Route]) =
     elif key == "notes":
       ctx.genNotes(routes)
 
+    if ctx.dev:
+      copyStaticAssets(ctx.staticDir, ctx.outDir)
+      ctx.writeStylesheet()
+
     if not fp.fileExists:
       handleCode(404)
-      return
-
-    if mime == "":
+    elif mime == "":
       handleCode(403)
-      return
+    else:
+      var headers: HttpHeaders
+      headers["Content-Type"] = mime
 
-    var headers: HttpHeaders
-    headers["Content-Type"] = mime
-
-    let content = readFile(fp.string)
-    request.respond(200, headers, content)
-
-    if ctx.dev:
-      copyDir(ctx.staticDir, ctx.outDir)
+      let content = readFile(fp.string)
+      request.respond(200, headers, content)
 
   # TODO: reload
   proc websocketHandler(
@@ -542,7 +462,6 @@ proc genSite(ctx: Ctx) =
   let
     inpDir = Path(ctx.inpDir)
     outDir = Path(ctx.outDir)
-    staticDir = Path(ctx.staticDir)
 
     followFilter = if ctx.privateNotes:
       {pcDir, pcLinkToDir}
@@ -553,8 +472,6 @@ proc genSite(ctx: Ctx) =
         let p = x.splitFile
         if p.ext == ".md":
           (p, x)
-
-  copyDir(staticDir.string, outDir.string)
 
   var routes = collect:
     for (x, src) in mdFiles:
@@ -580,7 +497,9 @@ proc genSite(ctx: Ctx) =
         uri: uri,
       )
 
+  copyStaticAssets(ctx.staticDir, ctx.outDir)
   discard outDir.existsOrCreateDir()
+  ctx.writeStylesheet()
   for r in routes.mitems:
     ctx.genRoute(r)
 

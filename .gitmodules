@@ -1,3 +1,6 @@
 [submodule "3rdparty/md4c"]
 	path = 3rdparty/md4c
 	url = git@github.com:mity/md4c.git
+[submodule "3rdparty/tree-sitter"]
+	path = 3rdparty/tree-sitter
+	url = git@github.com:tree-sitter/tree-sitter.git

@@ -93,7 +93,7 @@ betas=[0.99, 0.999]
 
 To implement this, we will need to define a `load[T]` function that accepts a file path and returns a `T`. The `load` function will iterate over the fields of the type `T` and call an overloaded `proc` called `parseValue` to parse each value string. I will provide `parseValue` for some primitive types. Let's see how to implement `load`:
 
-```nim
+```nim linenums
 import std/[parseutils, strformat, strutils, tables, sugar, enumerate]
 
 type ParseError* = object of CatchableError
