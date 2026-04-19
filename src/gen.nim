@@ -247,7 +247,7 @@ proc tocTargetStyle(headings: openArray[MarkdownHeading]): string =
   for heading in headings:
     result.add("html:not(.toc-js) .article-main:has([id=\"")
     result.add(heading.id)
-    result.add("\"]:target) + .toc a[href=\"#")
+    result.add("\"]:target) .toc a[href=\"#")
     result.add(heading.id)
     result.add("\"] {\n")
     result.add("  color: rgb(46, 54, 59);\n")
@@ -326,23 +326,28 @@ document.addEventListener('DOMContentLoaded', function() {
     .filter(function(heading) {
       return heading !== null;
     });
+  const articleContent = document.querySelector(".article-main .content");
 
-  if (headings.length === 0) {
+  if (headings.length === 0 || articleContent === null) {
     return;
   }
 
   const setActiveTocLink = function() {
     const viewportTop = window.scrollY + 144;
     const viewportBottom = window.scrollY + window.innerHeight;
+    const contentTop = articleContent.offsetTop;
+    const contentBottom = contentTop + articleContent.offsetHeight;
     let activeId = headings[0].id;
     let bestVisibility = -1;
     let bestOverlap = -1;
 
     for (let i = 0; i < headings.length; i++) {
-      const start = headings[i].offsetTop;
+      const start = headings[i].id === "title"
+        ? contentTop
+        : headings[i].offsetTop + headings[i].offsetHeight;
       const stop = i + 1 < headings.length
         ? headings[i + 1].offsetTop
-        : document.documentElement.scrollHeight;
+        : contentBottom;
       const sectionHeight = Math.max(1, stop - start);
       const overlapTop = Math.max(start, viewportTop);
       const overlapBottom = Math.min(stop, viewportBottom);
@@ -372,6 +377,13 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
+  window.addEventListener("scroll", function() {
+    window.requestAnimationFrame(setActiveTocLink);
+  }, {passive: true});
+  window.addEventListener("resize", function() {
+    window.requestAnimationFrame(setActiveTocLink);
+  });
+
   if ("IntersectionObserver" in window) {
     const observer = new IntersectionObserver(function() {
       window.requestAnimationFrame(setActiveTocLink);
@@ -383,13 +395,6 @@ document.addEventListener('DOMContentLoaded', function() {
     for (let heading of headings) {
       observer.observe(heading);
     }
-  } else {
-    window.addEventListener("scroll", function() {
-      window.requestAnimationFrame(setActiveTocLink);
-    }, {passive: true});
-    window.addEventListener("resize", function() {
-      window.requestAnimationFrame(setActiveTocLink);
-    });
   }
 
   window.addEventListener("hashchange", function() {
@@ -421,22 +426,22 @@ document.addEventListener('DOMContentLoaded', function() {
                       pre: text &"Time to read: {readingTimeMins} min"
                     else:
                       pre: text &"Time to read: {readingTimeMins} mins"
+                aside(class="toc"):
+                  nav(class="toc-nav", `aria-label`="Table of contents"):
+                    p(class="toc-title"): text "Table of Contents"
+                    ul(class="toc-list"):
+                      for heading in tocHeadings:
+                        li:
+                          a(
+                            href="#" & heading.id,
+                            class="toc-link level-" & $heading.level,
+                            `data-toc-link`=heading.id,
+                          ):
+                            text heading.text
 
                 tdiv(class="content"):
                   verbatim(content)
                 commentsSection()
-              aside(class="toc"):
-                nav(class="toc-nav", `aria-label`="Table of contents"):
-                  p(class="toc-title"): text "Table of Contents"
-                  ul(class="toc-list"):
-                    for heading in tocHeadings:
-                      li:
-                        a(
-                          href="#" & heading.id,
-                          class="toc-link level-" & $heading.level,
-                          `data-toc-link`=heading.id,
-                        ):
-                          text heading.text
         else:
           main:
             if r.kind == rkBlogPost:

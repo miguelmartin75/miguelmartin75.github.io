@@ -38,14 +38,11 @@ main {
 }
 
 main.has-toc {
-  max-width: 1180px;
+  max-width: 900px;
 }
 
 .article-layout {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 15rem;
-  column-gap: 2.5rem;
-  align-items: start;
+  position: relative;
 }
 
 .article-main {
@@ -54,19 +51,39 @@ main.has-toc {
 
 .toc {
   min-width: 0;
-  position: sticky;
-  top: 1.5rem;
-  align-self: start;
-  max-height: calc(100vh - 3rem);
-  overflow: auto;
+  position: absolute;
+  top: 0;
+  right: calc(-15rem - 2.5rem);
+  bottom: 0;
+  width: 15rem;
 }
 
 .toc-nav {
   display: block;
+  position: sticky;
+  top: 1.5rem;
+  max-height: calc(100vh - 3rem);
+  overflow: auto;
   font-size: 0.95rem;
   letter-spacing: normal;
   text-align: left;
   margin: 0;
+}
+
+@media only screen and (max-width: 1280px) {
+  .toc {
+    position: static;
+    right: auto;
+    bottom: auto;
+    width: auto;
+    margin-top: 1.5rem;
+  }
+
+  .toc-nav {
+    position: static;
+    max-height: none;
+    overflow: visible;
+  }
 }
 
 .toc-title {
@@ -463,15 +480,14 @@ $tokenCss
   }
 
   .article-layout {
+    display: grid;
     grid-template-columns: minmax(0, 1fr);
     row-gap: 1.5rem;
   }
 
   .toc {
     order: -1;
-    position: static;
-    max-height: none;
-    overflow: visible;
+    margin-top: 0;
   }
 
   .toc-nav {

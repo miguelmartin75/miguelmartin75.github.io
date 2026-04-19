@@ -3,6 +3,7 @@ title: "My Philosophy On Doing: Advice to Myself"
 state: publish
 date: 2025-04-11
 ---
+
 # Introduction
 Here is advice I've collected from others and myself over the years, which serves as a set of guidelines when attempting to do "The Thing". The Thing is anything, however this article is biased toward software development, but it does apply to other "Things" in life.
 
@@ -41,7 +42,7 @@ Here is advice I've collected from others and myself over the years, which serve
 		- Can you do The Thing with less code?
 	- Compounding efforts is ideal (e.g. building independent features that are composed together, code reuse), but don't let planning block you from Doing The Thing.
 
-# Doing The Thing
+# 4. Doing The Thing
 [Do The Thing](https://x.com/ChrisWillx/status/1664302375656357888?lang=en). [Just do it](https://www.youtube.com/watch?v=ZXsQAXx_ao0). ["Draw and don't waste time"](https://www.apollo-magazine.com/how-to-learn-drawing-from-michelangelo/).
 - Process
 	- Feedback loops are critical for fast progress. Start small and iterate. 
@@ -61,7 +62,7 @@ Here is advice I've collected from others and myself over the years, which serve
 	- Don't keep your head in the sand. "Look up" and "zoom out" to see the big picture.
 	- Don't [pre-maturely abstract](https://wiki.c2.com/?PrematureAbstraction) ([YAGNI](https://wiki.c2.com/?YouArentGonnaNeedIt)). Specialization often imposes constraints which often enables simplification and optimization. Building something that solves everything often does not work as well as something that is built for the task.
 
-# 4. Marking the Thing as Complete
+# 5. Marking the Thing as Complete
 i.e. Moving onto the Next Thing
 - Again, it doesn't have to be perfect.
 - Simplify before moving on if you can.
