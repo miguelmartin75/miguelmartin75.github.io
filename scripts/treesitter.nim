@@ -1,7 +1,6 @@
 import std/[algorithm, json, os, osproc, sequtils, strformat, strutils, times]
 
 const
-  DefaultTreeSitterParsersDir = "3rdparty/tree-sitter-parsers"
   LicenseCandidates = [
     "LICENSE",
     "LICENSE.txt",
@@ -141,7 +140,7 @@ proc installParser(
   name: string = "",
   path: string = "",
   rev: string = "",
-  treeSitterParsersDir: string = DefaultTreeSitterParsersDir,
+  treeSitterParsersDir: string = "3rdparty/tree-sitter-parsers",
   yes: bool = false,
   clean: bool = false,
   subtree: bool = false,
