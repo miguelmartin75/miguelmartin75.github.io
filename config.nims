@@ -16,10 +16,10 @@ task genPriv, "generate website":
   exec "nim c -r src/gen.nim --privateNotes --highlightTheme=" & quoteShell(HighlightTheme)
 
 task devpriv, "generate & serve website":
-  exec "nim c -r src/gen.nim --serve --port 3000 --privateNotes --dev --highlightTheme=" & quoteShell(HighlightTheme)
+  exec "nim c -r src/gen.nim --serve --port 3030 --privateNotes --dev --highlightTheme=" & quoteShell(HighlightTheme)
 
 task dev, "generate & serve website":
-  exec "nim c -r src/gen.nim --serve --port 3000 --dev --highlightTheme=" & quoteShell(HighlightTheme)
+  exec "nim c -r src/gen.nim --serve --port 3030 --dev --highlightTheme=" & quoteShell(HighlightTheme)
 
 task tsAddParser, "install a tree-sitter parser into 3rdparty/tree-sitter-parsers":
   var args = commandLineParams()

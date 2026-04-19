@@ -64,7 +64,7 @@ template declareTsParser(lang: static[string], procName: untyped) =
     proc procName(): ptr TsLanguage {.cdecl.} =
       return nil
 
-{.passC: "-I3rdparty/tree-sitter/lib/include -I3rdparty/tree-sitter/lib/src".}
+{.passC: "-I3rdparty/tree-sitter/lib/include -I3rdparty/tree-sitter/lib/src -I3rdparty/shims".}
 declareTsParser("javascript", treeSitterJavascript)
 declareTsParser("nim", treeSitterNim)
 
