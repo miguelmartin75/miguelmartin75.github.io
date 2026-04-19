@@ -84,6 +84,17 @@ type
     data: cstring
     len: int
 
+  MarkdownHeading* = object
+    id*: string
+    level*: int
+    text*: string
+
+  RenderedMarkdown* = object
+    html*: string
+    headings*: seq[MarkdownHeading]
+    hasTocMarker*: bool
+    hasContentBeforeFirstHeading*: bool
+
   MdAttribute* {.bycopy.} = object
     text*: cstring
     size*: cuint
@@ -178,6 +189,9 @@ type
     outputOptions: HtmlOutputOptions
     imageNestingLevel: int
     assignedHeadingIds: HashSet[string]
+    headings: seq[MarkdownHeading]
+    hasTocMarker: bool
+    hasContentBeforeFirstHeading: bool
     headingLevel: int
     headingText: string
     headingMathDepth: int
@@ -190,6 +204,13 @@ type
     output: ptr string
     imageNestingLevel: int
     inHtmlTag: bool
+
+proc mdToDocument*(
+  data: string,
+  parserFlags: cuint = DefaultParserFlags,
+  rendererFlags: cuint = 0,
+  outputOptions: HtmlOutputOptions = HtmlOutputOptions(),
+): RenderedMarkdown
 
 proc `$`*(x: Str8): string {.inline.} =
   result.setLen(x.len)
@@ -549,7 +570,14 @@ proc htmlLeaveBlock(blockType: cint, detail: pointer, userdata: pointer): cint {
   of MdBlockH:
     let detail = cast[ptr MdBlockHDetail](detail)
     let level = detail[].level.int
+    if r[].headings.len == 0 and r[].output[].len > 0:
+      r[].hasContentBeforeFirstHeading = true
     let id = makeHeadingId(r[].headingText, r[].assignedHeadingIds)
+    r[].headings.add(MarkdownHeading(
+      id: id,
+      level: level,
+      text: r[].headingText.strip(),
+    ))
     r[].current = r[].output
     r[].current[].add(&"<h{level} id=\"{id}\"><a href=\"#{id}\">")
     r[].current[].add(r[].temp)
@@ -560,11 +588,14 @@ proc htmlLeaveBlock(blockType: cint, detail: pointer, userdata: pointer): cint {
     r[].headingMathDepth = 0
   of MdBlockCode:
     let options = parseCodeBlockOptions(r[].codeBlockLang, r[].codeBlockInfo)
-    r[].outputOptions.codeBlock(
-      r[].current[],
-      r[].codeBlockText.toStr8(),
-      options,
-    )
+    if options.language == "toc":
+      r[].hasTocMarker = true
+    else:
+      r[].outputOptions.codeBlock(
+        r[].current[],
+        r[].codeBlockText.toStr8(),
+        options,
+      )
     r[].inCodeBlock = false
     r[].codeBlockInfo = Str8()
     r[].codeBlockLang = Str8()
@@ -765,12 +796,12 @@ proc textText(textType: cint, text: cstring, size: cuint, userdata: pointer): ci
 
   return 0
 
-proc mdToHtml*(
+proc mdToDocument*(
   data: string,
   parserFlags: cuint = DefaultParserFlags,
   rendererFlags: cuint = 0,
   outputOptions: HtmlOutputOptions = HtmlOutputOptions(),
-): string =
+): RenderedMarkdown =
   if data.len != 0:
     let input =
       if (rendererFlags and MdHtmlFlagSkipUtf8Bom) != 0 and data.startsWith("\xEF\xBB\xBF"):
@@ -792,8 +823,8 @@ proc mdToHtml*(
           syntax: nil,
         )
         state = HtmlOutputState(
-          output: result.addr,
-          current: result.addr,
+          output: result.html.addr,
+          current: result.html.addr,
           rendererFlags: rendererFlags,
           outputOptions: outputOptions,
         )
@@ -801,6 +832,22 @@ proc mdToHtml*(
       state.assignedHeadingIds = initHashSet[string]()
 
       doAssert mdParse(input[0].addr, input.len.cuint, parser.addr, state.addr) == 0
+      result.headings = state.headings
+      result.hasTocMarker = state.hasTocMarker
+      result.hasContentBeforeFirstHeading = state.hasContentBeforeFirstHeading
+
+proc mdToHtml*(
+  data: string,
+  parserFlags: cuint = DefaultParserFlags,
+  rendererFlags: cuint = 0,
+  outputOptions: HtmlOutputOptions = HtmlOutputOptions(),
+): string =
+  result = mdToDocument(
+    data,
+    parserFlags = parserFlags,
+    rendererFlags = rendererFlags,
+    outputOptions = outputOptions,
+  ).html
 
 proc mdToText*(
   data: string,

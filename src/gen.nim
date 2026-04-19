@@ -239,6 +239,22 @@ proc datedRouteListItem(r: Route): VNode =
     tdiv(class="hspace")
     a(href=r.uri.string): text r.title
 
+proc tocTargetStyle(headings: openArray[MarkdownHeading]): string =
+  if headings.len == 0:
+    return
+
+  result.add("<style>\n")
+  for heading in headings:
+    result.add("html:not(.toc-js) .article-main:has([id=\"")
+    result.add(heading.id)
+    result.add("\"]:target) + .toc a[href=\"#")
+    result.add(heading.id)
+    result.add("\"] {\n")
+    result.add("  color: rgb(46, 54, 59);\n")
+    result.add("  border-left-color: rgb(79, 94, 104);\n")
+    result.add("}\n")
+  result.add("</style>\n")
+
 proc genRoute(ctx: Ctx, r: var Route) =
   let src = readFile(r.src.string)
   if not ctx.silent:
@@ -246,7 +262,8 @@ proc genRoute(ctx: Ctx, r: var Route) =
 
   let
     (md, yaml) = splitMdAndYaml(src)
-    content = mdToHtml(md, outputOptions = HtmlOutputOptions(codeBlock: highlightedCodeBlockOutput))
+    rendered = mdToDocument(md, outputOptions = HtmlOutputOptions(codeBlock: highlightedCodeBlockOutput))
+    content = rendered.html
     title = yaml.getOrDefault("title", r.friendlyName)
     dt = yaml.getOrDefault("date", now().format("yyyy-MM-dd"))
 
@@ -254,7 +271,25 @@ proc genRoute(ctx: Ctx, r: var Route) =
   r.dt = parse(dt, "yyyy-MM-dd", local())
   r.yaml = yaml
 
+  var
+    tocHeadings: seq[MarkdownHeading]
+    hasIntroductionHeading = false
+  for heading in rendered.headings:
+    if heading.level <= 3:
+      if heading.text.strip.toLowerAscii == "introduction":
+        hasIntroductionHeading = true
+      tocHeadings.add(heading)
+
+  if rendered.hasContentBeforeFirstHeading:
+    let titleTocText = if hasIntroductionHeading: title else: "Introduction"
+    tocHeadings = @[MarkdownHeading(id: "title", level: 1, text: titleTocText)] & tocHeadings
+
   let
+    showToc = r.kind == rkBlogPost and rendered.hasTocMarker and tocHeadings.len > 0
+    targetStyle = if showToc:
+      tocTargetStyle(tocHeadings)
+    else:
+      ""
     info = getFileInfo(r.src.string)
     # ~4.7 chars per word
     # assume markdown is ~1.25x # bytes
@@ -277,28 +312,147 @@ document.addEventListener('DOMContentLoaded', function() {
           macros
       });
   }
-  })
+
+  const tocLinks = Array.from(document.querySelectorAll("[data-toc-link]"));
+  if (tocLinks.length === 0) {
+    return;
+  }
+  document.documentElement.classList.add("toc-js");
+
+  const headings = tocLinks
+    .map(function(link) {
+      return document.getElementById(link.dataset.tocLink);
+    })
+    .filter(function(heading) {
+      return heading !== null;
+    });
+
+  if (headings.length === 0) {
+    return;
+  }
+
+  const setActiveTocLink = function() {
+    const viewportTop = window.scrollY + 144;
+    const viewportBottom = window.scrollY + window.innerHeight;
+    let activeId = headings[0].id;
+    let bestVisibility = -1;
+    let bestOverlap = -1;
+
+    for (let i = 0; i < headings.length; i++) {
+      const start = headings[i].offsetTop;
+      const stop = i + 1 < headings.length
+        ? headings[i + 1].offsetTop
+        : document.documentElement.scrollHeight;
+      const sectionHeight = Math.max(1, stop - start);
+      const overlapTop = Math.max(start, viewportTop);
+      const overlapBottom = Math.min(stop, viewportBottom);
+      const overlap = Math.max(0, overlapBottom - overlapTop);
+      const visibility = overlap / sectionHeight;
+
+      if (visibility > bestVisibility) {
+        activeId = headings[i].id;
+        bestVisibility = visibility;
+        bestOverlap = overlap;
+        continue;
+      }
+
+      if (visibility === bestVisibility && overlap > bestOverlap) {
+        activeId = headings[i].id;
+        bestOverlap = overlap;
+        continue;
+      }
+
+      if (visibility === bestVisibility && overlap === bestOverlap && start <= viewportTop) {
+        activeId = headings[i].id;
+      }
+    }
+
+    for (let link of tocLinks) {
+      link.classList.toggle("active", link.dataset.tocLink === activeId);
+    }
+  }
+
+  if ("IntersectionObserver" in window) {
+    const observer = new IntersectionObserver(function() {
+      window.requestAnimationFrame(setActiveTocLink);
+    }, {
+      rootMargin: "-144px 0px -60% 0px",
+      threshold: 0
+    });
+
+    for (let heading of headings) {
+      observer.observe(heading);
+    }
+  } else {
+    window.addEventListener("scroll", function() {
+      window.requestAnimationFrame(setActiveTocLink);
+    }, {passive: true});
+    window.addEventListener("resize", function() {
+      window.requestAnimationFrame(setActiveTocLink);
+    });
+  }
+
+  window.addEventListener("hashchange", function() {
+    window.requestAnimationFrame(setActiveTocLink);
+  });
+
+  window.requestAnimationFrame(setActiveTocLink);
+  window.addEventListener("load", function() {
+    window.requestAnimationFrame(setActiveTocLink);
+  });
+})
 </script>
 """)
+        if showToc:
+          verbatim(targetStyle)
         css(ctx)
 
       body:
         navBar(ctx)
-        main:
-          if r.kind == rkBlogPost:
-            tdiv(class="info"):
-              h1(id="title"): a(href="#title"): text r.title
-              tdiv(class="times"):
-                pre: text format(r.dt, "MMMM d, yyyy")
-                if readingTimeMins == 1:
-                  pre: text &"Time to read: {readingTimeMins} min"
-                else:
-                  pre: text &"Time to read: {readingTimeMins} mins"
+        if showToc:
+          main(class="has-toc"):
+            tdiv(class="article-layout"):
+              tdiv(class="article-main"):
+                tdiv(class="info"):
+                  h1(id="title"): a(href="#title"): text r.title
+                  tdiv(class="times"):
+                    pre: text format(r.dt, "MMMM d, yyyy")
+                    if readingTimeMins == 1:
+                      pre: text &"Time to read: {readingTimeMins} min"
+                    else:
+                      pre: text &"Time to read: {readingTimeMins} mins"
 
-          tdiv(class="content"):
-            verbatim(content)
-          if r.kind == rkBlogPost:
-            commentsSection()
+                tdiv(class="content"):
+                  verbatim(content)
+                commentsSection()
+              aside(class="toc"):
+                nav(class="toc-nav", `aria-label`="Table of contents"):
+                  p(class="toc-title"): text "Table of Contents"
+                  ul(class="toc-list"):
+                    for heading in tocHeadings:
+                      li:
+                        a(
+                          href="#" & heading.id,
+                          class="toc-link level-" & $heading.level,
+                          `data-toc-link`=heading.id,
+                        ):
+                          text heading.text
+        else:
+          main:
+            if r.kind == rkBlogPost:
+              tdiv(class="info"):
+                h1(id="title"): a(href="#title"): text r.title
+                tdiv(class="times"):
+                  pre: text format(r.dt, "MMMM d, yyyy")
+                  if readingTimeMins == 1:
+                    pre: text &"Time to read: {readingTimeMins} min"
+                  else:
+                    pre: text &"Time to read: {readingTimeMins} mins"
+
+            tdiv(class="content"):
+              verbatim(content)
+            if r.kind == rkBlogPost:
+              commentsSection()
     outDir = r.dst.splitFile.dir
 
   for p in outDir.parentDirs(fromRoot=true):

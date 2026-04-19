@@ -4,6 +4,9 @@ state: publish
 date: 2025-08-28
 ---
 
+```toc
+```
+
 I've been using Nim for about 1-2 years now, and I believe the language is undervalued. It's not perfect, of course, but it's pleasant to write and read. My personal website [uses Nim](https://forum.nim-lang.org/t/12752#78704).
 
 After reading a recent article on Nim (["Why Nim"](https://undefined.pyfy.ch/why-nim)) and the [associated HN comments](https://news.ycombinator.com/item?id=44931415), it's clear that comments and some information about Nim are misleading and outdated. Since Nim 2, a **tracing Garbage Collector is not the default** nor the recommended memory management option. Instead, the default memory management model is [ORC/ARC](https://nim-lang.org/docs/destructors.html), which supports C++-esque RAII with destructors, moves, and copies. When you use `ref` types, your object instances are reference-counted, similar to a `shared_ptr` in C++, but it does not include atomic counters by default (use the switch `--mm:atomicArc`, which will likely be the default in Nim 3<sup>*</sup>).
