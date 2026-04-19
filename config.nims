@@ -25,8 +25,12 @@ task init, "initialize to publish":
   if not dirExists("dist"):
     exec &"git worktree add -f dist gh-pages"
   exec &"git submodule update --init"
-  exec &"nim c -r scripts/treesitter.nim -p git@github.com:alaviss/tree-sitter-nim.git -y"
-  exec &"nim c -r scripts/treesitter.nim -p git@github.com:alaviss/tree-sitter-javascript.git -y"
+
+  # tree-sitter parsers
+  if not dirExists("3rdparty/tree-sitter-parsers/nim"):
+    exec "nim c -r scripts/treesitter.nim -p git@github.com:alaviss/tree-sitter-nim.git -y"
+  if not dirExists("3rdparty/tree-sitter-parsers/javascript"):
+    exec "nim c -r scripts/treesitter.nim -p git@github.com:tree-sitter/tree-sitter-javascript.git -y"
 
 task publish, "generate & serve website":
   const dt = CompileDate & "T" & CompileTime
