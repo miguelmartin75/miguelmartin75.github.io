@@ -16,8 +16,128 @@ document.addEventListener('DOMContentLoaded', function() {
           macros
       });
   }
-  })
+
+  const tocLinks = Array.from(document.querySelectorAll("[data-toc-link]"));
+  if (tocLinks.length === 0) {
+    return;
+  }
+  document.documentElement.classList.add("toc-js");
+
+  const headings = tocLinks
+    .map(function(link) {
+      return document.getElementById(link.dataset.tocLink);
+    })
+    .filter(function(heading) {
+      return heading !== null;
+    });
+  const articleContent = document.querySelector(".article-main .content");
+
+  if (headings.length === 0 || articleContent === null) {
+    return;
+  }
+
+  const setActiveTocLink = function() {
+    const viewportTop = window.scrollY + 144;
+    const viewportBottom = window.scrollY + window.innerHeight;
+    const contentTop = articleContent.offsetTop;
+    const contentBottom = contentTop + articleContent.offsetHeight;
+    let activeId = headings[0].id;
+    let bestVisibility = -1;
+    let bestOverlap = -1;
+
+    for (let i = 0; i < headings.length; i++) {
+      const start = headings[i].id === "title"
+        ? contentTop
+        : headings[i].offsetTop + headings[i].offsetHeight;
+      const stop = i + 1 < headings.length
+        ? headings[i + 1].offsetTop
+        : contentBottom;
+      const sectionHeight = Math.max(1, stop - start);
+      const overlapTop = Math.max(start, viewportTop);
+      const overlapBottom = Math.min(stop, viewportBottom);
+      const overlap = Math.max(0, overlapBottom - overlapTop);
+      const visibility = overlap / sectionHeight;
+
+      if (visibility > bestVisibility) {
+        activeId = headings[i].id;
+        bestVisibility = visibility;
+        bestOverlap = overlap;
+        continue;
+      }
+
+      if (visibility === bestVisibility && overlap > bestOverlap) {
+        activeId = headings[i].id;
+        bestOverlap = overlap;
+        continue;
+      }
+
+      if (visibility === bestVisibility && overlap === bestOverlap && start <= viewportTop) {
+        activeId = headings[i].id;
+      }
+    }
+
+    for (let link of tocLinks) {
+      link.classList.toggle("active", link.dataset.tocLink === activeId);
+    }
+  }
+
+  window.addEventListener("scroll", function() {
+    window.requestAnimationFrame(setActiveTocLink);
+  }, {passive: true});
+  window.addEventListener("resize", function() {
+    window.requestAnimationFrame(setActiveTocLink);
+  });
+
+  if ("IntersectionObserver" in window) {
+    const observer = new IntersectionObserver(function() {
+      window.requestAnimationFrame(setActiveTocLink);
+    }, {
+      rootMargin: "-144px 0px -60% 0px",
+      threshold: 0
+    });
+
+    for (let heading of headings) {
+      observer.observe(heading);
+    }
+  }
+
+  window.addEventListener("hashchange", function() {
+    window.requestAnimationFrame(setActiveTocLink);
+  });
+
+  window.requestAnimationFrame(setActiveTocLink);
+  window.addEventListener("load", function() {
+    window.requestAnimationFrame(setActiveTocLink);
+  });
+})
 </script>
+
+    <style>
+html:not(.toc-js) .article-main:has([id="tldr"]:target) .toc a[href="#tldr"] {
+  color: rgb(46, 54, 59);
+  border-left-color: rgb(79, 94, 104);
+}
+html:not(.toc-js) .article-main:has([id="introduction"]:target) .toc a[href="#introduction"] {
+  color: rgb(46, 54, 59);
+  border-left-color: rgb(79, 94, 104);
+}
+html:not(.toc-js) .article-main:has([id="background"]:target) .toc a[href="#background"] {
+  color: rgb(46, 54, 59);
+  border-left-color: rgb(79, 94, 104);
+}
+html:not(.toc-js) .article-main:has([id="how-can-you-make-a-decoder-an-encoder"]:target) .toc a[href="#how-can-you-make-a-decoder-an-encoder"] {
+  color: rgb(46, 54, 59);
+  border-left-color: rgb(79, 94, 104);
+}
+html:not(.toc-js) .article-main:has([id="how-well-does-it-work-overview-of-results"]:target) .toc a[href="#how-well-does-it-work-overview-of-results"] {
+  color: rgb(46, 54, 59);
+  border-left-color: rgb(79, 94, 104);
+}
+html:not(.toc-js) .article-main:has([id="conclusion"]:target) .toc a[href="#conclusion"] {
+  color: rgb(46, 54, 59);
+  border-left-color: rgb(79, 94, 104);
+}
+</style>
 
     <html>
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -31,15 +151,26 @@ document.addEventListener('DOMContentLoaded', function() {
         <ul><li><a href="/blog">blog</a></li></ul>
         <ul><li><a href="/">miguel</a></li></ul>
       </nav></html>
-    <main>
-      <div class="info">
-        <h1 id="title"><a href="#title">Decoder-Only Transformers are SoTA Encoders (with some fine-tuning)</a></h1>
-        <div class="times">
-          <pre>May 20, 2025</pre>
-          <pre>Time to read: 10 mins</pre>
-        </div>
-      </div>
-      <div class="content"><document><h1 id="tldr"><html><a href="#tldr">tl;dr</a></html></h1>
+    <main class="has-toc"><div class="article-layout"><div class="article-main">
+          <div class="info">
+            <h1 id="title"><a href="#title">Decoder-Only Transformers are SoTA Encoders (with some fine-tuning)</a></h1>
+            <div class="times">
+              <pre>May 20, 2025</pre>
+              <pre>Time to read: 10 mins</pre>
+            </div>
+          </div>
+          <aside class="toc"><nav class="toc-nav" aria-label="Table of contents">
+              <p class="toc-title">Table of Contents</p>
+              <ul class="toc-list">
+                <li><a class="toc-link level-1" href="#tldr" data-toc-link="tldr">tl;dr</a></li>
+                <li><a class="toc-link level-1" href="#introduction" data-toc-link="introduction">Introduction</a></li>
+                <li><a class="toc-link level-1" href="#background" data-toc-link="background">Background</a></li>
+                <li><a class="toc-link level-1" href="#how-can-you-make-a-decoder-an-encoder" data-toc-link="how-can-you-make-a-decoder-an-encoder">How Can You Make a Decoder an Encoder?</a></li>
+                <li><a class="toc-link level-1" href="#how-well-does-it-work-overview-of-results" data-toc-link="how-well-does-it-work-overview-of-results">How Well Does it Work? Overview of Results</a></li>
+                <li><a class="toc-link level-1" href="#conclusion" data-toc-link="conclusion">Conclusion</a></li>
+              </ul>
+            </nav></aside>
+          <div class="content"><h1 id="tldr"><a href="#tldr">tl;dr</a></h1>
 <ul>
 <li>Despite their name, decoder-only Transformers (M-LLMs, e.g. Llama, Mistral,
 Qwen, etc.) <strong>can be fine-tuned into an encoder to obtain embeddings</strong> for
@@ -48,7 +179,7 @@ retrieval tasks, e.g. RAG, semantic search, etc., which can achieve state-of-the
 embeddings can be used to generate text without loss in performance. See
 <a href="https://arxiv.org/pdf/2402.09906">GRIT</a> on how this can be done.</li>
 </ul>
-<h1 id="introduction"><html><a href="#introduction">Introduction</a></html></h1>
+<h1 id="introduction"><a href="#introduction">Introduction</a></h1>
 <p>Decoder-only transformer architectures have taken over. Encoder-based
 transformer (encoder-only, encode-decode) architectures (e.g.
 <a href="https://huggingface.co/docs/transformers/model_doc/bert">BERT</a>) are becoming
@@ -93,7 +224,7 @@ objective (next-token prediction).</li>
 training recipes/techniques, e.g. distillation. <a href="https://qwenlm.github.io/blog/qwen3/">Qwen3 0.6B</a> can run on mobile
 devices, and qualitatively it performs well (I can&apos;t find benchmark numbers for this variant of Qwen3).</li>
 </ol>
-<h1 id="background"><html><a href="#background">Background</a></html></h1>
+<h1 id="background"><a href="#background">Background</a></h1>
 <p>Feel free to <a href="#how-can-you-make-a-decoder-an-encoder">skip</a> this section if you&apos;re familiar with embeddings/vector-based search.</p>
 <p>Encoders have the nice property of being able to take some input data (e.g.
 text, images, audio, etc.) and spit out an embedding vector associated to this.
@@ -137,7 +268,7 @@ could fine-tune a decoder LLM to encode text&quot; - oh there&apos;s a series of
 covering this already, &quot;you could use the same LLM for generative and
 embeddings without generative performance regressing&quot; - oh there&apos;s a paper for this
 (GRIT).</sup></p>
-<h1 id="how-can-you-make-a-decoder-an-encoder"><html><a href="#how-can-you-make-a-decoder-an-encoder">How Can You Make a Decoder an Encoder?</a></html></h1>
+<h1 id="how-can-you-make-a-decoder-an-encoder"><a href="#how-can-you-make-a-decoder-an-encoder">How Can You Make a Decoder an Encoder?</a></h1>
 <p>A decoder can be made into an encoder by performing fine-tuning in a specific
 manner, this fine-tuned/adapted model can deliver the same generative
 performance if you train with a next-token objective jointly with an embedding
@@ -184,7 +315,7 @@ perhaps due to not training jointly and/or full model training not being employe
 </li>
 <li>To obtain an embedding for an input sample:<ul>
 <li>Without bi-directional attention:<ul>
-<li>Use the last hidden state of the last output token, e.g. with HuggingFace:<pre><code class="language-python">emb = model(**inputs, output_hidden_states=True, return_dict=True)[&quot;hidden_states&quot;][-1][:, -1, :]
+<li>Use the last hidden state of the last output token, e.g. with HuggingFace:<pre class="code-block-pre"><code class="language-python">emb = model(**inputs, output_hidden_states=True, return_dict=True)[&quot;hidden_states&quot;][-1][:, -1, :]
 emb = F.normalize(emb, dim=-1)
 </code></pre>
 </li>
@@ -212,7 +343,7 @@ performance.</li>
 </ul>
 </li>
 </ol>
-<h1 id="how-well-does-it-work-overview-of-results"><html><a href="#how-well-does-it-work-overview-of-results">How Well Does it Work? Overview of Results</a></html></h1>
+<h1 id="how-well-does-it-work-overview-of-results"><a href="#how-well-does-it-work-overview-of-results">How Well Does it Work? Overview of Results</a></h1>
 <p>The <a href="https://huggingface.co/spaces/mteb/leaderboard">MTEB benchmark</a> serves as
 a standard benchmark for evaluating embedding quality on a wide variety of
 benchmarks and tasks across numerous datasets. You can take a deeper look for yourself on the <a href="https://huggingface.co/spaces/mteb/leaderboard">leaderboard</a>.</p>
@@ -300,8 +431,8 @@ benchmarks and tasks across numerous datasets. You can take a deeper look for yo
 </tr>
 </tbody>
 </table>
-<p><sup>1. GritLM is based on Mistral-7B from 2023 and is now <a href="https://docs.mistral.ai/getting-started/models/models_overview/#legacy-models">deprecated and retired</a>.</sup><br />
-<sup>2. This model is gte-Qwen fine-tuned further, showing that dataset quality and quantity matter.</sup><br />
+<p><sup>1. GritLM is based on Mistral-7B from 2023 and is now <a href="https://docs.mistral.ai/getting-started/models/models_overview/#legacy-models">deprecated and retired</a>.</sup><br>
+<sup>2. This model is gte-Qwen fine-tuned further, showing that dataset quality and quantity matter.</sup><br>
 <sup>3. These results are not published on the MTEB leaderboard, but their results are shown on their <a href="https://huggingface.co/ByteDance-Seed/Seed1.5-Embedding">model page</a></sup></p>
 <p>Here&apos;s how different multi-modal model approaches compare for Text-to-Image (T&lt;-&gt;I) Retrieval (in any direction):</p>
 <table>
@@ -349,7 +480,7 @@ performs better than E5-V by approximately ~20% for T-&gt;I and I-&gt;T (English
 multi-lingual performance for text to image retrieval is significantly higher
 than the CLIP alternative, likely due to the stronger language model or simply
 the LLM&apos;s pre-training dataset.</p>
-<h1 id="conclusion"><html><a href="#conclusion">Conclusion</a></html></h1>
+<h1 id="conclusion"><a href="#conclusion">Conclusion</a></h1>
 <p>To conclude, decoder-only transformers can be trained into strong SoTA
 encoders. You don&apos;t need to depend on proprietary models: you could train an
 encoder using the plethora of open-source M-LLMs released by research labs as a
@@ -358,8 +489,8 @@ requirements and compute constraints, so evaluate it for yourself.</p>
 <p>If you&apos;re still using SBERT (e.g.
 <a href="https://huggingface.co/sentence-transformers/all-mpnet-base-v2">all-mpnet-base-v2</a>),
 consider a decoder-only transformer as an encoder instead.</p>
-</document></div>
-      <html><script
+</div>
+          <html><script
   src="https://utteranc.es/client.js"
   repo="miguelmartin75/miguelmartin75.github.io"
   issue-term="title"
@@ -369,6 +500,6 @@ consider a decoder-only transformer as an encoder instead.</p>
   async>
 </script>
 </html>
-    </main>
+        </div></div></main>
   </body>
 </html>

@@ -18,11 +18,10 @@ After reading a recent article on Nim (&quot;Why Nim&quot;) and the associated H
       <guid>https://miguelmartin.com/blog/decoder-only-transformers-are-encoders</guid>
       <pubDate>Tue, 20 May 2025 00:00:00 -07:00</pubDate>
       <description>tl;dr
-
 Despite their name, decoder-only Transformers (M-LLMs, e.g. Llama, Mistral,
 Qwen, etc.) can be fine-tuned into an encoder to obtain embeddings for
 retrieval tasks, e.g. RAG, semantic search, etc., which can achieve state-of-the-art (SoTA) results
-You can have your cake and eat it too: the sam…</description>
+You can have your cake and eat it too: the same…</description>
     </item>
     <item>
       <title>My Philosophy On Doing: Advice to Myself</title>

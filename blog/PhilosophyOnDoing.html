@@ -16,7 +16,100 @@ document.addEventListener('DOMContentLoaded', function() {
           macros
       });
   }
-  })
+
+  const tocLinks = Array.from(document.querySelectorAll("[data-toc-link]"));
+  if (tocLinks.length === 0) {
+    return;
+  }
+  document.documentElement.classList.add("toc-js");
+
+  const headings = tocLinks
+    .map(function(link) {
+      return document.getElementById(link.dataset.tocLink);
+    })
+    .filter(function(heading) {
+      return heading !== null;
+    });
+  const articleContent = document.querySelector(".article-main .content");
+
+  if (headings.length === 0 || articleContent === null) {
+    return;
+  }
+
+  const setActiveTocLink = function() {
+    const viewportTop = window.scrollY + 144;
+    const viewportBottom = window.scrollY + window.innerHeight;
+    const contentTop = articleContent.offsetTop;
+    const contentBottom = contentTop + articleContent.offsetHeight;
+    let activeId = headings[0].id;
+    let bestVisibility = -1;
+    let bestOverlap = -1;
+
+    for (let i = 0; i < headings.length; i++) {
+      const start = headings[i].id === "title"
+        ? contentTop
+        : headings[i].offsetTop + headings[i].offsetHeight;
+      const stop = i + 1 < headings.length
+        ? headings[i + 1].offsetTop
+        : contentBottom;
+      const sectionHeight = Math.max(1, stop - start);
+      const overlapTop = Math.max(start, viewportTop);
+      const overlapBottom = Math.min(stop, viewportBottom);
+      const overlap = Math.max(0, overlapBottom - overlapTop);
+      const visibility = overlap / sectionHeight;
+
+      if (visibility > bestVisibility) {
+        activeId = headings[i].id;
+        bestVisibility = visibility;
+        bestOverlap = overlap;
+        continue;
+      }
+
+      if (visibility === bestVisibility && overlap > bestOverlap) {
+        activeId = headings[i].id;
+        bestOverlap = overlap;
+        continue;
+      }
+
+      if (visibility === bestVisibility && overlap === bestOverlap && start <= viewportTop) {
+        activeId = headings[i].id;
+      }
+    }
+
+    for (let link of tocLinks) {
+      link.classList.toggle("active", link.dataset.tocLink === activeId);
+    }
+  }
+
+  window.addEventListener("scroll", function() {
+    window.requestAnimationFrame(setActiveTocLink);
+  }, {passive: true});
+  window.addEventListener("resize", function() {
+    window.requestAnimationFrame(setActiveTocLink);
+  });
+
+  if ("IntersectionObserver" in window) {
+    const observer = new IntersectionObserver(function() {
+      window.requestAnimationFrame(setActiveTocLink);
+    }, {
+      rootMargin: "-144px 0px -60% 0px",
+      threshold: 0
+    });
+
+    for (let heading of headings) {
+      observer.observe(heading);
+    }
+  }
+
+  window.addEventListener("hashchange", function() {
+    window.requestAnimationFrame(setActiveTocLink);
+  });
+
+  window.requestAnimationFrame(setActiveTocLink);
+  window.addEventListener("load", function() {
+    window.requestAnimationFrame(setActiveTocLink);
+  });
+})
 </script>
 
     <html>
@@ -39,15 +132,15 @@ document.addEventListener('DOMContentLoaded', function() {
           <pre>Time to read: 3 mins</pre>
         </div>
       </div>
-      <div class="content"><document><h1 id="introduction"><html><a href="#introduction">Introduction</a></html></h1>
+      <div class="content"><h1 id="introduction"><a href="#introduction">Introduction</a></h1>
 <p>Here is advice I&apos;ve collected from others and myself over the years, which serves as a set of guidelines when attempting to do &quot;The Thing&quot;. The Thing is anything, however this article is biased toward software development, but it does apply to other &quot;Things&quot; in life.</p>
-<h1 id="what-should-you-work-on"><html><a href="#what-should-you-work-on">1. What Should You Work On?</a></html></h1>
+<h1 id="what-should-you-work-on"><a href="#what-should-you-work-on">1. What Should You Work On?</a></h1>
 <ul>
 <li>Build things for yourself first. Solve problems you personally have day-to-day.</li>
 <li>Research. Understand what came before you, what failed, and what exists.</li>
 <li>Don&apos;t worry if someone else has built it. This validates your idea.</li>
 </ul>
-<h1 id="before-starting"><html><a href="#before-starting">2. Before Starting</a></html></h1>
+<h1 id="before-starting"><a href="#before-starting">2. Before Starting</a></h1>
 <ul>
 <li>Ask yourself: why do you want to do it? What value will it bring yourself or others? For example:<ul>
 <li>Are you doing this to solve a problem you have?</li>
@@ -66,7 +159,7 @@ document.addEventListener('DOMContentLoaded', function() {
 </ul>
 </li>
 </ul>
-<h1 id="starting"><html><a href="#starting">3. Starting</a></html></h1>
+<h1 id="starting"><a href="#starting">3. Starting</a></h1>
 <ul>
 <li>Write about The Thing. Use writing as a tool for thinking and a vetting process for doing The Thing.</li>
 <li>Mindset<ul>
@@ -93,7 +186,7 @@ document.addEventListener('DOMContentLoaded', function() {
 </ul>
 </li>
 </ul>
-<h1 id="doing-the-thing"><html><a href="#doing-the-thing">Doing The Thing</a></html></h1>
+<h1 id="doing-the-thing"><a href="#doing-the-thing">4. Doing The Thing</a></h1>
 <p><a href="https://x.com/ChrisWillx/status/1664302375656357888?lang=en">Do The Thing</a>. <a href="https://www.youtube.com/watch?v=ZXsQAXx_ao0">Just do it</a>. <a href="https://www.apollo-magazine.com/how-to-learn-drawing-from-michelangelo/">&quot;Draw and don&apos;t waste time&quot;</a>.</p>
 <ul>
 <li>Process<ul>
@@ -120,7 +213,7 @@ document.addEventListener('DOMContentLoaded', function() {
 </ul>
 </li>
 </ul>
-<h1 id="marking-the-thing-as-complete"><html><a href="#marking-the-thing-as-complete">4. Marking the Thing as Complete</a></html></h1>
+<h1 id="marking-the-thing-as-complete"><a href="#marking-the-thing-as-complete">5. Marking the Thing as Complete</a></h1>
 <p>i.e. Moving onto the Next Thing</p>
 <ul>
 <li>Again, it doesn&apos;t have to be perfect.</li>
@@ -131,7 +224,7 @@ document.addEventListener('DOMContentLoaded', function() {
 </ul>
 </li>
 </ul>
-</document></div>
+</div>
       <html><script
   src="https://utteranc.es/client.js"
   repo="miguelmartin75/miguelmartin75.github.io"

@@ -16,7 +16,100 @@ document.addEventListener('DOMContentLoaded', function() {
           macros
       });
   }
-  })
+
+  const tocLinks = Array.from(document.querySelectorAll("[data-toc-link]"));
+  if (tocLinks.length === 0) {
+    return;
+  }
+  document.documentElement.classList.add("toc-js");
+
+  const headings = tocLinks
+    .map(function(link) {
+      return document.getElementById(link.dataset.tocLink);
+    })
+    .filter(function(heading) {
+      return heading !== null;
+    });
+  const articleContent = document.querySelector(".article-main .content");
+
+  if (headings.length === 0 || articleContent === null) {
+    return;
+  }
+
+  const setActiveTocLink = function() {
+    const viewportTop = window.scrollY + 144;
+    const viewportBottom = window.scrollY + window.innerHeight;
+    const contentTop = articleContent.offsetTop;
+    const contentBottom = contentTop + articleContent.offsetHeight;
+    let activeId = headings[0].id;
+    let bestVisibility = -1;
+    let bestOverlap = -1;
+
+    for (let i = 0; i < headings.length; i++) {
+      const start = headings[i].id === "title"
+        ? contentTop
+        : headings[i].offsetTop + headings[i].offsetHeight;
+      const stop = i + 1 < headings.length
+        ? headings[i + 1].offsetTop
+        : contentBottom;
+      const sectionHeight = Math.max(1, stop - start);
+      const overlapTop = Math.max(start, viewportTop);
+      const overlapBottom = Math.min(stop, viewportBottom);
+      const overlap = Math.max(0, overlapBottom - overlapTop);
+      const visibility = overlap / sectionHeight;
+
+      if (visibility > bestVisibility) {
+        activeId = headings[i].id;
+        bestVisibility = visibility;
+        bestOverlap = overlap;
+        continue;
+      }
+
+      if (visibility === bestVisibility && overlap > bestOverlap) {
+        activeId = headings[i].id;
+        bestOverlap = overlap;
+        continue;
+      }
+
+      if (visibility === bestVisibility && overlap === bestOverlap && start <= viewportTop) {
+        activeId = headings[i].id;
+      }
+    }
+
+    for (let link of tocLinks) {
+      link.classList.toggle("active", link.dataset.tocLink === activeId);
+    }
+  }
+
+  window.addEventListener("scroll", function() {
+    window.requestAnimationFrame(setActiveTocLink);
+  }, {passive: true});
+  window.addEventListener("resize", function() {
+    window.requestAnimationFrame(setActiveTocLink);
+  });
+
+  if ("IntersectionObserver" in window) {
+    const observer = new IntersectionObserver(function() {
+      window.requestAnimationFrame(setActiveTocLink);
+    }, {
+      rootMargin: "-144px 0px -60% 0px",
+      threshold: 0
+    });
+
+    for (let heading of headings) {
+      observer.observe(heading);
+    }
+  }
+
+  window.addEventListener("hashchange", function() {
+    window.requestAnimationFrame(setActiveTocLink);
+  });
+
+  window.requestAnimationFrame(setActiveTocLink);
+  window.addEventListener("load", function() {
+    window.requestAnimationFrame(setActiveTocLink);
+  });
+})
 </script>
 
     <html>
@@ -31,7 +124,7 @@ document.addEventListener('DOMContentLoaded', function() {
         <ul><li><a href="/blog">blog</a></li></ul>
         <ul><li><a href="/">miguel</a></li></ul>
       </nav></html>
-    <main><div class="content"><document><p>403 server error</p>
-</document></div></main>
+    <main><div class="content"><p>403 server error</p>
+</div></main>
   </body>
 </html>

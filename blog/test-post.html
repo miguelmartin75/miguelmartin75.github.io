@@ -16,8 +16,120 @@ document.addEventListener('DOMContentLoaded', function() {
           macros
       });
   }
-  })
+
+  const tocLinks = Array.from(document.querySelectorAll("[data-toc-link]"));
+  if (tocLinks.length === 0) {
+    return;
+  }
+  document.documentElement.classList.add("toc-js");
+
+  const headings = tocLinks
+    .map(function(link) {
+      return document.getElementById(link.dataset.tocLink);
+    })
+    .filter(function(heading) {
+      return heading !== null;
+    });
+  const articleContent = document.querySelector(".article-main .content");
+
+  if (headings.length === 0 || articleContent === null) {
+    return;
+  }
+
+  const setActiveTocLink = function() {
+    const viewportTop = window.scrollY + 144;
+    const viewportBottom = window.scrollY + window.innerHeight;
+    const contentTop = articleContent.offsetTop;
+    const contentBottom = contentTop + articleContent.offsetHeight;
+    let activeId = headings[0].id;
+    let bestVisibility = -1;
+    let bestOverlap = -1;
+
+    for (let i = 0; i < headings.length; i++) {
+      const start = headings[i].id === "title"
+        ? contentTop
+        : headings[i].offsetTop + headings[i].offsetHeight;
+      const stop = i + 1 < headings.length
+        ? headings[i + 1].offsetTop
+        : contentBottom;
+      const sectionHeight = Math.max(1, stop - start);
+      const overlapTop = Math.max(start, viewportTop);
+      const overlapBottom = Math.min(stop, viewportBottom);
+      const overlap = Math.max(0, overlapBottom - overlapTop);
+      const visibility = overlap / sectionHeight;
+
+      if (visibility > bestVisibility) {
+        activeId = headings[i].id;
+        bestVisibility = visibility;
+        bestOverlap = overlap;
+        continue;
+      }
+
+      if (visibility === bestVisibility && overlap > bestOverlap) {
+        activeId = headings[i].id;
+        bestOverlap = overlap;
+        continue;
+      }
+
+      if (visibility === bestVisibility && overlap === bestOverlap && start <= viewportTop) {
+        activeId = headings[i].id;
+      }
+    }
+
+    for (let link of tocLinks) {
+      link.classList.toggle("active", link.dataset.tocLink === activeId);
+    }
+  }
+
+  window.addEventListener("scroll", function() {
+    window.requestAnimationFrame(setActiveTocLink);
+  }, {passive: true});
+  window.addEventListener("resize", function() {
+    window.requestAnimationFrame(setActiveTocLink);
+  });
+
+  if ("IntersectionObserver" in window) {
+    const observer = new IntersectionObserver(function() {
+      window.requestAnimationFrame(setActiveTocLink);
+    }, {
+      rootMargin: "-144px 0px -60% 0px",
+      threshold: 0
+    });
+
+    for (let heading of headings) {
+      observer.observe(heading);
+    }
+  }
+
+  window.addEventListener("hashchange", function() {
+    window.requestAnimationFrame(setActiveTocLink);
+  });
+
+  window.requestAnimationFrame(setActiveTocLink);
+  window.addEventListener("load", function() {
+    window.requestAnimationFrame(setActiveTocLink);
+  });
+})
 </script>
+
+    <style>
+html:not(.toc-js) .article-main:has([id="this-is-a-h1"]:target) .toc a[href="#this-is-a-h1"] {
+  color: rgb(46, 54, 59);
+  border-left-color: rgb(79, 94, 104);
+}
+html:not(.toc-js) .article-main:has([id="header-1"]:target) .toc a[href="#header-1"] {
+  color: rgb(46, 54, 59);
+  border-left-color: rgb(79, 94, 104);
+}
+html:not(.toc-js) .article-main:has([id="header-2"]:target) .toc a[href="#header-2"] {
+  color: rgb(46, 54, 59);
+  border-left-color: rgb(79, 94, 104);
+}
+html:not(.toc-js) .article-main:has([id="header-3"]:target) .toc a[href="#header-3"] {
+  color: rgb(46, 54, 59);
+  border-left-color: rgb(79, 94, 104);
+}
+</style>
 
     <html>
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -31,19 +143,26 @@ document.addEventListener('DOMContentLoaded', function() {
         <ul><li><a href="/blog">blog</a></li></ul>
         <ul><li><a href="/">miguel</a></li></ul>
       </nav></html>
-    <main>
-      <div class="info">
-        <h1 id="title"><a href="#title">Test post</a></h1>
-        <div class="times">
-          <pre>May 21, 2022</pre>
-          <pre>Time to read: 1 min</pre>
-        </div>
-      </div>
-      <div class="content"><document><pre><code class="language-toc">
-</code></pre>
-<h1 id="this-is-a-h1"><html><a href="#this-is-a-h1">this is a h1</a></html></h1>
+    <main class="has-toc"><div class="article-layout"><div class="article-main">
+          <div class="info">
+            <h1 id="title"><a href="#title">Test post</a></h1>
+            <div class="times">
+              <pre>May 21, 2022</pre>
+              <pre>Time to read: 1 min</pre>
+            </div>
+          </div>
+          <aside class="toc"><nav class="toc-nav" aria-label="Table of contents">
+              <p class="toc-title">Table of Contents</p>
+              <ul class="toc-list">
+                <li><a class="toc-link level-1" href="#this-is-a-h1" data-toc-link="this-is-a-h1">this is a h1</a></li>
+                <li><a class="toc-link level-1" href="#header-1" data-toc-link="header-1">Header 1</a></li>
+                <li><a class="toc-link level-2" href="#header-2" data-toc-link="header-2">Header 2</a></li>
+                <li><a class="toc-link level-3" href="#header-3" data-toc-link="header-3">Header 3</a></li>
+              </ul>
+            </nav></aside>
+          <div class="content"><h1 id="this-is-a-h1"><a href="#this-is-a-h1">this is a h1</a></h1>
 <p>Interactive codeblock:</p>
-<pre><code class="language-python-interactive">print(&quot;HI&quot;)
+<pre class="code-block-pre"><code class="language-python">print(&quot;HI&quot;)
 
 print(&quot;hello world&quot;)
 x: int = 3
@@ -64,24 +183,24 @@ firm-textured, round yolk that is bright orange-red in color.</p>
 <p>You can also write code blocks here!</p>
 <p>This is a paragraph.</p>
 <p>This is a paragraph.</p>
-<pre><code class="language-python">print(&quot;HI from python&quot;)
+<pre class="code-block-pre"><code class="language-python">print(&quot;HI from python&quot;)
 x + 2
 y = 4324 * 43
 z = input(&quot;Hello&quot;)
 
 print(x + y + z)
 </code></pre>
-<h1 id="header-1"><html><a href="#header-1">Header 1</a></html></h1>
-<pre><code class="language-js">console.log(&quot;HI&quot;)
+<h1 id="header-1"><a href="#header-1">Header 1</a></h1>
+<pre class="code-block-pre"><code class="language-javascript" data-highlighter="tree-sitter"><span class="ts-capture ts-variable ts-variable-builtin">console</span><span class="ts-capture ts-punctuation ts-punctuation-delimiter">.</span><span class="ts-capture ts-function ts-function-method">log</span><span class="ts-capture ts-punctuation ts-punctuation-bracket">(</span><span class="ts-capture ts-string">&quot;HI&quot;</span><span class="ts-capture ts-punctuation ts-punctuation-bracket">)</span>
 </code></pre>
-<h2 id="header-2"><html><a href="#header-2">Header 2</a></html></h2>
+<h2 id="header-2"><a href="#header-2">Header 2</a></h2>
 <p>Here is some math <x-equation>x + 1</x-equation> that is inline.</p>
 <p>Here is some math that is not inlined:</p>
 <p><x-equation type="display"> \sin \theta + 1 </x-equation></p>
-<h3 id="header-3"><html><a href="#header-3">Header 3</a></html></h3>
-<h4 id="header-4"><html><a href="#header-4">Header 4</a></html></h4>
-<h5 id="header-5"><html><a href="#header-5">Header 5</a></html></h5>
-<h6 id="header-6"><html><a href="#header-6">Header 6</a></html></h6>
+<h3 id="header-3"><a href="#header-3">Header 3</a></h3>
+<h4 id="header-4"><a href="#header-4">Header 4</a></h4>
+<h5 id="header-5"><a href="#header-5">Header 5</a></h5>
+<h6 id="header-6"><a href="#header-6">Header 6</a></h6>
 <table>
 <thead>
 <tr>
@@ -108,8 +227,8 @@ print(x + y + z)
 </tr>
 </tbody>
 </table>
-</document></div>
-      <html><script
+</div>
+          <html><script
   src="https://utteranc.es/client.js"
   repo="miguelmartin75/miguelmartin75.github.io"
   issue-term="title"
@@ -119,6 +238,6 @@ print(x + y + z)
   async>
 </script>
 </html>
-    </main>
+        </div></div></main>
   </body>
 </html>

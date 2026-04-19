@@ -16,8 +16,124 @@ document.addEventListener('DOMContentLoaded', function() {
           macros
       });
   }
-  })
+
+  const tocLinks = Array.from(document.querySelectorAll("[data-toc-link]"));
+  if (tocLinks.length === 0) {
+    return;
+  }
+  document.documentElement.classList.add("toc-js");
+
+  const headings = tocLinks
+    .map(function(link) {
+      return document.getElementById(link.dataset.tocLink);
+    })
+    .filter(function(heading) {
+      return heading !== null;
+    });
+  const articleContent = document.querySelector(".article-main .content");
+
+  if (headings.length === 0 || articleContent === null) {
+    return;
+  }
+
+  const setActiveTocLink = function() {
+    const viewportTop = window.scrollY + 144;
+    const viewportBottom = window.scrollY + window.innerHeight;
+    const contentTop = articleContent.offsetTop;
+    const contentBottom = contentTop + articleContent.offsetHeight;
+    let activeId = headings[0].id;
+    let bestVisibility = -1;
+    let bestOverlap = -1;
+
+    for (let i = 0; i < headings.length; i++) {
+      const start = headings[i].id === "title"
+        ? contentTop
+        : headings[i].offsetTop + headings[i].offsetHeight;
+      const stop = i + 1 < headings.length
+        ? headings[i + 1].offsetTop
+        : contentBottom;
+      const sectionHeight = Math.max(1, stop - start);
+      const overlapTop = Math.max(start, viewportTop);
+      const overlapBottom = Math.min(stop, viewportBottom);
+      const overlap = Math.max(0, overlapBottom - overlapTop);
+      const visibility = overlap / sectionHeight;
+
+      if (visibility > bestVisibility) {
+        activeId = headings[i].id;
+        bestVisibility = visibility;
+        bestOverlap = overlap;
+        continue;
+      }
+
+      if (visibility === bestVisibility && overlap > bestOverlap) {
+        activeId = headings[i].id;
+        bestOverlap = overlap;
+        continue;
+      }
+
+      if (visibility === bestVisibility && overlap === bestOverlap && start <= viewportTop) {
+        activeId = headings[i].id;
+      }
+    }
+
+    for (let link of tocLinks) {
+      link.classList.toggle("active", link.dataset.tocLink === activeId);
+    }
+  }
+
+  window.addEventListener("scroll", function() {
+    window.requestAnimationFrame(setActiveTocLink);
+  }, {passive: true});
+  window.addEventListener("resize", function() {
+    window.requestAnimationFrame(setActiveTocLink);
+  });
+
+  if ("IntersectionObserver" in window) {
+    const observer = new IntersectionObserver(function() {
+      window.requestAnimationFrame(setActiveTocLink);
+    }, {
+      rootMargin: "-144px 0px -60% 0px",
+      threshold: 0
+    });
+
+    for (let heading of headings) {
+      observer.observe(heading);
+    }
+  }
+
+  window.addEventListener("hashchange", function() {
+    window.requestAnimationFrame(setActiveTocLink);
+  });
+
+  window.requestAnimationFrame(setActiveTocLink);
+  window.addEventListener("load", function() {
+    window.requestAnimationFrame(setActiveTocLink);
+  });
+})
 </script>
+
+    <style>
+html:not(.toc-js) .article-main:has([id="title"]:target) .toc a[href="#title"] {
+  color: rgb(46, 54, 59);
+  border-left-color: rgb(79, 94, 104);
+}
+html:not(.toc-js) .article-main:has([id="why-nim-the-good-parts"]:target) .toc a[href="#why-nim-the-good-parts"] {
+  color: rgb(46, 54, 59);
+  border-left-color: rgb(79, 94, 104);
+}
+html:not(.toc-js) .article-main:has([id="implementing-a-simple-keyvalue-file-format"]:target) .toc a[href="#implementing-a-simple-keyvalue-file-format"] {
+  color: rgb(46, 54, 59);
+  border-left-color: rgb(79, 94, 104);
+}
+html:not(.toc-js) .article-main:has([id="the-bad"]:target) .toc a[href="#the-bad"] {
+  color: rgb(46, 54, 59);
+  border-left-color: rgb(79, 94, 104);
+}
+html:not(.toc-js) .article-main:has([id="conclusion"]:target) .toc a[href="#conclusion"] {
+  color: rgb(46, 54, 59);
+  border-left-color: rgb(79, 94, 104);
+}
+</style>
 
     <html>
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -31,21 +147,31 @@ document.addEventListener('DOMContentLoaded', function() {
         <ul><li><a href="/blog">blog</a></li></ul>
         <ul><li><a href="/">miguel</a></li></ul>
       </nav></html>
-    <main>
-      <div class="info">
-        <h1 id="title"><a href="#title">A Review of Nim 2: The Good &amp; Bad with Example Code</a></h1>
-        <div class="times">
-          <pre>August 28, 2025</pre>
-          <pre>Time to read: 14 mins</pre>
-        </div>
-      </div>
-      <div class="content"><document><p>I&apos;ve been using Nim for about 1-2 years now, and I believe the language is undervalued. It&apos;s not perfect, of course, but it&apos;s pleasant to write and read. My personal website <a href="https://forum.nim-lang.org/t/12752#78704">uses Nim</a>.</p>
+    <main class="has-toc"><div class="article-layout"><div class="article-main">
+          <div class="info">
+            <h1 id="title"><a href="#title">A Review of Nim 2: The Good &amp; Bad with Example Code</a></h1>
+            <div class="times">
+              <pre>August 28, 2025</pre>
+              <pre>Time to read: 14 mins</pre>
+            </div>
+          </div>
+          <aside class="toc"><nav class="toc-nav" aria-label="Table of contents">
+              <p class="toc-title">Table of Contents</p>
+              <ul class="toc-list">
+                <li><a class="toc-link level-1" href="#title" data-toc-link="title">Introduction</a></li>
+                <li><a class="toc-link level-1" href="#why-nim-the-good-parts" data-toc-link="why-nim-the-good-parts">Why Nim? The Good Parts</a></li>
+                <li><a class="toc-link level-1" href="#implementing-a-simple-keyvalue-file-format" data-toc-link="implementing-a-simple-keyvalue-file-format">Implementing a Simple Key&#x2F;Value File Format</a></li>
+                <li><a class="toc-link level-1" href="#the-bad" data-toc-link="the-bad">The Bad</a></li>
+                <li><a class="toc-link level-1" href="#conclusion" data-toc-link="conclusion">Conclusion</a></li>
+              </ul>
+            </nav></aside>
+          <div class="content"><p>I&apos;ve been using Nim for about 1-2 years now, and I believe the language is undervalued. It&apos;s not perfect, of course, but it&apos;s pleasant to write and read. My personal website <a href="https://forum.nim-lang.org/t/12752#78704">uses Nim</a>.</p>
 <p>After reading a recent article on Nim (<a href="https://undefined.pyfy.ch/why-nim">&quot;Why Nim&quot;</a>) and the <a href="https://news.ycombinator.com/item?id=44931415">associated HN comments</a>, it&apos;s clear that comments and some information about Nim are misleading and outdated. Since Nim 2, a <strong>tracing Garbage Collector is not the default</strong> nor the recommended memory management option. Instead, the default memory management model is <a href="https://nim-lang.org/docs/destructors.html">ORC/ARC</a>, which supports C++-esque RAII with destructors, moves, and copies. When you use <code>ref</code> types, your object instances are reference-counted, similar to a <code>shared_ptr</code> in C++, but it does not include atomic counters by default (use the switch <code>--mm:atomicArc</code>, which will likely be the default in Nim 3<sup>*</sup>).</p>
 <p>In fact, you could use Nim as a production-ready alternative to the upcoming <a href="https://github.com/carbon-language/carbon-lang">Carbon</a> language. Nim has fantastic interoperability with C++, supporting templates, constructors, destructors, overloaded operators, etc. However, it does <em>not</em> compile to readable C or C++ code, which is unlike Carbon.</p>
-<p>In this article, I review the good and bad parts of Nim 2. I&apos;ll write a tiny key/value file format that can load a user-declared object to demonstrate how some of Nim&apos;s features compose in powerful ways. Hopefully, this code example will give a good feel for the language. If you prefer to start with code, feel free to <a href="#implementing-a-vector-database-in-nim">jump to the example</a> first.</p>
+<p>In this article, I review the good and bad parts of Nim 2. I&apos;ll write a tiny key/value file format that can load a user-declared object to demonstrate how some of Nim&apos;s features compose in powerful ways. Hopefully, this code example will give a good feel for the language. If you prefer to start with code, feel free to <a href="#implementing-a-simple-keyvalue-file-format">jump to the example</a> first.</p>
 <p>I&apos;m not going to discuss subjective dismissals of the language, such as whitespace or <a href="https://nim-lang.org/docs/manual.html#lexical-analysis-identifier-equality">case insensitivity</a>, which IMO are not reasons to dismiss a language.</p>
 <p><sup>* The Nim team is currently working on Nim 3 (called <a href="https://github.com/nim-lang/nimony/">Nimony</a>), a new iteration of the language. The largest design change is NIF, an intermediate human-readable format (similar to Lisp). NIF enables incremental compilation, a better macro system (simpler to implement), and better tooling. Here is a link to <a href="https://github.com/nim-lang/nimony/blob/master/doc/design.md">a document describing the design</a> and <a href="https://nim-lang.org/araq/nimony.html">associated blog post</a>.</sup></p>
-<h1 id="why-nim-the-good-parts"><html><a href="#why-nim-the-good-parts">Why Nim? The Good Parts</a></html></h1>
+<h1 id="why-nim-the-good-parts"><a href="#why-nim-the-good-parts">Why Nim? The Good Parts</a></h1>
 <p>A common question I see online is: <strong>What sets Nim apart?</strong> In other words, why should you use Nim over any other language it competes with, such as C++, Go, Rust, JavaScript, or Python? In my opinion, there isn&apos;t just one unique &quot;ground-breaking&quot; feature or quality that sets Nim apart from the pack: it&apos;s the language as a whole. Overall, Nim is one of the most <strong>concise</strong>, <strong>flexible</strong>, and <strong>performant</strong> languages publicly available.</p>
 <p>Nim is a systems programming language that feels much like a high-level scripting language like Python, as it generally requires less code to do actual work (minimal boilerplate; here&apos;s a <a href="https://arhamjain.com/2021/11/22/nim-simple-chat.html">chatroom in 70 LOC</a>), i.e. it is <strong>concise</strong>. Nim is <strong>flexible</strong> as it has some of the best meta-programming capabilities and can be compiled to JavaScript (for a web <a href="https://moigagoo.svbtle.com/exploring-karax">frontend</a>) or to a native executable (via C, C++, or Objective-C); it has arbitrary compile-time execution, that is: any code written in Nim can execute at compile-time. Nim can produce code that <a href="https://github.com/attractivechaos/plb2?tab=readme-ov-file#appendix-timing-on-apple-m1-macbook-pro">is similar in performance</a> to other systems programming languages (C, C++, Rust, Odin, Zig). If you need to squeeze out extra performance, you can write lower-level style code, use SIMD intrinsics (e.g. using <a href="https://github.com/guzba/nimsimd">nimsimd</a>) and/or generate code, e.g. <a href="https://nim-lang.org/docs/nimc.html#gpu-compilation">here&apos;s how to generate CUDA code at compile-time with an emit pragma</a>.</p>
 <p>Here is an overview of <em>some of</em> Nim 2&apos;s features that make the language a joy to write in and hopefully will allow you to gain an idea of what Nim offers. This list is grouped by category from most to least commonly used:</p>
@@ -88,103 +214,103 @@ document.addEventListener('DOMContentLoaded', function() {
 </li>
 <li>Arbitrary compile-time code execution. When code is written in pure Nim, it can be executed at compile-time and results can be stored in a <code>const</code> identifier, e.g. <code>const myFileContents = readFile(&quot;file.txt&quot;)</code></li>
 <li>Macros enable you to perform AST-to-AST transformations, on both an <code>untyped</code> AST (before type-checking is performed) and a <code>typed</code> AST (after type-checking is performed). With this feature you can generate a <a href="https://github.com/c-blake/cligen/">CLI argument parser</a>, write DSLs for languages (e.g. <a href="https://github.com/karaxnim/karax">HTML</a>, <a href="https://github.com/treeform/shady">GLSL</a>), generate bindings for other languages, generate types at compile-time, etc.</li>
-<li>Templates are a simpler form of a macro, which essentially performs a &quot;copy and paste&quot;, similar to a C macro, but they are &quot;hygienic&quot;. Hygienic simply means the variables in the expanded template don&apos;t pollute the current scope, unless explicitly marked to do so with <code>{.inject.}</code>. For example:<pre><code class="language-nim">template echoMs*(prefix: string, body: untyped) =
-  let t1 = nowMs()  # here t1 won&apos;t be injected into the call site&apos;s scope
+<li>Templates are a simpler form of a macro, which essentially performs a &quot;copy and paste&quot;, similar to a C macro, but they are &quot;hygienic&quot;. Hygienic simply means the variables in the expanded template don&apos;t pollute the current scope, unless explicitly marked to do so with <code>{.inject.}</code>. For example:<pre class="code-block-pre"><code class="language-nim" data-highlighter="tree-sitter"><span class="ts-capture ts-keyword">template</span> <span class="ts-capture ts-function ts-function-macro">echoMs</span><span class="ts-capture ts-type ts-type-qualifier">*</span><span class="ts-capture ts-punctuation ts-punctuation-bracket">(</span><span class="ts-capture ts-variable">prefix</span><span class="ts-capture ts-punctuation ts-punctuation-delimiter">:</span> <span class="ts-capture ts-type">string</span><span class="ts-capture ts-punctuation ts-punctuation-delimiter">,</span> <span class="ts-capture ts-variable">body</span><span class="ts-capture ts-punctuation ts-punctuation-delimiter">:</span> <span class="ts-capture ts-type">untyped</span><span class="ts-capture ts-punctuation ts-punctuation-bracket">)</span> <span class="ts-capture ts-punctuation ts-punctuation-delimiter">=</span>
+  <span class="ts-capture ts-keyword">let</span> <span class="ts-capture ts-variable">t1</span> <span class="ts-capture ts-punctuation ts-punctuation-delimiter">=</span> <span class="ts-capture ts-function ts-function-call">nowMs</span><span class="ts-capture ts-punctuation ts-punctuation-bracket">(</span><span class="ts-capture ts-punctuation ts-punctuation-bracket">)</span>  <span class="ts-capture ts-comment"># here t1 won&apos;t be injected into the call site&apos;s scope</span>
   body
-  let
-    t2 = nowMs()
-    delta = t2 - t1
+  <span class="ts-capture ts-keyword">let</span>
+    <span class="ts-capture ts-variable">t2</span> <span class="ts-capture ts-punctuation ts-punctuation-delimiter">=</span> <span class="ts-capture ts-function ts-function-call">nowMs</span><span class="ts-capture ts-punctuation ts-punctuation-bracket">(</span><span class="ts-capture ts-punctuation ts-punctuation-bracket">)</span>
+    <span class="ts-capture ts-variable">delta</span> <span class="ts-capture ts-punctuation ts-punctuation-delimiter">=</span> t2 <span class="ts-capture ts-operator">-</span> t1
 
-  var deltaStr = &quot;&quot;
-  deltaStr.formatValue(delta, &quot;.3f&quot;)
-  echo prefix, deltaStr, &quot;ms&quot;
+  <span class="ts-capture ts-keyword">var</span> <span class="ts-capture ts-variable">deltaStr</span> <span class="ts-capture ts-punctuation ts-punctuation-delimiter">=</span> <span class="ts-capture ts-string">&quot;&quot;</span>
+  deltaStr<span class="ts-capture ts-punctuation ts-punctuation-delimiter">.</span><span class="ts-capture ts-function ts-function-call">formatValue</span><span class="ts-capture ts-punctuation ts-punctuation-bracket">(</span>delta<span class="ts-capture ts-punctuation ts-punctuation-delimiter">,</span> <span class="ts-capture ts-string">&quot;.3f&quot;</span><span class="ts-capture ts-punctuation ts-punctuation-bracket">)</span>
+  <span class="ts-capture ts-function ts-function-call">echo</span> prefix<span class="ts-capture ts-punctuation ts-punctuation-delimiter">,</span> deltaStr<span class="ts-capture ts-punctuation ts-punctuation-delimiter">,</span> <span class="ts-capture ts-string">&quot;ms&quot;</span>
 
-# at a call site...
-echoMs(&quot;foo: &quot;):  # pass in the body (a statement list) with the : operator
-  foo()
+<span class="ts-capture ts-comment"># at a call site...</span>
+<span class="ts-capture ts-function ts-function-call">echoMs</span><span class="ts-capture ts-punctuation ts-punctuation-bracket">(</span><span class="ts-capture ts-string">&quot;foo: &quot;</span><span class="ts-capture ts-punctuation ts-punctuation-bracket">)</span><span class="ts-capture ts-punctuation ts-punctuation-delimiter">:</span>  <span class="ts-capture ts-comment"># pass in the body (a statement list) with the : operator</span>
+  <span class="ts-capture ts-function ts-function-call">foo</span><span class="ts-capture ts-punctuation ts-punctuation-bracket">(</span><span class="ts-capture ts-punctuation ts-punctuation-bracket">)</span>
 </code></pre>
 </li>
 </ul>
 </li>
 </ul>
-<h1 id="implementing-a-simple-keyvalue-file-format"><html><a href="#implementing-a-simple-keyvalue-file-format">Implementing a Simple Key/Value File Format</a></html></h1>
+<h1 id="implementing-a-simple-keyvalue-file-format"><a href="#implementing-a-simple-keyvalue-file-format">Implementing a Simple Key/Value File Format</a></h1>
 <p>Here&apos;s the code for the full example in the <a href="https://play.nim-lang.org/#pasty=kRhvMEVq">Nim Playground</a> or as a <a href="https://gist.github.com/miguelmartin75/c41143c50c7a055d0b8b36e690a5cd56">gist</a>.</p>
 <p>My favourite combination of features in Nim has to be <code>fieldPairs</code> and procedure overloading. This combination of features enables an easy way to serialize and de-serialize types to/from various sources (databases, files, a network, etc.) without requiring external code generation scripts.</p>
 <p>To demonstrate this combination of features, I&apos;ll write a simple key/value file format. For example, say we wanted to load configuration from a text file. The schema of the file would be defined by a user-defined object, such as:</p>
-<pre><code class="language-nim">type
-  Config = object
-    name: string
-    lr: float
-    betas: seq[float]
+<pre class="code-block-pre"><code class="language-nim" data-highlighter="tree-sitter"><span class="ts-capture ts-keyword">type</span>
+  Config <span class="ts-capture ts-operator">=</span> <span class="ts-capture ts-keyword">object</span>
+    <span class="ts-capture ts-variable">name</span><span class="ts-capture ts-punctuation ts-punctuation-delimiter">:</span> <span class="ts-capture ts-type">string</span>
+    <span class="ts-capture ts-variable">lr</span><span class="ts-capture ts-punctuation ts-punctuation-delimiter">:</span> <span class="ts-capture ts-type">float</span>
+    <span class="ts-capture ts-variable">betas</span><span class="ts-capture ts-punctuation ts-punctuation-delimiter">:</span> seq<span class="ts-capture ts-punctuation ts-punctuation-bracket">[</span>float<span class="ts-capture ts-punctuation ts-punctuation-bracket">]</span>
 </code></pre>
 <p>Here is an associated file for the <code>Config</code> object, if using <code>=</code> as a separator for keys and values:</p>
-<pre><code class="language-text">name=my experiment
+<pre class="code-block-pre"><code>name=my experiment
 lr=0.001
 betas=[0.99, 0.999]
 </code></pre>
 <p>To implement this, we will need to define a <code>load[T]</code> function that accepts a file path and returns a <code>T</code>. The <code>load</code> function will iterate over the fields of the type <code>T</code> and call an overloaded <code>proc</code> called <code>parseValue</code> to parse each value string. I will provide <code>parseValue</code> for some primitive types. Let&apos;s see how to implement <code>load</code>:</p>
-<pre><code class="language-nim">import std/[parseutils, strformat, strutils, tables, sugar, enumerate]
-
-type ParseError* = object of CatchableError
-
-proc parseValue*(x: var int, value: string): bool = parseInt(value, x) &gt; 0
-proc parseValue*(x: var float, value: string): bool = parseFloat(value, x) &gt; 0
-proc parseValue*(x: var string, value: string): bool =
-  x = value
-  return true
-
-proc load*[T: object](fp: string, sep: string = &quot;=&quot;): T =
-  let
-    content = readFile(fp)
-    kvs = collect:
-      for i, line in enumerate(content.splitLines):
-        if line.len == 0:
-          continue
-        let kv = line.split(sep)
-        if kv.len != 2:
-          raise newException(ParseError,
-            &amp;&quot;line: {i}, expected a key and value pair seperated by {sep}&quot; &amp;
-            &amp;&quot;got instead {kv.len} seperations, line content: {line}&quot;
-          )
-        {kv[0]: kv[1]}
-
-  for name, value in result.fieldPairs:
-    if name in kvs:
-      if not parseValue(value, kvs[name]):
-        raise newException(ParseError,
-          &quot;could not parse field: &apos;&quot; &amp;
-          $name &amp;
-          &quot;&apos; with specified value: &quot; &amp;
-          kvs[name] &amp;
-          &quot; (expected type is: &quot; &amp; $typeof(value) &amp; &quot;)&quot;
-        )
-        # NOTE: the below line wont work due to how fieldPairs works (`name` &amp; `value` are mangled)
-        # raise newException(CatchableError, &amp;&quot;could not parse &apos;{name}&apos; ...&quot;)
+<pre class="code-block-pre has-line-numbers"><code class="language-nim" data-highlighter="tree-sitter"><span class="code-line"><span class="code-line-content"><span class="ts-capture ts-include">import</span> std<span class="ts-capture ts-operator">/</span><span class="ts-capture ts-punctuation ts-punctuation-bracket">[</span>parseutils<span class="ts-capture ts-punctuation ts-punctuation-delimiter">,</span> strformat<span class="ts-capture ts-punctuation ts-punctuation-delimiter">,</span> strutils<span class="ts-capture ts-punctuation ts-punctuation-delimiter">,</span> tables<span class="ts-capture ts-punctuation ts-punctuation-delimiter">,</span> sugar<span class="ts-capture ts-punctuation ts-punctuation-delimiter">,</span> enumerate<span class="ts-capture ts-punctuation ts-punctuation-bracket">]</span></span></span>
+<span class="code-line"><span class="code-line-content"></span></span>
+<span class="code-line"><span class="code-line-content"><span class="ts-capture ts-keyword">type</span> ParseError<span class="ts-capture ts-type ts-type-qualifier">*</span> <span class="ts-capture ts-operator">=</span> <span class="ts-capture ts-keyword">object</span> <span class="ts-capture ts-keyword ts-keyword-operator">of</span> CatchableError</span></span>
+<span class="code-line"><span class="code-line-content"></span></span>
+<span class="code-line"><span class="code-line-content"><span class="ts-capture ts-keyword ts-keyword-function">proc</span> <span class="ts-capture ts-function">parseValue</span><span class="ts-capture ts-type ts-type-qualifier">*</span><span class="ts-capture ts-punctuation ts-punctuation-bracket">(</span><span class="ts-capture ts-variable">x</span><span class="ts-capture ts-punctuation ts-punctuation-delimiter">:</span> <span class="ts-capture ts-keyword">var</span> int<span class="ts-capture ts-punctuation ts-punctuation-delimiter">,</span> <span class="ts-capture ts-variable">value</span><span class="ts-capture ts-punctuation ts-punctuation-delimiter">:</span> <span class="ts-capture ts-type">string</span><span class="ts-capture ts-punctuation ts-punctuation-bracket">)</span><span class="ts-capture ts-punctuation ts-punctuation-delimiter">:</span> <span class="ts-capture ts-type">bool</span> <span class="ts-capture ts-punctuation ts-punctuation-delimiter">=</span> <span class="ts-capture ts-function ts-function-call">parseInt</span><span class="ts-capture ts-punctuation ts-punctuation-bracket">(</span>value<span class="ts-capture ts-punctuation ts-punctuation-delimiter">,</span> x<span class="ts-capture ts-punctuation ts-punctuation-bracket">)</span> <span class="ts-capture ts-operator">&gt;</span> <span class="ts-capture ts-number">0</span></span></span>
+<span class="code-line"><span class="code-line-content"><span class="ts-capture ts-keyword ts-keyword-function">proc</span> <span class="ts-capture ts-function">parseValue</span><span class="ts-capture ts-type ts-type-qualifier">*</span><span class="ts-capture ts-punctuation ts-punctuation-bracket">(</span><span class="ts-capture ts-variable">x</span><span class="ts-capture ts-punctuation ts-punctuation-delimiter">:</span> <span class="ts-capture ts-keyword">var</span> float<span class="ts-capture ts-punctuation ts-punctuation-delimiter">,</span> <span class="ts-capture ts-variable">value</span><span class="ts-capture ts-punctuation ts-punctuation-delimiter">:</span> <span class="ts-capture ts-type">string</span><span class="ts-capture ts-punctuation ts-punctuation-bracket">)</span><span class="ts-capture ts-punctuation ts-punctuation-delimiter">:</span> <span class="ts-capture ts-type">bool</span> <span class="ts-capture ts-punctuation ts-punctuation-delimiter">=</span> <span class="ts-capture ts-function ts-function-call">parseFloat</span><span class="ts-capture ts-punctuation ts-punctuation-bracket">(</span>value<span class="ts-capture ts-punctuation ts-punctuation-delimiter">,</span> x<span class="ts-capture ts-punctuation ts-punctuation-bracket">)</span> <span class="ts-capture ts-operator">&gt;</span> <span class="ts-capture ts-number">0</span></span></span>
+<span class="code-line"><span class="code-line-content"><span class="ts-capture ts-keyword ts-keyword-function">proc</span> <span class="ts-capture ts-function">parseValue</span><span class="ts-capture ts-type ts-type-qualifier">*</span><span class="ts-capture ts-punctuation ts-punctuation-bracket">(</span><span class="ts-capture ts-variable">x</span><span class="ts-capture ts-punctuation ts-punctuation-delimiter">:</span> <span class="ts-capture ts-keyword">var</span> string<span class="ts-capture ts-punctuation ts-punctuation-delimiter">,</span> <span class="ts-capture ts-variable">value</span><span class="ts-capture ts-punctuation ts-punctuation-delimiter">:</span> <span class="ts-capture ts-type">string</span><span class="ts-capture ts-punctuation ts-punctuation-bracket">)</span><span class="ts-capture ts-punctuation ts-punctuation-delimiter">:</span> <span class="ts-capture ts-type">bool</span> <span class="ts-capture ts-punctuation ts-punctuation-delimiter">=</span></span></span>
+<span class="code-line"><span class="code-line-content">  x <span class="ts-capture ts-operator">=</span> value</span></span>
+<span class="code-line"><span class="code-line-content">  <span class="ts-capture ts-keyword ts-keyword-return">return</span> true</span></span>
+<span class="code-line"><span class="code-line-content"></span></span>
+<span class="code-line"><span class="code-line-content"><span class="ts-capture ts-keyword ts-keyword-function">proc</span> <span class="ts-capture ts-function">load</span><span class="ts-capture ts-type ts-type-qualifier">*</span><span class="ts-capture ts-punctuation ts-punctuation-bracket">[</span><span class="ts-capture ts-variable">T</span><span class="ts-capture ts-punctuation ts-punctuation-delimiter">:</span> <span class="ts-capture ts-keyword">object</span><span class="ts-capture ts-punctuation ts-punctuation-bracket">]</span><span class="ts-capture ts-punctuation ts-punctuation-bracket">(</span><span class="ts-capture ts-variable">fp</span><span class="ts-capture ts-punctuation ts-punctuation-delimiter">:</span> <span class="ts-capture ts-type">string</span><span class="ts-capture ts-punctuation ts-punctuation-delimiter">,</span> <span class="ts-capture ts-variable">sep</span><span class="ts-capture ts-punctuation ts-punctuation-delimiter">:</span> <span class="ts-capture ts-type">string</span> <span class="ts-capture ts-punctuation ts-punctuation-delimiter">=</span> <span class="ts-capture ts-string">&quot;=&quot;</span><span class="ts-capture ts-punctuation ts-punctuation-bracket">)</span><span class="ts-capture ts-punctuation ts-punctuation-delimiter">:</span> <span class="ts-capture ts-type">T</span> <span class="ts-capture ts-punctuation ts-punctuation-delimiter">=</span></span></span>
+<span class="code-line"><span class="code-line-content">  <span class="ts-capture ts-keyword">let</span></span></span>
+<span class="code-line"><span class="code-line-content">    <span class="ts-capture ts-variable">content</span> <span class="ts-capture ts-punctuation ts-punctuation-delimiter">=</span> <span class="ts-capture ts-function ts-function-call">readFile</span><span class="ts-capture ts-punctuation ts-punctuation-bracket">(</span>fp<span class="ts-capture ts-punctuation ts-punctuation-bracket">)</span></span></span>
+<span class="code-line"><span class="code-line-content">    <span class="ts-capture ts-variable">kvs</span> <span class="ts-capture ts-punctuation ts-punctuation-delimiter">=</span> <span class="ts-capture ts-function ts-function-call">collect</span><span class="ts-capture ts-punctuation ts-punctuation-delimiter">:</span></span></span>
+<span class="code-line"><span class="code-line-content">      <span class="ts-capture ts-repeat">for</span> <span class="ts-capture ts-variable">i</span><span class="ts-capture ts-punctuation ts-punctuation-delimiter">,</span> <span class="ts-capture ts-variable">line</span> <span class="ts-capture ts-keyword ts-keyword-operator">in</span> <span class="ts-capture ts-function ts-function-call">enumerate</span><span class="ts-capture ts-punctuation ts-punctuation-bracket">(</span>content<span class="ts-capture ts-punctuation ts-punctuation-delimiter">.</span><span class="ts-capture ts-field">splitLines</span><span class="ts-capture ts-punctuation ts-punctuation-bracket">)</span><span class="ts-capture ts-punctuation ts-punctuation-delimiter">:</span></span></span>
+<span class="code-line"><span class="code-line-content">        <span class="ts-capture ts-conditional">if</span> line<span class="ts-capture ts-punctuation ts-punctuation-delimiter">.</span><span class="ts-capture ts-field">len</span> <span class="ts-capture ts-operator">==</span> <span class="ts-capture ts-number">0</span><span class="ts-capture ts-punctuation ts-punctuation-delimiter">:</span></span></span>
+<span class="code-line"><span class="code-line-content">          <span class="ts-capture ts-repeat">continue</span></span></span>
+<span class="code-line"><span class="code-line-content">        <span class="ts-capture ts-keyword">let</span> <span class="ts-capture ts-variable">kv</span> <span class="ts-capture ts-punctuation ts-punctuation-delimiter">=</span> line<span class="ts-capture ts-punctuation ts-punctuation-delimiter">.</span><span class="ts-capture ts-function ts-function-call">split</span><span class="ts-capture ts-punctuation ts-punctuation-bracket">(</span>sep<span class="ts-capture ts-punctuation ts-punctuation-bracket">)</span></span></span>
+<span class="code-line"><span class="code-line-content">        <span class="ts-capture ts-conditional">if</span> kv<span class="ts-capture ts-punctuation ts-punctuation-delimiter">.</span><span class="ts-capture ts-field">len</span> <span class="ts-capture ts-operator">!=</span> <span class="ts-capture ts-number">2</span><span class="ts-capture ts-punctuation ts-punctuation-delimiter">:</span></span></span>
+<span class="code-line"><span class="code-line-content">          <span class="ts-capture ts-exception">raise</span> <span class="ts-capture ts-function ts-function-call">newException</span><span class="ts-capture ts-punctuation ts-punctuation-bracket">(</span>ParseError<span class="ts-capture ts-punctuation ts-punctuation-delimiter">,</span></span></span>
+<span class="code-line"><span class="code-line-content">            <span class="ts-capture ts-operator">&amp;</span><span class="ts-capture ts-string">&quot;line: {i}, expected a key and value pair seperated by {sep}&quot;</span> <span class="ts-capture ts-operator">&amp;</span></span></span>
+<span class="code-line"><span class="code-line-content">            <span class="ts-capture ts-operator">&amp;</span><span class="ts-capture ts-string">&quot;got instead {kv.len} seperations, line content: {line}&quot;</span></span></span>
+<span class="code-line"><span class="code-line-content">          <span class="ts-capture ts-punctuation ts-punctuation-bracket">)</span></span></span>
+<span class="code-line"><span class="code-line-content">        <span class="ts-capture ts-punctuation ts-punctuation-bracket">{</span>kv<span class="ts-capture ts-punctuation ts-punctuation-bracket">[</span><span class="ts-capture ts-number">0</span><span class="ts-capture ts-punctuation ts-punctuation-bracket">]</span><span class="ts-capture ts-punctuation ts-punctuation-delimiter">:</span> kv<span class="ts-capture ts-punctuation ts-punctuation-bracket">[</span><span class="ts-capture ts-number">1</span><span class="ts-capture ts-punctuation ts-punctuation-bracket">]</span><span class="ts-capture ts-punctuation ts-punctuation-bracket">}</span></span></span>
+<span class="code-line"><span class="code-line-content"></span></span>
+<span class="code-line"><span class="code-line-content">  <span class="ts-capture ts-repeat">for</span> <span class="ts-capture ts-variable">name</span><span class="ts-capture ts-punctuation ts-punctuation-delimiter">,</span> <span class="ts-capture ts-variable">value</span> <span class="ts-capture ts-keyword ts-keyword-operator">in</span> result<span class="ts-capture ts-punctuation ts-punctuation-delimiter">.</span><span class="ts-capture ts-field">fieldPairs</span><span class="ts-capture ts-punctuation ts-punctuation-delimiter">:</span></span></span>
+<span class="code-line"><span class="code-line-content">    <span class="ts-capture ts-conditional">if</span> name <span class="ts-capture ts-keyword ts-keyword-operator">in</span> kvs<span class="ts-capture ts-punctuation ts-punctuation-delimiter">:</span></span></span>
+<span class="code-line"><span class="code-line-content">      <span class="ts-capture ts-conditional">if</span> <span class="ts-capture ts-keyword ts-keyword-operator">not</span> <span class="ts-capture ts-function ts-function-call">parseValue</span><span class="ts-capture ts-punctuation ts-punctuation-bracket">(</span>value<span class="ts-capture ts-punctuation ts-punctuation-delimiter">,</span> kvs<span class="ts-capture ts-punctuation ts-punctuation-bracket">[</span>name<span class="ts-capture ts-punctuation ts-punctuation-bracket">]</span><span class="ts-capture ts-punctuation ts-punctuation-bracket">)</span><span class="ts-capture ts-punctuation ts-punctuation-delimiter">:</span></span></span>
+<span class="code-line"><span class="code-line-content">        <span class="ts-capture ts-exception">raise</span> <span class="ts-capture ts-function ts-function-call">newException</span><span class="ts-capture ts-punctuation ts-punctuation-bracket">(</span>ParseError<span class="ts-capture ts-punctuation ts-punctuation-delimiter">,</span></span></span>
+<span class="code-line"><span class="code-line-content">          <span class="ts-capture ts-string">&quot;could not parse field: &apos;&quot;</span> <span class="ts-capture ts-operator">&amp;</span></span></span>
+<span class="code-line"><span class="code-line-content">          <span class="ts-capture ts-operator">$</span>name <span class="ts-capture ts-operator">&amp;</span></span></span>
+<span class="code-line"><span class="code-line-content">          <span class="ts-capture ts-string">&quot;&apos; with specified value: &quot;</span> <span class="ts-capture ts-operator">&amp;</span></span></span>
+<span class="code-line"><span class="code-line-content">          kvs<span class="ts-capture ts-punctuation ts-punctuation-bracket">[</span>name<span class="ts-capture ts-punctuation ts-punctuation-bracket">]</span> <span class="ts-capture ts-operator">&amp;</span></span></span>
+<span class="code-line"><span class="code-line-content">          <span class="ts-capture ts-string">&quot; (expected type is: &quot;</span> <span class="ts-capture ts-operator">&amp;</span> <span class="ts-capture ts-operator">$</span><span class="ts-capture ts-function ts-function-call">typeof</span><span class="ts-capture ts-punctuation ts-punctuation-bracket">(</span>value<span class="ts-capture ts-punctuation ts-punctuation-bracket">)</span> <span class="ts-capture ts-operator">&amp;</span> <span class="ts-capture ts-string">&quot;)&quot;</span></span></span>
+<span class="code-line"><span class="code-line-content">        <span class="ts-capture ts-punctuation ts-punctuation-bracket">)</span></span></span>
+<span class="code-line"><span class="code-line-content">        <span class="ts-capture ts-comment"># NOTE: the below line wont work due to how fieldPairs works (`name` &amp; `value` are mangled)</span></span></span>
+<span class="code-line"><span class="code-line-content">        <span class="ts-capture ts-comment"># raise newException(CatchableError, &amp;&quot;could not parse &apos;{name}&apos; ...&quot;)</span></span></span>
 </code></pre>
 <p>If a user needs need custom parsing support for their type, they can provide more overloaded versions of <code>parseValue</code>. I&apos;ll provide an overload for <code>seq[T]</code> as the <code>Config</code> type uses a <code>seq[float]</code>.</p>
-<pre><code class="language-nim">proc parseValue*[T](xs: var seq[T], value: string): bool =
-  if not value.startsWith(&quot;[&quot;) and not value.endsWith(&quot;]&quot;):
-    raise newException(ParseError, &quot;expected seq to start and end with &apos;[&apos; and &apos;]&apos;&quot;)
+<pre class="code-block-pre"><code class="language-nim" data-highlighter="tree-sitter"><span class="ts-capture ts-keyword ts-keyword-function">proc</span> <span class="ts-capture ts-function">parseValue</span><span class="ts-capture ts-type ts-type-qualifier">*</span><span class="ts-capture ts-punctuation ts-punctuation-bracket">[</span><span class="ts-capture ts-variable">T</span><span class="ts-capture ts-punctuation ts-punctuation-bracket">]</span><span class="ts-capture ts-punctuation ts-punctuation-bracket">(</span><span class="ts-capture ts-variable">xs</span><span class="ts-capture ts-punctuation ts-punctuation-delimiter">:</span> <span class="ts-capture ts-keyword">var</span> seq<span class="ts-capture ts-punctuation ts-punctuation-bracket">[</span>T<span class="ts-capture ts-punctuation ts-punctuation-bracket">]</span><span class="ts-capture ts-punctuation ts-punctuation-delimiter">,</span> <span class="ts-capture ts-variable">value</span><span class="ts-capture ts-punctuation ts-punctuation-delimiter">:</span> <span class="ts-capture ts-type">string</span><span class="ts-capture ts-punctuation ts-punctuation-bracket">)</span><span class="ts-capture ts-punctuation ts-punctuation-delimiter">:</span> <span class="ts-capture ts-type">bool</span> <span class="ts-capture ts-punctuation ts-punctuation-delimiter">=</span>
+  <span class="ts-capture ts-conditional">if</span> <span class="ts-capture ts-keyword ts-keyword-operator">not</span> value<span class="ts-capture ts-punctuation ts-punctuation-delimiter">.</span><span class="ts-capture ts-function ts-function-call">startsWith</span><span class="ts-capture ts-punctuation ts-punctuation-bracket">(</span><span class="ts-capture ts-string">&quot;[&quot;</span><span class="ts-capture ts-punctuation ts-punctuation-bracket">)</span> <span class="ts-capture ts-keyword ts-keyword-operator">and</span> <span class="ts-capture ts-keyword ts-keyword-operator">not</span> value<span class="ts-capture ts-punctuation ts-punctuation-delimiter">.</span><span class="ts-capture ts-function ts-function-call">endsWith</span><span class="ts-capture ts-punctuation ts-punctuation-bracket">(</span><span class="ts-capture ts-string">&quot;]&quot;</span><span class="ts-capture ts-punctuation ts-punctuation-bracket">)</span><span class="ts-capture ts-punctuation ts-punctuation-delimiter">:</span>
+    <span class="ts-capture ts-exception">raise</span> <span class="ts-capture ts-function ts-function-call">newException</span><span class="ts-capture ts-punctuation ts-punctuation-bracket">(</span>ParseError<span class="ts-capture ts-punctuation ts-punctuation-delimiter">,</span> <span class="ts-capture ts-string">&quot;expected seq to start and end with &apos;[&apos; and &apos;]&apos;&quot;</span><span class="ts-capture ts-punctuation ts-punctuation-bracket">)</span>
 
-  for value in value[1..^2].split(&quot;,&quot;):
-    var tmp: T
-    if not parseValue(tmp, value.strip(trailing=false)):
-      raise newException(ParseError, &amp;&quot;could not parse {value} as type {$T}&quot;)
-    xs.add tmp
-  return true
+  <span class="ts-capture ts-repeat">for</span> <span class="ts-capture ts-variable">value</span> <span class="ts-capture ts-keyword ts-keyword-operator">in</span> value<span class="ts-capture ts-punctuation ts-punctuation-bracket">[</span><span class="ts-capture ts-number">1</span><span class="ts-capture ts-operator">..^</span><span class="ts-capture ts-number">2</span><span class="ts-capture ts-punctuation ts-punctuation-bracket">]</span><span class="ts-capture ts-punctuation ts-punctuation-delimiter">.</span><span class="ts-capture ts-function ts-function-call">split</span><span class="ts-capture ts-punctuation ts-punctuation-bracket">(</span><span class="ts-capture ts-string">&quot;,&quot;</span><span class="ts-capture ts-punctuation ts-punctuation-bracket">)</span><span class="ts-capture ts-punctuation ts-punctuation-delimiter">:</span>
+    <span class="ts-capture ts-keyword">var</span> <span class="ts-capture ts-variable">tmp</span><span class="ts-capture ts-punctuation ts-punctuation-delimiter">:</span> <span class="ts-capture ts-type">T</span>
+    <span class="ts-capture ts-conditional">if</span> <span class="ts-capture ts-keyword ts-keyword-operator">not</span> <span class="ts-capture ts-function ts-function-call">parseValue</span><span class="ts-capture ts-punctuation ts-punctuation-bracket">(</span>tmp<span class="ts-capture ts-punctuation ts-punctuation-delimiter">,</span> value<span class="ts-capture ts-punctuation ts-punctuation-delimiter">.</span><span class="ts-capture ts-function ts-function-call">strip</span><span class="ts-capture ts-punctuation ts-punctuation-bracket">(</span>trailing<span class="ts-capture ts-operator">=</span>false<span class="ts-capture ts-punctuation ts-punctuation-bracket">)</span><span class="ts-capture ts-punctuation ts-punctuation-bracket">)</span><span class="ts-capture ts-punctuation ts-punctuation-delimiter">:</span>
+      <span class="ts-capture ts-exception">raise</span> <span class="ts-capture ts-function ts-function-call">newException</span><span class="ts-capture ts-punctuation ts-punctuation-bracket">(</span>ParseError<span class="ts-capture ts-punctuation ts-punctuation-delimiter">,</span> <span class="ts-capture ts-operator">&amp;</span><span class="ts-capture ts-string">&quot;could not parse {value} as type {$T}&quot;</span><span class="ts-capture ts-punctuation ts-punctuation-bracket">)</span>
+    xs<span class="ts-capture ts-punctuation ts-punctuation-delimiter">.</span><span class="ts-capture ts-function ts-function-call">add</span> tmp
+  <span class="ts-capture ts-keyword ts-keyword-return">return</span> true
 </code></pre>
 <p>Now we can load a <code>Config</code> object at runtime:</p>
-<pre><code class="language-nim">let config = load[Config](&quot;config.txt&quot;)
-echo config
+<pre class="code-block-pre"><code class="language-nim" data-highlighter="tree-sitter"><span class="ts-capture ts-keyword">let</span> <span class="ts-capture ts-variable">config</span> <span class="ts-capture ts-punctuation ts-punctuation-delimiter">=</span> load<span class="ts-capture ts-punctuation ts-punctuation-bracket">[</span>Config<span class="ts-capture ts-punctuation ts-punctuation-bracket">]</span><span class="ts-capture ts-punctuation ts-punctuation-bracket">(</span><span class="ts-capture ts-string">&quot;config.txt&quot;</span><span class="ts-capture ts-punctuation ts-punctuation-bracket">)</span>
+<span class="ts-capture ts-function ts-function-call">echo</span> config
 </code></pre>
 <p>and at compile-time, by changing <code>let</code> to <code>const</code> - nice!</p>
-<pre><code class="language-nim">const config = load[Config](&quot;config.txt&quot;)
-static:  # a static block executes each statement at compile time
-  echo &quot;Using configuration:&quot;
-  echo config
+<pre class="code-block-pre"><code class="language-nim" data-highlighter="tree-sitter"><span class="ts-capture ts-keyword">const</span> <span class="ts-capture ts-variable">config</span> <span class="ts-capture ts-punctuation ts-punctuation-delimiter">=</span> load<span class="ts-capture ts-punctuation ts-punctuation-bracket">[</span>Config<span class="ts-capture ts-punctuation ts-punctuation-bracket">]</span><span class="ts-capture ts-punctuation ts-punctuation-bracket">(</span><span class="ts-capture ts-string">&quot;config.txt&quot;</span><span class="ts-capture ts-punctuation ts-punctuation-bracket">)</span>
+<span class="ts-capture ts-keyword">static</span><span class="ts-capture ts-punctuation ts-punctuation-delimiter">:</span>  <span class="ts-capture ts-comment"># a static block executes each statement at compile time</span>
+  <span class="ts-capture ts-function ts-function-call">echo</span> <span class="ts-capture ts-string">&quot;Using configuration:&quot;</span>
+  <span class="ts-capture ts-function ts-function-call">echo</span> config
 </code></pre>
 <p>I&apos;ll leave handling nested types as an exercise to the reader (hint: you&apos;ll likely have to change the format a bit).</p>
-<h1 id="the-bad"><html><a href="#the-bad">The Bad</a></html></h1>
+<h1 id="the-bad"><a href="#the-bad">The Bad</a></h1>
 <p>Using Nim is not all sunshine and rainbows. Nim&apos;s weaknesses, in my opinion, are with respect to tooling and some minor things with the compiler and language. Also, in my opinion, to get the most out of Nim, you should understand and know clang/GCC&apos;s compiler switches (or the C compiler of your choice, such as MSVC).</p>
 <p>Here&apos;s a list of my nit-picks with Nim, they&apos;re nits as they will not block you from developing productively with the language. Feel free to correct me in the comments about any of the following points:</p>
 <ul>
@@ -214,7 +340,7 @@ static:  # a static block executes each statement at compile time
 </ul>
 </li>
 </ul>
-<h1 id="conclusion"><html><a href="#conclusion">Conclusion</a></html></h1>
+<h1 id="conclusion"><a href="#conclusion">Conclusion</a></h1>
 <p>Overall, Nim is a great systems programming language. It&apos;s opened my eyes to what a programming language can be. You don&apos;t need to write a lot of code in Nim to do something useful, and it&apos;s pretty easy to write code that can generalize. Nim has a small community, but some libraries are really high quality. For example, if you want to write a CLI tool in the language, then check out <a href="https://github.com/c-blake/cligen">cligen</a> for argument parsing. cligen is similar to <a href="https://click.palletsprojects.com/en/stable/">click</a> in Python-land.</p>
 <p>Here are some other third-party libraries I recommend checking out if you use the language, in no particular order:</p>
 <ul>
@@ -227,8 +353,8 @@ static:  # a static block executes each statement at compile time
 <li>Fast JSON serialization <a href="https://github.com/treeform/jsony">jsony</a></li>
 <li>CLI argument parser: <a href="https://github.com/c-blake/cligen">cligen</a></li>
 </ul>
-</document></div>
-      <html><script
+</div>
+          <html><script
   src="https://utteranc.es/client.js"
   repo="miguelmartin75/miguelmartin75.github.io"
   issue-term="title"
@@ -238,6 +364,6 @@ static:  # a static block executes each statement at compile time
   async>
 </script>
 </html>
-    </main>
+        </div></div></main>
   </body>
 </html>
