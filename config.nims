@@ -21,19 +21,12 @@ task devpriv, "generate & serve website":
 task dev, "generate & serve website":
   exec "nim c -r src/gen.nim --serve --port 3030 --dev --highlightTheme=" & quoteShell(HighlightTheme)
 
-task tsAddParser, "install a tree-sitter parser into 3rdparty/tree-sitter-parsers":
-  var args = commandLineParams()
-  if args.len > 0 and args[0] == "tsAddParser":
-    args = args[1..^1]
-  if args.len > 0 and args[0] == "--":
-    args = args[1..^1]
-  let extra = if args.len == 0: "" else: " " & args.mapIt(quoteShell(it)).join(" ")
-  exec "nim c -r scripts/treesitter.nim" & extra
-
 task init, "initialize to publish":
   if not dirExists("dist"):
     exec &"git worktree add -f dist gh-pages"
   exec &"git submodule update --init"
+  exec &"nim c -r scripts/treesitter.nim -p git@github.com:alaviss/tree-sitter-nim.git -y"
+  exec &"nim c -r scripts/treesitter.nim -p git@github.com:alaviss/tree-sitter-javascript.git -y"
 
 task publish, "generate & serve website":
   const dt = CompileDate & "T" & CompileTime
