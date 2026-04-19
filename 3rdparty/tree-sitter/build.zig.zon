@@ -1,0 +1,96 @@
+.{
+    .name = .tree_sitter,
+    .fingerprint = 0x841224b447ac0d4f,
+    .version = "0.27.0",
+    .minimum_zig_version = "0.16.0",
+    .paths = .{
+        "build.zig",
+        "build.zig.zon",
+        "lib/src",
+        "lib/include",
+        "README.md",
+        "LICENSE",
+    },
+    .dependencies = .{
+        .wasmtime_c_api_aarch64_android = .{
+            .url = "https://github.com/bytecodealliance/wasmtime/releases/download/v36.0.7/wasmtime-v36.0.7-aarch64-android-c-api.tar.xz",
+            .hash = "N-V-__8AAIO-FwRvhPargObqK-4J-s5Ihp9V3cvNZA4e9xo6",
+            .lazy = true,
+        },
+        .wasmtime_c_api_aarch64_linux = .{
+            .url = "https://github.com/bytecodealliance/wasmtime/releases/download/v36.0.7/wasmtime-v36.0.7-aarch64-linux-c-api.tar.xz",
+            .hash = "N-V-__8AAK86GASyPddIjWJmrD3zqn5NRPsKjUhYC6BW1GzO",
+            .lazy = true,
+        },
+        .wasmtime_c_api_aarch64_macos = .{
+            .url = "https://github.com/bytecodealliance/wasmtime/releases/download/v36.0.7/wasmtime-v36.0.7-aarch64-macos-c-api.tar.xz",
+            .hash = "N-V-__8AANOT3QIV5Ltus7D_GI_ULJH2Y2UdZVexyET1B_rf",
+            .lazy = true,
+        },
+        .wasmtime_c_api_aarch64_musl = .{
+            .url = "https://github.com/bytecodealliance/wasmtime/releases/download/v36.0.7/wasmtime-v36.0.7-aarch64-musl-c-api.tar.xz",
+            .hash = "N-V-__8AADffFgQKpRqiymUDN3jizpq3l8JfHrmAGJO6mMdS",
+            .lazy = true,
+        },
+        .wasmtime_c_api_aarch64_windows = .{
+            .url = "https://github.com/bytecodealliance/wasmtime/releases/download/v36.0.7/wasmtime-v36.0.7-aarch64-windows-c-api.zip",
+            .hash = "N-V-__8AANnqnQQ6WdmS8_M_Qvobik4Vpqq5Q7QFIucdWrja",
+            .lazy = true,
+        },
+        .wasmtime_c_api_armv7_linux = .{
+            .url = "https://github.com/bytecodealliance/wasmtime/releases/download/v36.0.7/wasmtime-v36.0.7-armv7-linux-c-api.tar.xz",
+            .hash = "N-V-__8AAL99aQOeUB4CV9AtoNre30_TgWR0iIhR-B7Zt-T7",
+            .lazy = true,
+        },
+        .wasmtime_c_api_i686_linux = .{
+            .url = "https://github.com/bytecodealliance/wasmtime/releases/download/v36.0.7/wasmtime-v36.0.7-i686-linux-c-api.tar.xz",
+            .hash = "N-V-__8AANVYpgNF-5QLL9fG8dQ3ag3pSqZdJV3uh1sle2QF",
+            .lazy = true,
+        },
+        .wasmtime_c_api_i686_windows = .{
+            .url = "https://github.com/bytecodealliance/wasmtime/releases/download/v36.0.7/wasmtime-v36.0.7-i686-windows-c-api.zip",
+            .hash = "N-V-__8AAOPphQSIbA0_OwjSys4ZYW3qGFf3yUQJ_xSBTXOl",
+            .lazy = true,
+        },
+        .wasmtime_c_api_riscv64gc_linux = .{
+            .url = "https://github.com/bytecodealliance/wasmtime/releases/download/v36.0.7/wasmtime-v36.0.7-riscv64gc-linux-c-api.tar.xz",
+            .hash = "N-V-__8AAG-tVQVeChy1ncf4qDSoAiPtKO8NInYatzUlMCrQ",
+            .lazy = true,
+        },
+        .wasmtime_c_api_s390x_linux = .{
+            .url = "https://github.com/bytecodealliance/wasmtime/releases/download/v36.0.7/wasmtime-v36.0.7-s390x-linux-c-api.tar.xz",
+            .hash = "N-V-__8AAHnmUwQL2OOfD2ME6jVXK0WNReQLcZfOaLOuus5k",
+            .lazy = true,
+        },
+        .wasmtime_c_api_x86_64_android = .{
+            .url = "https://github.com/bytecodealliance/wasmtime/releases/download/v36.0.7/wasmtime-v36.0.7-x86_64-android-c-api.tar.xz",
+            .hash = "N-V-__8AAAdrmQRkOxagcTNdbxM75MOAE1UVvetvPpbshqym",
+            .lazy = true,
+        },
+        .wasmtime_c_api_x86_64_linux = .{
+            .url = "https://github.com/bytecodealliance/wasmtime/releases/download/v36.0.7/wasmtime-v36.0.7-x86_64-linux-c-api.tar.xz",
+            .hash = "N-V-__8AAAVQmATDCgvg4vIZpMsmDddWQDxNwvehHk-hMzAk",
+            .lazy = true,
+        },
+        .wasmtime_c_api_x86_64_macos = .{
+            .url = "https://github.com/bytecodealliance/wasmtime/releases/download/v36.0.7/wasmtime-v36.0.7-x86_64-macos-c-api.tar.xz",
+            .hash = "N-V-__8AAOvnUwOFD1dzXV-6Oca9lme003B_txfKOZ-8vQbA",
+            .lazy = true,
+        },
+        .wasmtime_c_api_x86_64_mingw = .{
+            .url = "https://github.com/bytecodealliance/wasmtime/releases/download/v36.0.7/wasmtime-v36.0.7-x86_64-mingw-c-api.zip",
+            .hash = "N-V-__8AAO_u-AQOVhy_tpVd6c3OEWjrQZoXOyQ2DqfBDRHL",
+            .lazy = true,
+        },
+        .wasmtime_c_api_x86_64_musl = .{
+            .url = "https://github.com/bytecodealliance/wasmtime/releases/download/v36.0.7/wasmtime-v36.0.7-x86_64-musl-c-api.tar.xz",
+            .hash = "N-V-__8AAGVumwRkQcJQUjNIA9PyOevzD8pxvCPz35ma3TUc",
+            .lazy = true,
+        },
+        .wasmtime_c_api_x86_64_windows = .{
+            .url = "https://github.com/bytecodealliance/wasmtime/releases/download/v36.0.7/wasmtime-v36.0.7-x86_64-windows-c-api.zip",
+            .hash = "N-V-__8AAGGfXQU3bW2QoO-Wije8QtTLhVTy-zVacWf4MLCt",
+            .lazy = true,
+        },
+    },
+}

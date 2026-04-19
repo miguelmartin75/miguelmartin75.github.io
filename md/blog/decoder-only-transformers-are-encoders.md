@@ -4,6 +4,10 @@ date: 2025-05-20
 state: publish
 ---
 
+```toc
+
+```
+
 # tl;dr
 
 * Despite their name, decoder-only Transformers (M-LLMs, e.g. Llama, Mistral,
