@@ -33,6 +33,33 @@
 - Do not use tabs for indentation.
 - Natural language characters (accented letters, CJK, etc.) are fine when the content requires them.
 
+## Writing Style
+
+- Preserve a direct, practical, engineering-minded voice.
+- Prefer plain claims over decorative prose.
+- Keep writing concise, but do not remove useful technical precision.
+- Preserve first-person framing when it explains motivation, experience, or judgment.
+- Use questions to frame the reader's problem when that is already the post's structure.
+- Prefer concrete examples, links, code, tables, formulas, and implementation details over abstract explanation.
+- Examples should be realistic, not extreme or isolated in nature.
+- Keep conclusions practical and outcome-focused.
+- Colons are acceptable when they introduce a definition, explanation, list, or punchline. Do not remove them just to make prose more conventional.
+- Avoid making posts sound like polished magazine essays. Do not add literary transitions, metaphor-heavy phrasing, or emotional language unless explicitly requested.
+- Keep punchy phrasing when it is grammatically valid and clear.
+
+## Proofreading Guidelines
+
+- Review for grammar, clarity, and verbosity.
+- Preserve the author's style by default. Suggest changes only when they improve correctness, clarity, rhythm, or concision.
+- Distinguish errors from optional style preferences.
+- Australian style is acceptable. Do not require Oxford commas unless they prevent ambiguity or improve readability in a specific sentence.
+- Prefer direct rewrites that keep the original sentence shape where possible.
+- Watch for tense mismatches, duplicated words, comma splices, missing prepositions, unclear pronouns, and overloaded sentences with too many parentheticals.
+- For short philosophical posts, tighten vague references such as "this" or "it" when the referent is not obvious.
+- For technical posts, preserve precision and caveats. Do not simplify away important constraints, evidence, examples, or source references.
+- When suggesting punctuation changes, explain the effect on meaning or rhythm, not only the rule.
+- Do not over-smooth intentionally punchy constructions if they are correct and readable.
+
 ## Code Guidelines
 
 ### Scope and Simplicity
