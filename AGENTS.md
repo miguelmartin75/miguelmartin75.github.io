@@ -65,7 +65,7 @@
 ### Scope and Simplicity
 
 - Keep changes small and direct.
-- Prefer simple direct code and solutions over abstractions, unless clearly repeated many times (>10x).
+- Prefer simple direct code and solutions over abstractions, unless clearly repeated many times (>3x).
 - Avoid simple helpers that perform little to no computation, unless it is used frequently and provides readability.
 - Prefer the simpler language feature, use the features in order of: `proc`, `iterator`, `converter`, `template`, `macro`.
 - Only use a more complex language construct (`converter`, `template`, or `macro`) when it is necessary for performance, provides LOC reduction (or will in the near future), or has other quantifiable improvements.
