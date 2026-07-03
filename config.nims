@@ -39,6 +39,13 @@ task publish, "generate & serve website":
   exec &"cd dist && git add -A && git commit -m '{dt}'"
   exec "git push origin gh-pages -f && cd .."
 
+task sync, "pull, commit, and push site changes":
+  const dt = CompileDate & "T" & CompileTime
+  exec "git pull origin master"
+  exec "git add -A"
+  exec &"if ! git diff --cached --quiet; then git commit -m '{dt}'; fi"
+  exec "git push origin master"
+
 # begin Nimble config (version 2)
 when withDir(thisDir(), system.fileExists("nimble.paths")):
   include "nimble.paths"
